@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 72" role="img" aria-label="Vinoja Foods">
+  <defs>
+    <linearGradient id="lg-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2F7A52"/>
+      <stop offset="100%" stop-color="#1F5C45"/>
+    </linearGradient>
+    <linearGradient id="lg-gold" x1="20%" y1="0%" x2="80%" y2="100%">
+      <stop offset="0%" stop-color="#EBD48A"/>
+      <stop offset="45%" stop-color="#D4A82E"/>
+      <stop offset="100%" stop-color="#A6841F"/>
+    </linearGradient>
+  </defs>
+  <g transform="translate(4 4)">
+    <circle cx="32" cy="32" r="30" fill="url(#lg-bg)"/>
+    <circle cx="32" cy="32" r="30" fill="none" stroke="#D4A82E" stroke-opacity="0.35" stroke-width="1.5"/>
+    <path fill="url(#lg-gold)" d="M32 11c-8 9-12 20-11 33 2-4 5-7 11-9 6 2 9 5 11 9 1-13-3-24-11-33z"/>
+    <path fill="none" stroke="#1F5C45" stroke-opacity="0.45" stroke-width="1.2" stroke-linecap="round" d="M32 14v36M26 22c3 6 6 10 6 16M38 22c-3 6-6 10-6 16"/>
+    <circle cx="32" cy="44" r="2.2" fill="#F5A623" opacity="0.9"/>
+  </g>
+  <text
+    x="84"
+    y="46"
+    fill="#2A1F18"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="32"
+    font-weight="600"
+    letter-spacing="-0.5"
+  >Vinoja Foods</text>
+</svg>

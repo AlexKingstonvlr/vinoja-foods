@@ -18,3 +18,4 @@ coverage/
 *.avif
 !public/
 !public/**
+.env*

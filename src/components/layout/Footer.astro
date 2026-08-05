@@ -70,9 +70,14 @@ const orderUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
     <div class="grid gap-10 lg:grid-cols-12 mb-12">
       <div class="lg:col-span-5">
         <a href={`/${locale}/`} class="inline-flex items-center gap-3 mb-4">
-          <span class="flex h-11 w-11 items-center justify-center rounded-full bg-leaf-500 text-brass-200" aria-hidden="true">
-            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 6 5 9.5 5 13a7 7 0 0014 0c0-3.5-3-7-7-11zm0 16a4 4 0 01-4-4c0-1.8 1.4-3.8 4-7.2 2.6 3.4 4 5.4 4 7.2a4 4 0 01-4 4z"/></svg>
-          </span>
+          <img
+            src="/images/logo-mark.svg"
+            alt=""
+            width="44"
+            height="44"
+            class="h-11 w-11 rounded-full"
+            decoding="async"
+          />
           <span class="font-display text-2xl font-semibold text-white">
             {isEnglish ? 'Vinoja Foods' : 'வினோஜா ஃபூட்ஸ்'}
           </span>

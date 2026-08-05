@@ -55,9 +55,14 @@ const navLinks = [
   <div class="container-custom">
     <div class="flex h-16 sm:h-[4.25rem] items-center justify-between gap-4">
       <a href={`/${locale}/`} class="flex items-center gap-3 group" aria-label={isEnglish ? 'Vinoja Foods Home' : 'வினோஜா ஃபூட்ஸ் முகப்பு'}>
-        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-leaf-600 text-brass-300 shadow-warm group-hover:scale-105 transition-transform" aria-hidden="true">
-          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 6 5 9.5 5 13a7 7 0 0014 0c0-3.5-3-7-7-11zm0 16a4 4 0 01-4-4c0-1.8 1.4-3.8 4-7.2 2.6 3.4 4 5.4 4 7.2a4 4 0 01-4 4z"/></svg>
-        </span>
+        <img
+          src="/images/logo-mark.svg"
+          alt=""
+          width="40"
+          height="40"
+          class="h-10 w-10 rounded-full shadow-warm group-hover:scale-105 transition-transform"
+          decoding="async"
+        />
         <span class="font-display text-lg sm:text-2xl font-semibold text-ink tracking-tight">
           {isEnglish ? 'Vinoja Foods' : 'வினோஜா ஃபூட்ஸ்'}
         </span>
