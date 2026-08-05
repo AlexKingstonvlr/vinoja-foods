@@ -1,0 +1,25 @@
+---
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+
+interface Props {
+  locale: 'en' | 'ta';
+  title: string;
+  subtitle?: string;
+  label?: string;
+  breadcrumbs: Array<{ name?: string; label?: string; url?: string; href?: string }>;
+}
+
+const { title, subtitle, label, breadcrumbs } = Astro.props;
+---
+
+<section class="relative overflow-hidden border-b border-leaf-100/80 bg-paper-soft pt-28 pb-12 sm:pt-32 sm:pb-14" aria-labelledby="page-hero-title">
+  <div class="absolute inset-0 pointer-events-none opacity-60" style="background: radial-gradient(ellipse at 10% 0%, rgba(47,122,82,0.12), transparent 45%), radial-gradient(ellipse at 90% 100%, rgba(201,162,39,0.1), transparent 40%);"></div>
+  <div class="container-custom relative">
+    <Breadcrumb items={breadcrumbs} />
+    <header class="mt-6 max-w-3xl animate-in">
+      {label && <p class="section-label">{label}</p>}
+      <h1 id="page-hero-title" class="heading-1 text-balance">{title}</h1>
+      {subtitle && <p class="mt-4 text-fluid-lg text-ink-muted leading-relaxed max-w-2xl">{subtitle}</p>}
+    </header>
+  </div>
+</section>

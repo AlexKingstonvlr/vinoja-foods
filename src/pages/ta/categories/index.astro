@@ -1,0 +1,121 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { products } from '@/data/products';
+
+const locale = 'ta';
+
+const categoryMeta = [
+  {
+    name: 'முறுக்கு & சக்லி',
+    slug: 'murukku-chakli',
+    blurb: 'கை முறுக்கு, தென்குழல் — அந்தக் கைவினைக்குப் புகழ்பெற்ற ஊர்களிலிருந்து.',
+    image: '/images/categories/murukku.jpg'
+  },
+  {
+    name: 'இனிப்புகள்',
+    slug: 'sweets-mithai',
+    blurb: 'மைசூர் பாக், லட்டு, அதிரசம் — மென்மையான, நெய் மணம், பிராந்தியத் தயாரிப்பு.',
+    image: '/images/categories/sweets.jpg'
+  },
+  {
+    name: 'மிக்ச்சர் & நம்கீன்',
+    slug: 'mixture-namkeen',
+    blurb: 'மாலை சாய்க்கு கறிவேப்பிலை வெப்பம் — தோற்றத்தில் பேக்.',
+    image: '/images/categories/mixture.jpg'
+  },
+  {
+    name: 'பண்டிகை சிறப்புகள்',
+    slug: 'festival-specials',
+    blurb: 'பொங்கல் முதல் தீபாவளி — புதிய பரிசுத் தொகுப்பைக் கேளுங்கள்.',
+    image: '/images/categories/festival.jpg'
+  },
+  {
+    name: 'ஆரோக்கிய தின்பண்டங்கள்',
+    slug: 'healthy-snacks',
+    blurb: 'மொறுமொறுப்பு வேண்டும், அளவுடன் — லேசான பாரம்பரியத் தேர்வுகள்.',
+    image: '/images/categories/healthy.jpg'
+  },
+  {
+    name: 'பரிசு ஹாம்பர்கள்',
+    slug: 'gift-hampers',
+    blurb: 'கொண்டாட்டங்களுக்காகப் பொதிந்த மாவட்டச் சிறப்புகள்.',
+    image: '/images/categories/gift.jpg'
+  }
+];
+
+const categories = categoryMeta.map((c) => ({
+  ...c,
+  productCount: products.filter((p) => p.category === c.slug).length
+}));
+---
+
+<BaseLayout
+  title="வகைகள் — வினோஜா ஃபூட்ஸ் | தமிழ்நாட்டுச் சிறப்புகள்"
+  description="முறுக்கு, இனிப்புகள், மிக்ச்சர், பண்டிகைப் பொட்டலங்கள் — தமிழ்நாடு முழுவதும், சென்னையில் புதிதாக."
+  locale={locale}
+>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="விருப்பப்படி வாங்குங்கள்"
+      title="வகைகள்"
+      subtitle="ஒவ்வொரு வகையும் புகழ்பெற்ற ஊர்களில் தயாரிக்கப்பட்ட சிறப்புகளை ஒன்று சேர்க்கிறது — சுகாதார பேக்கிங், ஒரு நாளுக்குள் சென்னை கடைக்கு."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'வகைகள்', url: '/ta/categories/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        {categories.map((category, index) => (
+          <a
+            href={`/${locale}/products/?category=${category.slug}`}
+            class="group relative block rounded-2xl overflow-hidden aspect-[4/5] shadow-soft border border-leaf-100 animate-in"
+            style={`animation-delay: ${index * 70}ms`}
+          >
+            <img
+              src={category.image}
+              alt=""
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/35 to-ink/10"></div>
+            <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+              {category.productCount > 0 ? (
+                <span class="badge badge-secondary mb-3">{category.productCount} கடையில்</span>
+              ) : (
+                <span class="badge bg-white/20 text-white mb-3">வாட்ஸ்அப்பில் கேளுங்கள்</span>
+              )}
+              <h2 class="font-display text-2xl font-semibold text-balance">{category.name}</h2>
+              <p class="mt-2 text-sm text-white/80 leading-relaxed">{category.blurb}</p>
+              <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brass-200">
+                உற்பத்திகளைப் பாருங்கள்
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="எந்த வகை என்று தெரியவில்லையா?"
+      subtitle="டீ-நேரம், பண்டிகைப் பரிசு, மொத்தம் — சொல்லுங்கள்; பிராந்தியப் பொட்டலங்களைப் பரிந்துரைக்கிறோம்."
+      message="வணக்கம் வினோஜா ஃபூட்ஸ்! தின்பண்டங்கள் தேர்ந்தெடுக்க உதவுங்கள்."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

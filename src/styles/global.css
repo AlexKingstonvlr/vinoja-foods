@@ -1,0 +1,264 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-leaf: 31 92 69;
+    --color-brass: 201 162 39;
+    --color-ink: 42 31 24;
+    --color-paper: 232 237 230;
+  }
+
+  html {
+    @apply scroll-smooth;
+  }
+
+  body {
+    @apply font-sans text-ink antialiased bg-paper;
+    background-image: theme('backgroundImage.leaf-veins');
+    background-attachment: fixed;
+    font-feature-settings: 'ss01', 'kern';
+    padding-bottom: env(safe-area-inset-bottom, 0);
+  }
+
+  main {
+    @apply pb-20 sm:pb-8;
+  }
+
+  :lang(ta) {
+    font-family: 'Noto Sans Tamil', 'Source Sans 3', system-ui, sans-serif;
+  }
+
+  :lang(ta) h1,
+  :lang(ta) h2,
+  :lang(ta) h3,
+  :lang(ta) .font-display {
+    font-family: 'Noto Serif Tamil', Fraunces, Georgia, serif;
+  }
+
+  ::selection {
+    @apply bg-brass-200 text-ink;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-leaf-500 ring-offset-2 ring-offset-paper;
+  }
+
+  .skip-link {
+    @apply absolute -top-12 left-4 z-[100] bg-leaf-600 text-white px-4 py-2 rounded-md transition-all;
+  }
+
+  .skip-link:focus {
+    @apply top-4;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-semibold tracking-wide rounded-md transition-all duration-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-primary {
+    @apply btn bg-leaf-600 text-white hover:bg-leaf-700 focus-visible:ring-leaf-500 px-7 py-3.5 text-fluid-base shadow-warm hover:-translate-y-0.5;
+  }
+
+  .btn-secondary {
+    @apply btn bg-brass-500 text-ink hover:bg-brass-400 focus-visible:ring-brass-500 px-7 py-3.5 text-fluid-base shadow-soft hover:-translate-y-0.5;
+  }
+
+  .btn-outline {
+    @apply btn border-2 border-ink/20 text-ink hover:border-leaf-600 hover:text-leaf-700 hover:bg-leaf-50 focus-visible:ring-leaf-500 px-7 py-3.5 text-fluid-base bg-white/50 backdrop-blur-sm;
+  }
+
+  .btn-whatsapp {
+    @apply btn bg-whatsapp text-white hover:bg-whatsapp-dark focus-visible:ring-whatsapp px-6 py-3.5 text-fluid-base shadow-warm hover:-translate-y-0.5;
+  }
+
+  .btn-ghost {
+    @apply btn text-ink-muted hover:bg-leaf-50 hover:text-leaf-700 focus-visible:ring-leaf-500 px-4 py-2 text-fluid-sm;
+  }
+
+  .btn-on-dark {
+    @apply btn border-2 border-white/70 text-white hover:bg-white hover:text-leaf-800 focus-visible:ring-white px-7 py-3.5 text-fluid-base;
+  }
+
+  .container-custom {
+    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+  }
+
+  .section {
+    @apply py-fluid-12 lg:py-fluid-16;
+  }
+
+  .section-sm {
+    @apply py-fluid-8 lg:py-fluid-12;
+  }
+
+  .product-tile,
+  .card {
+    @apply bg-paper-soft/90 rounded-xl overflow-hidden border border-leaf-100/80 transition-all duration-300 hover:shadow-lift hover:border-leaf-200 hover:-translate-y-1;
+  }
+
+  .card-hover {
+    @apply product-tile group;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-1 rounded-md text-xs font-semibold tracking-wide;
+  }
+
+  .badge-primary {
+    @apply badge bg-leaf-100 text-leaf-800;
+  }
+
+  .badge-secondary {
+    @apply badge bg-brass-100 text-brass-800;
+  }
+
+  .badge-accent {
+    @apply badge bg-accent-100 text-accent-800;
+  }
+
+  .badge-green {
+    @apply badge bg-leaf-100 text-leaf-700;
+  }
+
+  .badge-red {
+    @apply badge bg-red-100 text-red-800;
+  }
+
+  .input {
+    @apply w-full px-4 py-3 rounded-md border border-ink/15 bg-white text-ink placeholder-ink-faint transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-leaf-500 focus:border-transparent;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-ink-muted mb-1.5;
+  }
+
+  .heading-1 {
+    @apply font-display text-fluid-4xl font-semibold tracking-tight text-ink;
+  }
+
+  .heading-2 {
+    @apply font-display text-fluid-3xl font-semibold tracking-tight text-ink;
+  }
+
+  .heading-3 {
+    @apply font-display text-fluid-2xl font-semibold tracking-tight text-ink;
+  }
+
+  .heading-4 {
+    @apply font-display text-fluid-xl font-medium tracking-tight text-ink;
+  }
+
+  .text-body {
+    @apply text-fluid-base leading-relaxed text-ink-muted;
+  }
+
+  .text-sm-body {
+    @apply text-fluid-sm leading-relaxed text-ink-muted;
+  }
+
+  .link {
+    @apply text-leaf-600 hover:text-leaf-700 underline underline-offset-2 transition-colors;
+  }
+
+  .trust-strip {
+    @apply border-y border-leaf-200/60 bg-paper-soft/80 backdrop-blur-sm;
+  }
+
+  .section-label {
+    @apply inline-block font-sans text-xs font-bold uppercase tracking-[0.2em] text-leaf-600 mb-3;
+  }
+
+  .cta-band {
+    @apply relative overflow-hidden bg-leaf-700 text-white;
+  }
+
+  .cta-band::before {
+    content: '';
+    @apply absolute inset-0 opacity-30 pointer-events-none;
+    background:
+      radial-gradient(circle at 15% 20%, rgba(201, 162, 39, 0.45), transparent 40%),
+      radial-gradient(circle at 85% 80%, rgba(255, 255, 255, 0.12), transparent 35%);
+  }
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .animate-in {
+    animation: fadeUp 0.7s ease-out both;
+  }
+
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+
+  .hero-ken-burns {
+    animation: kenBurns 18s ease-in-out infinite alternate;
+  }
+
+  @keyframes kenBurns {
+    0% { transform: scale(1) translate(0, 0); }
+    100% { transform: scale(1.08) translate(-1.5%, -1%); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-in,
+    .hero-ken-burns,
+    .animate-soft-pulse,
+    .animate-steam {
+      animation: none !important;
+    }
+  }
+}
+
+.prose {
+  @apply text-ink-muted;
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  @apply text-ink font-display font-semibold;
+}
+
+.prose a {
+  @apply text-leaf-600 hover:text-leaf-700 underline underline-offset-2;
+}
+
+.prose blockquote {
+  @apply border-l-4 border-brass-500 pl-6 italic text-ink-muted my-6;
+}
+
+.prose-legal h2 {
+  @apply heading-3 mt-10 mb-4;
+}
+
+.prose-legal h3 {
+  @apply heading-4 mt-8 mb-3;
+}
+
+.prose-legal p,
+.prose-legal li {
+  @apply text-ink-muted leading-relaxed;
+}
+
+.prose-legal ul {
+  @apply list-disc pl-5 space-y-2 my-4;
+}
+
+.prose-legal ol {
+  @apply list-decimal pl-5 space-y-2 my-4;
+}
+
+.prose-legal strong {
+  @apply text-ink font-semibold;
+}

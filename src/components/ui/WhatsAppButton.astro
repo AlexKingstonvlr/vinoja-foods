@@ -1,0 +1,72 @@
+---
+import { getWhatsAppUrl, getProductWhatsAppMessage } from '@/utils/helpers';
+
+interface Props {
+  locale: 'en' | 'ta';
+  variant?: 'header' | 'floating' | 'inline' | 'product';
+  message?: string;
+  productName?: string;
+  weight?: string;
+  price?: number;
+  class?: string;
+  text?: string;
+}
+
+const {
+  locale,
+  variant = 'floating',
+  message,
+  productName,
+  weight,
+  price,
+  class: className = '',
+  text
+} = Astro.props;
+
+const isEnglish = locale === 'en';
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || '91XXXXXXXXXX';
+
+let finalMessage = message;
+let finalText = text;
+
+if (productName && weight && price) {
+  finalMessage = getProductWhatsAppMessage(productName, weight, price, locale);
+  finalText = finalText || (isEnglish ? 'Order on WhatsApp' : 'வாட்ஸ்அப்பில் ஆர்டர்');
+} else if (!finalMessage) {
+  finalMessage = isEnglish
+    ? 'Hello Vinoja Foods! I would like to inquire about your products.'
+    : 'வணக்கம் வினோஜா ஃபூட்ஸ்! உங்கள் உற்பத்திகள் பற்றி எனக்கு விசாரணை உள்ளது.';
+  finalText = finalText || (isEnglish ? 'Chat on WhatsApp' : 'வாட்ஸ்அப்பில் பேசுங்கள்');
+} else if (!finalText) {
+  finalText = isEnglish ? 'Order on WhatsApp' : 'வாட்ஸ்அப்பில் ஆர்டர்';
+}
+
+const whatsappUrl = getWhatsAppUrl(finalMessage, whatsappNumber);
+
+const variantStyles = {
+  header: 'btn-whatsapp text-sm px-4 py-2.5 gap-2 min-h-[44px]',
+  floating: 'fixed bottom-4 right-4 z-40 btn-whatsapp !px-3.5 !py-3.5 sm:!px-5 sm:!py-3.5 rounded-xl shadow-lift animate-soft-pulse min-w-[48px] min-h-[48px]',
+  inline: 'btn-whatsapp w-full sm:w-auto justify-center text-base sm:text-lg px-6 sm:px-8 py-3.5 sm:py-4 min-h-[48px]',
+  product: 'btn-whatsapp w-full justify-center gap-2 min-h-[48px]'
+};
+---
+
+<a
+  href={whatsappUrl}
+  target="_blank"
+  rel="noopener noreferrer"
+  class:list={[variantStyles[variant], className]}
+  aria-label={isEnglish ? 'Order on WhatsApp' : 'வாட்ஸ்அப்பில் ஆர்டர் செய்யவும்'}
+  data-wa-click="true"
+  data-wa-context={productName ? `product:${productName}` : variant}
+>
+  <svg class="w-5 h-5 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.447.099-.149.05-.323-.025-.447-.074-.124-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/>
+    <path d="M12 0C5.373 0 0 5.373 0 12c0 2.118.55 4.106 1.515 5.837L.057 23.45a.75.75 0 00.92.94l5.748-1.51A11.95 11.95 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.72 9.72 0 01-4.95-1.35l-.354-.21-3.72.977.992-3.63-.23-.372A9.72 9.72 0 012.25 12 9.75 9.75 0 0112 2.25 9.75 9.75 0 0121.75 12 9.75 9.75 0 0112 21.75z"/>
+  </svg>
+  {variant === 'floating' ? (
+    <span class="hidden sm:inline">{finalText}</span>
+  ) : (
+    <span>{finalText}</span>
+  )}
+</a>

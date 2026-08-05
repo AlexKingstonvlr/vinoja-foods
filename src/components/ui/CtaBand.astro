@@ -1,0 +1,31 @@
+---
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+
+interface Props {
+  locale: 'en' | 'ta';
+  title: string;
+  subtitle: string;
+  buttonText?: string;
+  message?: string;
+}
+
+const { locale, title, subtitle, buttonText, message } = Astro.props;
+const isEnglish = locale === 'en';
+---
+
+<section class="cta-band section" aria-labelledby="cta-band-heading">
+  <div class="container-custom text-center relative">
+    <div class="max-w-2xl mx-auto animate-in">
+      <h2 id="cta-band-heading" class="font-display text-fluid-3xl font-semibold text-white mb-4 text-balance">
+        {title}
+      </h2>
+      <p class="text-white/85 mb-8 text-fluid-lg leading-relaxed">{subtitle}</p>
+      <WhatsAppButton
+        locale={locale}
+        variant="inline"
+        text={buttonText || (isEnglish ? 'Chat on WhatsApp' : 'வாட்ஸ்அப்பில் பேசுங்கள்')}
+        message={message}
+      />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,47 @@
+---
+interface Props {
+  items: Array<{
+    name?: string;
+    label?: string;
+    url?: string;
+    href?: string;
+  }>;
+  class?: string;
+}
+
+const { items, class: className = '' } = Astro.props;
+
+const normalized = items.map((item) => ({
+  name: item.name ?? item.label ?? '',
+  url: item.url ?? item.href ?? '#'
+}));
+---
+
+<nav class={`flex flex-wrap items-center gap-1.5 text-sm ${className}`} aria-label="Breadcrumb" role="navigation">
+  <ol class="flex flex-wrap items-center gap-1.5" itemscope itemtype="https://schema.org/BreadcrumbList">
+    {normalized.map((item, index) => {
+      const isLast = index === normalized.length - 1;
+      return (
+        <li class="flex items-center gap-1.5" itemprop="itemListElement" itemscope itemtype="https://schema.org/ListItem">
+          {index > 0 && (
+            <svg class="w-4 h-4 text-ink-faint flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+            </svg>
+          )}
+          {isLast ? (
+            <span class="text-ink font-medium" itemprop="name">{item.name}</span>
+          ) : (
+            <a
+              href={item.url}
+              itemprop="item"
+              class="text-ink-muted hover:text-leaf-700 transition-colors"
+            >
+              <span itemprop="name">{item.name}</span>
+            </a>
+          )}
+          <meta itemprop="position" content={String(index + 1)} />
+        </li>
+      );
+    })}
+  </ol>
+</nav>

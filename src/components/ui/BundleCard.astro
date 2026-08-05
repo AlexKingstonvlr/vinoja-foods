@@ -1,0 +1,72 @@
+---
+import { formatPrice } from '@/utils/helpers';
+import { getWhatsAppUrl } from '@/utils/helpers';
+import {
+  type Bundle,
+  getBundleItemsResolved,
+  getBundleSavings,
+  getBundleSinglesTotal,
+  getBundleWhatsAppMessage
+} from '@/data/bundles';
+
+interface Props {
+  locale: 'en' | 'ta';
+  bundle: Bundle;
+}
+
+const { locale, bundle } = Astro.props;
+const isEnglish = locale === 'en';
+const items = getBundleItemsResolved(bundle);
+const singlesTotal = getBundleSinglesTotal(bundle);
+const savings = getBundleSavings(bundle);
+const name = isEnglish ? bundle.name.en : bundle.name.ta;
+const description = isEnglish ? bundle.description.en : bundle.description.ta;
+const waUrl = getWhatsAppUrl(getBundleWhatsAppMessage(bundle, locale));
+---
+
+<article class="product-tile group flex flex-col h-full">
+  <a href={`/${locale}/bundles/#${bundle.slug}`} class="block relative aspect-[4/3] overflow-hidden bg-leaf-50">
+    <img
+      src={bundle.image}
+      alt=""
+      class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+      loading="lazy"
+      width="640"
+      height="480"
+    />
+    {savings > 0 && (
+      <span class="absolute top-3 left-3 badge badge-green">
+        {isEnglish ? `Save ${formatPrice(savings, locale)}` : `${formatPrice(savings, locale)} சேமிப்பு`}
+      </span>
+    )}
+  </a>
+  <div class="p-5 flex flex-col flex-1">
+    <h3 class="font-display text-lg font-semibold text-ink mb-1">{name}</h3>
+    <p class="text-sm text-ink-faint mb-3 leading-relaxed flex-1">{description}</p>
+    <ul class="text-xs text-ink-muted mb-4 space-y-1">
+      {items.map(({ product, qty }) => (
+        <li>
+          {qty > 1 ? `${qty}× ` : ''}
+          {isEnglish ? product.name : product.tamilName}
+          <span class="text-ink-faint"> · {product.weight}</span>
+        </li>
+      ))}
+    </ul>
+    <div class="flex items-baseline gap-2 mb-4">
+      <span class="text-xl font-bold text-leaf-700">{formatPrice(bundle.price, locale)}</span>
+      {singlesTotal > bundle.price && (
+        <span class="text-sm text-ink-faint line-through">{formatPrice(singlesTotal, locale)}</span>
+      )}
+    </div>
+    <a
+      href={waUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="btn-whatsapp w-full justify-center min-h-[48px]"
+      data-wa-click="true"
+      data-wa-context={`bundle:${bundle.slug}`}
+    >
+      {isEnglish ? 'Order this pack' : 'இந்த பேக்கை ஆர்டர்'}
+    </a>
+  </div>
+</article>

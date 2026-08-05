@@ -1,0 +1,87 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+import { getWhatsAppUrl } from '@/utils/helpers';
+
+const locale = 'en';
+const wa = getWhatsAppUrl('Hello Vinoja Foods! I have a question about shipping.');
+---
+
+<BaseLayout
+  title="Shipping & Returns — Vinoja Foods"
+  description="Delivery timelines from our Chennai shop, free shipping threshold, and how we handle damaged packs."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Policies"
+      title="Shipping & returns"
+      subtitle="How regional specialties leave our Chennai shop — and what we do if something arrives wrong."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Shipping & Returns', url: '/en/shipping-returns/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <h2>Shipping</h2>
+        <p>
+          Specialties arrive at our Chennai shop within a day of packing at their place of origin.
+          From the shop, we deliver across Chennai and ship elsewhere in India through trusted partners.
+        </p>
+
+        <h3>Estimated delivery</h3>
+        <div class="not-prose my-6 overflow-x-auto rounded-xl border border-leaf-100">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-paper-soft">
+              <tr class="border-b border-leaf-100">
+                <th class="py-3 px-4 font-semibold text-ink">Region</th>
+                <th class="py-3 px-4 font-semibold text-ink">Typical timeline</th>
+              </tr>
+            </thead>
+            <tbody class="text-ink-muted">
+              <tr class="border-b border-leaf-50"><td class="py-3 px-4">Chennai</td><td class="py-3 px-4">1–2 business days</td></tr>
+              <tr class="border-b border-leaf-50"><td class="py-3 px-4">Tamil Nadu</td><td class="py-3 px-4">2–3 business days</td></tr>
+              <tr><td class="py-3 px-4">Rest of India</td><td class="py-3 px-4">5–7 business days</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>Shipping charges</h3>
+        <p>Free shipping on orders above <strong>₹500</strong>. Below that, a flat fee of ₹50 usually applies — confirmed on WhatsApp.</p>
+
+        <h3>Tracking</h3>
+        <p>After dispatch we share a tracking link via SMS, email, or WhatsApp. Reply anytime with your order details.</p>
+
+        <h2>Returns</h2>
+        <p>Because these are perishable foods, we do not accept returns of opened or correctly delivered packs. We do make good on genuine issues:</p>
+        <ul>
+          <li>Damaged or tampered packaging on arrival</li>
+          <li>Wrong product sent</li>
+          <li>Product expired at delivery</li>
+        </ul>
+
+        <h3>How to raise a request</h3>
+        <ol>
+          <li>Contact us within <strong>48 hours</strong> of delivery via <a href={wa}>WhatsApp</a> or email ({SITE_CONFIG.contactEmail}).</li>
+          <li>Share order details and clear photos.</li>
+          <li>We’ll respond quickly with a replacement or refund per our <a href="/en/refund-policy/">Refund Policy</a>.</li>
+        </ol>
+      </div>
+    </section>
+
+    <CtaBand locale={locale} title="Need a delivery estimate?" subtitle="Send your pin code on WhatsApp — we’ll confirm timelines and today’s fresh packs." message="Hello Vinoja Foods! What is the delivery time to my area?" />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

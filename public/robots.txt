@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vinojafoods.com/sitemap-index.xml
+
+# Disallow admin and private paths
+Disallow: /admin/
+Disallow: /api/

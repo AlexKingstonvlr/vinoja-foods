@@ -1,0 +1,72 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+
+const locale = 'ta';
+---
+
+<BaseLayout
+  title="தனியுரிமைக் கொள்கை — வினோஜா ஃபூட்ஸ்"
+  description="வினோஜா ஃபூட்ஸ் உங்கள் தகவலை எப்படிச் சேகரித்துப் பாதுகாக்கிறது."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="சட்டம்"
+      title="தனியுரிமைக் கொள்கை"
+      subtitle="கடைசியாகப் புதுப்பிக்கப்பட்டது: ஜனவரி 2025. நீங்கள் வாங்கிச் செய்தி அனுப்பும்போது உங்கள் நம்பிக்கையை மதிக்கிறோம்."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'தனியுரிமை', url: '/ta/privacy-policy/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <p>
+          வினோஜா ஃபூட்ஸ் (“நாங்கள்”) vinojafoods.com மற்றும் சென்னை கடையை இயக்குகிறோம். உலாவும்போது, வாட்ஸ்அப் ஆர்டர், அல்லது தொடர்பு கொள்ளும்போது தனிப்பட்ட தகவலை எப்படிக் கையாளுகிறோம் என்பதை இக்கொள்கை விளக்குகிறது.
+        </p>
+
+        <h2>நாங்கள் சேகரிப்பது</h2>
+        <ul>
+          <li><strong>தொடர்பு & ஆர்டர்</strong> — பெயர், தொலைபேசி, மின்னஞ்சல், டெலிவரி முகவரி, வாட்ஸ்அப்/படிவச் செய்திகள்.</li>
+          <li><strong>பயன்பாட்டுத் தரவு</strong> — பக்கங்கள், சாதனம்/உலாவி, பகுப்பாய்வுக் கருவிகள் தரும் தோராய இடம்.</li>
+          <li><strong>குக்கிகள்</strong> — <a href="/ta/cookie-policy/">குக்கி கொள்கை</a> பாருங்கள்.</li>
+        </ul>
+
+        <h2>எப்படிப் பயன்படுத்துகிறோம்</h2>
+        <ul>
+          <li>சென்னை கடையிலிருந்து மாவட்டச் சிறப்பு ஆர்டர்களை உறுதி செய்து நிறைவேற்ற</li>
+          <li>விசாரணைகளுக்குப் பதிலளிக்க</li>
+          <li>தளத்தை மேம்படுத்த / போக்குவரத்தை அளக்க</li>
+          <li>நீங்கள் கேட்டால் புதுப்பிப்புகளை அனுப்ப</li>
+        </ul>
+
+        <h2>பகிர்வு</h2>
+        <p>ஹோஸ்டிங், டெலிவரி, கட்டணம் போன்ற சேவை வழங்குநர்களுடன் மட்டுமே தேவையான அளவு. தனிப்பட்ட தகவலை விற்க மாட்டோம்.</p>
+
+        <h2>பாதுகாப்பு & வைத்திருத்தல்</h2>
+        <p>நியாயமான பாதுகாப்பு நடவடிக்கைகள். ஆர்டர்/தொடர்புப் பதிவுகளைச் சட்ட மற்றும் கணக்குத் தேவைக்காக வைத்திருந்து, பின்னர் நீக்குதல்/அநாமதேயமாக்கல்.</p>
+
+        <h2>உங்கள் தேர்வுகள்</h2>
+        <p>அணுகல், திருத்தம், நீக்கம் கோரலாம். {SITE_CONFIG.contactEmail} அல்லது வாட்ஸ்அப்.</p>
+
+        <h2>தொடர்பு</h2>
+        <p>
+          வினோஜா ஃபூட்ஸ் · {SITE_CONFIG.address.ta}<br />
+          மின்னஞ்சல்: {SITE_CONFIG.contactEmail} · தொலைபேசி: {SITE_CONFIG.contactPhone}
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

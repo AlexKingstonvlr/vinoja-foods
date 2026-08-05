@@ -1,0 +1,78 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+
+const locale = 'en';
+---
+
+<BaseLayout
+  title="Privacy Policy — Vinoja Foods"
+  description="How Vinoja Foods collects, uses, and protects your information when you order regional Tamil Nadu specialties."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Legal"
+      title="Privacy policy"
+      subtitle="Last updated: January 2025. We respect your trust when you shop and message us."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Privacy Policy', url: '/en/privacy-policy/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <p>
+          Vinoja Foods (“we”) operates vinojafoods.com and our Chennai shop. This policy explains how we handle personal information when you browse, order via WhatsApp, or contact us.
+        </p>
+
+        <h2>Information we collect</h2>
+        <ul>
+          <li><strong>Contact & order details</strong> — name, phone, email, delivery address, and messages you send on WhatsApp or forms.</li>
+          <li><strong>Usage data</strong> — pages viewed, device/browser info, and approximate location as provided by analytics tools.</li>
+          <li><strong>Cookies</strong> — see our <a href="/en/cookie-policy/">Cookie Policy</a>.</li>
+        </ul>
+
+        <h2>How we use it</h2>
+        <ul>
+          <li>To confirm and fulfil orders of regional specialties from our Chennai shop</li>
+          <li>To answer enquiries and provide customer support</li>
+          <li>To improve the website and measure traffic (e.g. Plausible / analytics if enabled)</li>
+          <li>To send optional updates when you ask to stay informed</li>
+        </ul>
+
+        <h2>Sharing</h2>
+        <p>
+          We share data only with service providers who help us operate (hosting, delivery partners, payment processors) — and only as needed for those tasks. We do not sell your personal information.
+        </p>
+
+        <h2>Security & retention</h2>
+        <p>
+          We take reasonable steps to protect your data. We keep order and contact records as long as needed for fulfilment, legal, and accounting purposes, then delete or anonymise where practical.
+        </p>
+
+        <h2>Your choices</h2>
+        <p>
+          You may request access, correction, or deletion of personal data we hold, subject to legal requirements. Contact {SITE_CONFIG.contactEmail} or message us on WhatsApp.
+        </p>
+
+        <h2>Contact</h2>
+        <p>
+          Vinoja Foods · {SITE_CONFIG.address.en}<br />
+          Email: {SITE_CONFIG.contactEmail} · Phone: {SITE_CONFIG.contactPhone}
+        </p>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

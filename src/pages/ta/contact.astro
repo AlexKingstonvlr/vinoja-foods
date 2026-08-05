@@ -1,0 +1,183 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+import { getOsmEmbedUrl, getOsmLink, getGoogleMapsSearchUrl, getWhatsAppUrl } from '@/utils/helpers';
+
+const locale = 'ta';
+const address = SITE_CONFIG.address.ta;
+const addressEn = SITE_CONFIG.address.en;
+const { lat, lng } = SITE_CONFIG.map;
+const osmEmbed = getOsmEmbedUrl(lat, lng);
+const osmLink = getOsmLink(lat, lng);
+const googleMapsUrl = getGoogleMapsSearchUrl(addressEn);
+const phone = SITE_CONFIG.contactPhone;
+const email = SITE_CONFIG.contactEmail;
+const waUrl = getWhatsAppUrl('வணக்கம் வினோஜா ஃபூட்ஸ்! சென்னை கடை மற்றும் ஆர்டர் பற்றி கேள்வி உள்ளது.');
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'வினோஜா ஃபூட்ஸ் தொடர்பு',
+  description: 'சென்னை கடையை வரைபடத்தில் காணுங்கள் அல்லது வாட்ஸ்அப்பில் மாவட்டச் சிறப்புகளுக்கு ஆர்டர் செய்யுங்கள்.',
+  url: 'https://vinojafoods.com/ta/contact'
+};
+
+const hours = [
+  { days: 'திங்கள் – சனி', time: 'காலை 9:00 – இரவு 9:00' },
+  { days: 'ஞாயிறு', time: 'காலை 10:00 – இரவு 8:00' }
+];
+---
+
+<BaseLayout
+  title="தொடர்பு — வினோஜா ஃபூட்ஸ் | சென்னை கடை & வாட்ஸ்அப்"
+  description="சென்னை கடையை வரைபடத்தில் காணுங்கள், அழைக்கவும், அல்லது வாட்ஸ்அப்பில் மாவட்டச் சிறப்புகளை ஆர்டர் செய்யுங்கள்."
+  locale={locale}
+>
+  <StructuredData locale={locale} data={structuredData} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="வருகை & செய்தி"
+      title="எங்களைத் தொடர்பு கொள்ளுங்கள்"
+      subtitle="எங்கள் சென்னை கடை தமிழ்நாடு முழுவதும் உள்ள சிறப்புகளை விற்கிறது. வாட்ஸ்அப்பில் ஆர்டர் செய்யுங்கள் அல்லது நேரில் வாருங்கள்."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'தொடர்பு', url: '/ta/contact/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom grid lg:grid-cols-5 gap-12">
+        <div class="lg:col-span-3 animate-in">
+          <p class="section-label">எழுதுங்கள்</p>
+          <h2 class="heading-3 mb-6">செய்தி அனுப்புங்கள்</h2>
+          <form class="space-y-5" action="#" method="POST">
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="name" class="label">பெயர்</label>
+                <input type="text" id="name" name="name" class="input" placeholder="உங்கள் பெயர்" required />
+              </div>
+              <div>
+                <label for="email" class="label">மின்னஞ்சல்</label>
+                <input type="email" id="email" name="email" class="input" placeholder="you@example.com" required />
+              </div>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="phone" class="label">தொலைபேசி</label>
+                <input type="tel" id="phone" name="phone" class="input" placeholder="+91 …" />
+              </div>
+              <div>
+                <label for="subject" class="label">பொருள்</label>
+                <select id="subject" name="subject" class="input" required>
+                  <option value="" disabled selected>தேர்வு செய்க</option>
+                  <option value="order">ஆர்டர் விசாரணை</option>
+                  <option value="bulk">மொத்த / பண்டிகை ஆர்டர்</option>
+                  <option value="wholesale">மொத்த விற்பனை</option>
+                  <option value="feedback">கருத்து</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="message" class="label">செய்தி</label>
+              <textarea id="message" name="message" class="input min-h-[140px]" placeholder="உங்களுக்கு என்ன வேண்டும்…" required></textarea>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+              <button type="submit" class="btn-primary">செய்தி அனுப்பு</button>
+              <span class="text-sm text-ink-faint">விரைவு வேண்டுமா? வாட்ஸ்அப் பயன்படுத்துங்கள் — பொதுவாக வேகமாகப் பதிலளிக்கிறோம்.</span>
+            </div>
+          </form>
+        </div>
+
+        <div class="lg:col-span-2 space-y-4 animate-in delay-100">
+          <p class="section-label">கடை விவரங்கள்</p>
+          <h2 class="heading-3 mb-2">தொடர்பு</h2>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-1">முகவரி</h3>
+            <p class="text-sm-body">{address}</p>
+            <p class="text-xs text-ink-faint mt-2">சென்னையில் விற்பனை — தமிழ்நாடு முழுவதும் தயாரிப்பு.</p>
+          </div>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-1">தொலைபேசி</h3>
+            <a href={`tel:${phone.replace(/\s/g, '')}`} class="link text-sm">{phone}</a>
+          </div>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-1">மின்னஞ்சல்</h3>
+            <a href={`mailto:${email}`} class="link text-sm">{email}</a>
+          </div>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-1">வாட்ஸ்அப்</h3>
+            <a href={waUrl} class="link text-sm" target="_blank" rel="noopener noreferrer">எங்களுடன் அரட்டையடிக்க</a>
+          </div>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-2">நேரங்கள்</h3>
+            {hours.map((h) => (
+              <p class="text-sm text-ink-muted">
+                <span class="font-medium text-ink">{h.days}:</span> {h.time}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section-sm bg-paper-soft border-y border-leaf-100/80" aria-labelledby="map-heading">
+      <div class="container-custom">
+        <header class="mb-6 animate-in">
+          <p class="section-label">கடையைக் காணுங்கள்</p>
+          <h2 id="map-heading" class="heading-3">வரைபடத்தில் சென்னை கடை</h2>
+          <p class="text-body mt-2 max-w-2xl">
+            கீழே உள்ள வரைபடத்தைப் பாருங்கள், அல்லது Google Maps / OpenStreetMap-ஐ புதிய தாவலில் திறக்கவும்.
+          </p>
+        </header>
+
+        <div class="relative rounded-2xl overflow-hidden border border-leaf-200 shadow-soft bg-leaf-50 animate-in delay-100">
+          <iframe
+            title="வினோஜா ஃபூட்ஸ் சென்னை கடை வரைபடம்"
+            src={osmEmbed}
+            class="w-full h-80 sm:h-96 border-0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div class="mt-5 flex flex-col sm:flex-row flex-wrap gap-3 animate-in delay-200">
+          <a href={googleMapsUrl} class="btn-primary text-center" target="_blank" rel="noopener noreferrer">
+            Google Maps-இல் திற
+          </a>
+          <a href={osmLink} class="btn-outline text-center" target="_blank" rel="noopener noreferrer">
+            OpenStreetMap-இல் திற
+          </a>
+          <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(addressEn)}`} class="btn-ghost text-center" target="_blank" rel="noopener noreferrer">
+            வழிகாட்டுதல்
+          </a>
+        </div>
+        <p class="mt-4 text-sm text-ink-faint">{address}</p>
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="விரைவான அரட்டை வேண்டுமா?"
+      subtitle="இன்றைய புதிய பொட்டலங்கள், பண்டிகைப் பெட்டிகள் அல்லது கடை வழிகாட்டுதலுக்கு வாட்ஸ்அப்பில் செய்தி அனுப்புங்கள்."
+      buttonText="வாட்ஸ்அப்பில் பேசுங்கள்"
+      message="வணக்கம் வினோஜா ஃபூட்ஸ்! ஆர்டர் செய்ய / சென்னை கடைக்கு வர விரும்புகிறேன்."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

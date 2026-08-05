@@ -1,0 +1,57 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+
+const locale = 'en';
+---
+
+<BaseLayout
+  title="Cookie Policy — Vinoja Foods"
+  description="How Vinoja Foods uses cookies and how you can manage preferences."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Legal"
+      title="Cookie policy"
+      subtitle="Last updated: January 2025. Simple cookies for a smooth, trustworthy shopping experience."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Cookie Policy', url: '/en/cookie-policy/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <p>This policy explains how vinojafoods.com uses cookies and similar technologies.</p>
+
+        <h2>What are cookies?</h2>
+        <p>Small text files stored on your device to help the site work, remember preferences, and understand visits.</p>
+
+        <h2>Types we may use</h2>
+        <h3>Essential</h3>
+        <p>Required for navigation, security, and basic features. The site may not work properly without them.</p>
+        <h3>Preferences</h3>
+        <p>Remember language (EN/TA) and similar choices.</p>
+        <h3>Analytics</h3>
+        <p>Help us see which pages are useful (e.g. privacy-friendly analytics if configured). We avoid invasive tracking where possible.</p>
+
+        <h2>Managing cookies</h2>
+        <p>You can block or delete cookies in your browser settings. Essential cookies may still be needed for the site to function.</p>
+
+        <h2>More information</h2>
+        <p>See our <a href="/en/privacy-policy/">Privacy Policy</a> or email {SITE_CONFIG.contactEmail}.</p>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

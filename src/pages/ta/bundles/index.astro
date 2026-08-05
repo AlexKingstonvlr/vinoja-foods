@@ -1,0 +1,67 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import BundleCard from '@/components/ui/BundleCard.astro';
+import BuildABox from '@/components/ui/BuildABox.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { bundles } from '@/data/bundles';
+
+const locale = 'ta';
+---
+
+<BaseLayout
+  locale={locale}
+  title="சிற்றுண்டி பேக்குகள் & பெட்டி உருவாக்கம் | வினோஜா ஃபூட்ஸ்"
+  description="தேநீர் நேரம், இனிப்பு+காரம், திருவிழா பரிசு பேக்குகள் — தனித்தனியாக வாங்குவதை விட சேமிப்பு. அல்லது உங்கள் பெட்டியை உருவாக்கி வாட்ஸ்அப்பில் ஆர்டர்."
+>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content" role="main">
+    <PageHero
+      locale={locale}
+      label="மதிப்பு பேக்குகள்"
+      title="பேக்குகள் & பெட்டி உருவாக்கம்"
+      subtitle="தனித்தனியாக வாங்குவதை விட சேமிப்புள்ள தொகுப்புகள் — அல்லது உங்கள் கலவையைத் தேர்வு செய்யுங்கள். தமிழ்நாட்டின் புகழ்பெற்ற ஊர்களில் தயாரிப்பு; ஒரு நாளுக்குள் சென்னை கடையில் புதிதாக."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'பேக்குகள்', url: '/ta/bundles/' }
+      ]}
+    />
+
+    <section class="section" aria-labelledby="bundles-heading">
+      <div class="container-custom">
+        <h2 id="bundles-heading" class="heading-3 mb-8">தொகுப்பு பேக்குகள்</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {bundles.map((bundle) => (
+            <div id={bundle.slug}>
+              <BundleCard locale={locale} bundle={bundle} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <BuildABox locale={locale} />
+
+    <CtaBand
+      locale={locale}
+      title="எந்த பேக் என்று தெரியவில்லையா?"
+      subtitle="திருவிழா, தேநீர் நேரம் அல்லது அலுவலக பரிசு என்று சொல்லுங்கள் — புதிதாக உள்ளவற்றில் இருந்து பரிந்துரைப்போம்."
+      buttonText="வாட்ஸ்அப்பில் கேளுங்கள்"
+      message="வணக்கம் வினோஜா ஃபூட்ஸ்! பேக் தேர்வு அல்லது பெட்டி உருவாக்க உதவி வேண்டும்."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton
+    locale={locale}
+    variant="floating"
+    text="ஆர்டர்"
+    message="வணக்கம் வினோஜா ஃபூட்ஸ்! சிற்றுண்டி பேக் ஆர்டர் செய்ய விரும்புகிறேன்."
+  />
+</BaseLayout>

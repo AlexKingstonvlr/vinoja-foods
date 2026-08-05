@@ -1,0 +1,81 @@
+---
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+  jsonLd?: Record<string, unknown>[];
+  lang?: 'en' | 'ta';
+  noindex?: boolean;
+  nofollow?: boolean;
+  type?: 'website' | 'article' | 'product';
+  publishedTime?: string;
+  modifiedTime?: string;
+  author?: string;
+  section?: string;
+  tags?: string[];
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  jsonLd = [],
+  lang = 'en',
+  noindex = false,
+  nofollow = false,
+  type = 'website',
+  publishedTime,
+  modifiedTime,
+  author,
+  section,
+  tags = []
+} = Astro.props;
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://vinojafoods.com';
+const finalTitle = title || (lang === 'en' ? 'Vinoja Foods | Authentic South Indian Snacks & Sweets' : 'வினோஜா ஃபூட்ஸ் | உண்மையான தென்னிந்திய செம்மீடக்கள் மற்றும் மிட்டாய்கள்');
+const finalDescription = description || (lang === 'en' ? 'Discover authentic South Indian snacks and sweets handcrafted with traditional recipes. Order online via WhatsApp for fresh delivery.' : 'பாரம்பரிய முரைகளுடன் கைநிர்மணம் செய்யப்பட்ட உண்மையான தென்னிந்திய செம்மீடக்கள் மற்றும் மிட்டாய்களைக் கண்டுபிடிக்கவும். வாட்ஸ்அப்பில் ஆர்டர் செய்யவும்.');
+const finalOgImage = ogImage ? new URL(ogImage, siteUrl).toString() : `${siteUrl}/images/og-default.jpg`;
+const finalCanonical = canonicalURL || new URL(Astro.url.pathname, siteUrl).toString();
+const alternates = {
+  en: new URL(`/en${Astro.url.pathname.replace(/^\/[a-z]{2}/, '')}`, siteUrl).toString(),
+  ta: new URL(`/ta${Astro.url.pathname.replace(/^\/[a-z]{2}/, '')}`, siteUrl).toString()
+};
+---
+
+<>
+  <title>{finalTitle}</title>
+  <meta name="description" content={finalDescription} />
+  <meta name="robots" content={`${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`} />
+
+  <link rel="canonical" href={finalCanonical} />
+  <link rel="alternate" hreflang="en" href={alternates.en} />
+  <link rel="alternate" hreflang="ta" href={alternates.ta} />
+  <link rel="alternate" hreflang="x-default" href={alternates.en} />
+
+  <meta property="og:type" content={type} />
+  <meta property="og:site_name" content={lang === 'en' ? 'Vinoja Foods' : 'வினோஜா ஃபூட்ஸ்'} />
+  <meta property="og:title" content={finalTitle} />
+  <meta property="og:description" content={finalDescription} />
+  <meta property="og:image" content={finalOgImage} />
+  <meta property="og:url" content={finalCanonical} />
+  <meta property="og:locale" content={lang === 'en' ? 'en_IN' : 'ta_IN'} />
+  <meta property="og:locale:alternate" content={lang === 'en' ? 'ta_IN' : 'en_IN'} />
+
+  {publishedTime && <meta property="article:published_time" content={publishedTime} />}
+  {modifiedTime && <meta property="article:modified_time" content={modifiedTime} />}
+  {author && <meta property="article:author" content={author} />}
+  {section && <meta property="article:section" content={section} />}
+  {tags.length > 0 && tags.map(tag => <meta property="article:tag" content={tag} />)}
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:site" content="@vinojafoods" />
+  <meta name="twitter:title" content={finalTitle} />
+  <meta name="twitter:description" content={finalDescription} />
+  <meta name="twitter:image" content={finalOgImage} />
+
+  {jsonLd.map((ld, i) => (
+    <script type="application/ld+json" set:data-index={i} dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+  ))}
+</>

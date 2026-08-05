@@ -1,0 +1,83 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+import { getWhatsAppUrl } from '@/utils/helpers';
+
+const locale = 'ta';
+const wa = getWhatsAppUrl('வணக்கம் வினோஜா ஃபூட்ஸ்! பணத்திரும்பல் உதவி வேண்டும்.');
+---
+
+<BaseLayout
+  title="பணத்திரும்பல் கொள்கை — வினோஜா ஃபூட்ஸ்"
+  description="வினோஜா ஃபூட்ஸ் ஆர்டர்களுக்கு எப்போது பணத்திரும்பல் பொருந்தும்."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="கொள்கைகள்"
+      title="பணத்திரும்பல் கொள்கை"
+      subtitle="புத்துணர்ச்சி மற்றும் பேக்கிங் தரத்திற்குப் பின்னால் நிற்கிறோம். பணத்திரும்பல் எப்போது."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'பணத்திரும்பல்', url: '/ta/refund-policy/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <h2>தகுதியான சூழல்கள்</h2>
+        <ul>
+          <li>வருகையில் சேதம் / திறந்த பேக்கிங்</li>
+          <li>உறுதிப்படுத்தியதற்கு மாறான தவறான உற்பத்தி</li>
+          <li>வழங்கும்போதே காலாவதி</li>
+          <li>48 மணி நேரத்திற்குள் புகைப்படங்களுடன் தரப் பிரச்சினை</li>
+        </ul>
+
+        <h2>எப்படிக் கோரலாம்</h2>
+        <ol>
+          <li><strong>48 மணி</strong> நேரத்திற்குள் <a href={wa}>வாட்ஸ்அப்</a> அல்லது {SITE_CONFIG.contactEmail}.</li>
+          <li>ஆர்டர் ID, விவரம், புகைப்படங்கள்.</li>
+          <li>சுமார் <strong>24 மணி</strong> நேரத்தில் பதில்.</li>
+          <li>அனுமதிக்கப்பட்டால் அசல் கட்டண முறைக்குப் பணத்திரும்பல்.</li>
+        </ol>
+
+        <h2>பொதுவான நேரங்கள்</h2>
+        <div class="not-prose my-6 overflow-x-auto rounded-xl border border-leaf-100">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-paper-soft">
+              <tr class="border-b border-leaf-100">
+                <th class="py-3 px-4 font-semibold text-ink">முறை</th>
+                <th class="py-3 px-4 font-semibold text-ink">நேரம்</th>
+              </tr>
+            </thead>
+            <tbody class="text-ink-muted">
+              <tr class="border-b border-leaf-50"><td class="py-3 px-4">UPI</td><td class="py-3 px-4">3–5 வேலை நாட்கள்</td></tr>
+              <tr class="border-b border-leaf-50"><td class="py-3 px-4">கார்டு</td><td class="py-3 px-4">5–7 வேலை நாட்கள்</td></tr>
+              <tr><td class="py-3 px-4">நெட் பேங்கிங்</td><td class="py-3 px-4">5–7 வேலை நாட்கள்</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>பொதுவாக இல்லை</h2>
+        <ul>
+          <li>சரியான, புதிய பொட்டலம் வந்த பிறகு மன மாற்றம்</li>
+          <li>48 மணிக்குப் பிறகு அறிவிப்பு</li>
+          <li>வருகையில் தவறுக்கான ஆதாரம் இல்லாமல் திறக்கப்பட்ட பொட்டலம்</li>
+        </ul>
+      </div>
+    </section>
+
+    <CtaBand locale={locale} title="ஆர்டர் உதவி வேண்டுமா?" subtitle="புகைப்படங்களை வாட்ஸ்அப்பில் அனுப்புங்கள் — நியாயமான தீர்வு விரைவில்." message="வணக்கம் வினோஜா ஃபூட்ஸ்! பணத்திரும்பல் / மாற்று உதவி வேண்டும்." />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

@@ -1,0 +1,54 @@
+---
+import { ORIGIN_REGIONS, ORIGINS_PAGE } from '@/data/origins';
+
+interface Props {
+  locale: 'en' | 'ta';
+  /** Link to full origins page */
+  showLink?: boolean;
+  limit?: number;
+}
+
+const { locale, showLink = true, limit } = Astro.props;
+const isEnglish = locale === 'en';
+const page = ORIGINS_PAGE[locale];
+const regions = typeof limit === 'number' ? ORIGIN_REGIONS.slice(0, limit) : ORIGIN_REGIONS;
+---
+
+<section class="section" aria-labelledby="origins-heading">
+  <div class="container-custom">
+    <header class="max-w-2xl mb-10 animate-in">
+      <p class="section-label">{page.label}</p>
+      <h2 id="origins-heading" class="heading-2 mb-3">{page.title}</h2>
+      <p class="text-body text-fluid-lg">{page.subtitle}</p>
+    </header>
+
+    <!-- Map-style visual: district chips on a soft Tamil Nadu-inspired plane -->
+    <div class="relative rounded-2xl overflow-hidden border border-leaf-100 bg-gradient-to-br from-leaf-800 via-leaf-700 to-leaf-900 p-6 sm:p-10 mb-10 shadow-lift">
+      <div class="absolute inset-0 opacity-30 pointer-events-none" style="background: radial-gradient(circle at 30% 40%, rgba(201,162,39,0.35), transparent 45%), radial-gradient(circle at 70% 60%, rgba(255,255,255,0.08), transparent 40%);"></div>
+      <p class="relative text-brass-200 text-sm font-semibold tracking-wide mb-6">
+        {isEnglish ? 'From famous towns across Tamil Nadu → sold in Chennai' : 'தமிழ்நாட்டின் புகழ்பெற்ற ஊர்களிலிருந்து → சென்னையில் விற்பனை'}
+      </p>
+      <ul class="relative grid sm:grid-cols-2 lg:grid-cols-3 gap-3" role="list">
+        {regions.map((r) => (
+          <li class="rounded-lg bg-white/10 backdrop-blur-sm border border-white/15 px-4 py-3 text-white">
+            <p class="font-display font-semibold text-brass-200">{isEnglish ? r.place.en : r.place.ta}</p>
+            <p class="text-sm text-white/80 mt-1 leading-snug">{isEnglish ? r.specialty.en : r.specialty.ta}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="rounded-xl border border-leaf-100 bg-paper-soft/80 p-5 sm:p-6 max-w-2xl">
+      <h3 class="font-display font-semibold text-ink mb-2">{page.hygieneTitle}</h3>
+      <p class="text-sm text-ink-muted leading-relaxed">{page.hygieneBody}</p>
+    </div>
+
+    {showLink && (
+      <div class="mt-8">
+        <a href={`/${locale}/origins/`} class="btn-outline inline-flex">
+          {isEnglish ? 'Explore all origins' : 'அனைத்து மூலங்களையும் பாருங்கள்'}
+        </a>
+      </div>
+    )}
+  </div>
+</section>

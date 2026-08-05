@@ -1,0 +1,61 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+
+const locale = 'ta';
+---
+
+<BaseLayout
+  title="நிபந்தனைகள் — வினோஜா ஃபூட்ஸ்"
+  description="வினோஜா ஃபூட்ஸ் சென்னை கடையிலிருந்து ஆர்டர் செய்வதற்கான நிபந்தனைகள்."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="சட்டம்"
+      title="நிபந்தனைகள்"
+      subtitle="கடைசியாகப் புதுப்பிக்கப்பட்டது: ஜனவரி 2025. தளத்தைப் பயன்படுத்தினால் அல்லது ஆர்டர் செய்தால் இவற்றை ஏற்கிறீர்கள்."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'நிபந்தனைகள்', url: '/ta/terms-conditions/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <h2>ஏற்பு</h2>
+        <p>vinojafoods.com அல்லது வாட்ஸ்அப் ஆர்டர் — இந்த நிபந்தனைகளையும் தனியுரிமைக் கொள்கையையும் ஏற்பதாகும்.</p>
+
+        <h2>உற்பத்திகள் & உண்மைத்தன்மை</h2>
+        <ul>
+          <li>பொருட்கள் தமிழ்நாட்டில் புகழ்பெற்ற ஊர்களில் பாரம்பரியமாகத் தயாரிக்கப்பட்டு சென்னை கடையில் விற்கப்படுகின்றன.</li>
+          <li>எல்லாம் சென்னை தொழிற்சாலைச் சமையலறையில் தயாரிப்பு என்று நாங்கள் சொல்ல மாட்டோம்.</li>
+          <li>படங்கள் விளக்கத்திற்காக; கைவேலை உணவில் இயல்பான வேறுபாடு இருக்கும்.</li>
+          <li>கிடைப்பு — பேக்கிங்கிற்குப் பிறகு ஒரு நாளுக்குள் வரும் புதிய பொட்டலங்களைப் பொறுத்தது; ஆர்டரில் உறுதி செய்கிறோம்.</li>
+        </ul>
+
+        <h2>ஆர்டர் & விலை</h2>
+        <p>வாட்ஸ்அப்பில் ஏற்றதும் ஆர்டர் உறுதி. விலை INR; உறுதிப்படுத்திய விலை பொருந்தும்.</p>
+
+        <h2>டெலிவரி</h2>
+        <p>நேரங்கள் மதிப்பீடு. <a href="/ta/shipping-returns/">அனுப்புதல்</a> பாருங்கள்.</p>
+
+        <h2>அலர்ஜி & சேமிப்பு</h2>
+        <p>கொட்டை, பால், பசும்புரதம், எள் இருக்கலாம். அட்டைகளைப் பார்த்து சேமியுங்கள்.</p>
+
+        <h2>தொடர்பு</h2>
+        <p>{SITE_CONFIG.contactEmail} · {SITE_CONFIG.contactPhone} · {SITE_CONFIG.address.ta}</p>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

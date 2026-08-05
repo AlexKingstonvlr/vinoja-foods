@@ -1,0 +1,198 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+
+const locale = 'ta';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'வினோஜா ஃபூட்ஸ் பற்றி',
+  description:
+    'தமிழ்நாடு முழுவதும் மாவட்டச் சிறப்புகள் — புகழ்பெற்ற ஊர்களில் தயாரிப்பு, சென்னை கடையில் ஒரு நாளுக்குள் புதிதாக விற்பனை.',
+  url: 'https://vinojafoods.com/ta/about'
+};
+---
+
+<BaseLayout
+  title="எங்கள் கதை — வினோஜா ஃபூட்ஸ் | மாவட்டச் சிறப்புகள் சென்னையில்"
+  description="எல்லாவற்றையும் சென்னையில் சமைப்பதில்லை. புகழ்பெற்ற ஊர்களில் உண்மையான தயாரிப்பு — சுகாதார பேக்கிங், ஒரு நாளுக்குள் சென்னை கடைக்கு."
+  locale={locale}
+>
+  <StructuredData locale={locale} data={structuredData} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="வாழை இலை சமையலறை"
+      title="எங்கள் கதை"
+      subtitle="தமிழ்நாட்டின் ஒவ்வொரு மாவட்டத்தின் சிறப்பும் — சென்னையில் புதிதாக. நகரத் தொழிற்சாலையில் அல்ல. ஒவ்வொன்றும் அதன் புகழ் ஊரில் தயாரிப்பு."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'எங்களைப் பற்றி', url: '/ta/about/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="animate-in">
+          <p class="section-label">நாங்கள் யார்</p>
+          <h2 class="heading-2 mb-5 text-balance">தமிழ்நாடு முழுமைக்கும் ஒரு சென்னை கடை</h2>
+          <p class="text-body text-fluid-lg mb-4">
+            வினோஜா ஃபூட்ஸ் — சென்னை குடும்பங்கள் வளர்ந்தபோது ஏங்கிய முறுக்கு, இனிப்பு, மிக்ச்சர் ஆகியவற்றைக் காணும் இடம்.
+            முறுக்குக்குப் புகழ்பெற்ற ஊர்களில் முறுக்கு; இனிப்புக்குப் புகழ்பெற்ற சமையலறைகளில் இனிப்பு.
+          </p>
+          <p class="text-body mb-4">
+            நாங்கள் ஒவ்வொரு பொட்டலத்திலும் <strong class="text-ink">“சென்னையில் தயாரிப்பு”</strong> என்று அடிக்கும் தொழிற்சாலை அல்ல.
+            உற்பத்திகள் தமிழ்நாட்டில் அதற்குப் புகழ்பெற்ற ஊர்களில் பாரம்பரியமாகத் தயாரிக்கப்படுகின்றன.
+            பிறகு சுகாதாரமாகப் பேக் செய்யப்பட்டு, எங்கள் சென்னை கடைக்கு <strong class="text-ink">ஒரு நாளுக்குள்</strong> அனுப்பப்படுகின்றன.
+          </p>
+          <p class="text-body">
+            அதுதான் எங்கள் விற்பனைப் புள்ளி: ஒவ்வொரு மாவட்டத்தின் சிறந்த சிறப்புகளும் — சென்னையில் ஒரு நம்பகமான கூரையின் கீழ் —
+            அயலகக் கடையைப் போல வாட்ஸ்அப் ஆர்டருடன்.
+          </p>
+        </div>
+        <div class="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lift animate-in delay-200">
+          <img
+            src="/images/products/kai-murukku.jpg"
+            alt="கை முறுக்கு — தமிழ்நாட்டுப் பிராந்தியச் சிறப்பு"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="section bg-leaf-800 text-white relative overflow-hidden">
+      <div class="absolute inset-0 opacity-25 pointer-events-none" style="background: radial-gradient(circle at 80% 20%, rgba(201,162,39,0.45), transparent 45%);"></div>
+      <div class="container-custom relative max-w-3xl">
+        <p class="section-label text-brass-300">எப்படித் தொடங்கியது</p>
+        <h2 class="font-display text-fluid-3xl font-semibold mb-6 text-balance">“அந்த ஊர் சுவை” காணாமல் போனதிலிருந்து</h2>
+        <div class="space-y-5 text-fluid-lg text-white/85 leading-relaxed">
+          <p>
+            சொந்த மாவட்டத்தை விட்டு வாழ்பவர்கள் அறிவார்கள்: அந்த ஒரு முறுக்கின் மொறுமொறுப்பு,
+            ஒரு தெரு மட்டும் சரியாகச் செய்யும் இனிப்பின் மென்மை. ஒவ்வொரு வாரம் பயணம் செய்ய முடியாது.
+            பொதுவான “தென்னிந்திய தின்பண்டங்களில்” சமரசம் செய்வது அமைதியான ஏமாற்றம்.
+          </p>
+          <p>
+            வினோஜா ஃபூட்ஸ் அந்த இடைவெளியை மூடவே உருவானது. ஒவ்வொரு சிறப்புக்கும் புகழ்பெற்ற ஊர்களில் பாரம்பரியத் தயாரிப்பாளர்களைத் தேடி,
+            அந்தப் பொட்டலங்களை விரைவாகவும் கவனமாகவும் சென்னைக்குக் கொண்டு வருகிறோம். கைவினை அதன் ஊரிலேயே இருக்கும்; கடை சந்திப்புப் புள்ளி.
+          </p>
+          <p>
+            இன்று அடையார் முதல் வேளச்சேரி வரை அயலவர்கள் டீ-நேரப் பெட்டிகள், பண்டிகைப் பரிசுகள், வீட்டுச் சுவைக்காக எங்களுக்குச் செய்தி அனுப்புகிறார்கள்.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="quality" class="section">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-12 animate-in">
+          <p class="section-label">தர வாக்குறுதி</p>
+          <h2 class="heading-2 mb-3">ஒவ்வொரு பொட்டலத்திலும் நம்பிக்கை</h2>
+          <p class="text-body text-fluid-lg">
+            சிறப்பு என்பது சென்னை சமையலறைச் சுவரில் உள்ள வாசகம் அல்ல — தோற்றம், சுகாதாரம், கடைக்கு வரும் வேகம்.
+          </p>
+        </header>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              title: 'புகழ்பெற்ற ஊர்களில் தயாரிப்பு',
+              body: 'ஒவ்வொன்றும் அந்தச் சிறப்புக்குப் புகழ்பெற்ற இடத்தில் — பாரம்பரிய சமையல், உண்மையான கைவினை.'
+            },
+            {
+              title: 'சுகாதார பேக்கிங்',
+              body: 'மொறுமொறுப்பும் மணமும் பாதுகாப்பாகச் சென்னைக்குப் பயணிக்கும்படி அடைக்கப்படுகிறது.'
+            },
+            {
+              title: 'ஒரு நாளுக்குள் சென்னை',
+              body: 'பேக்கிங்கிற்குப் பிறகு ஒரு நாளுக்குள் கடைக்கு — டீ-நேரத்திற்கும் பண்டிகைக்கும் போதுமான புத்துணர்ச்சி.'
+            },
+            {
+              title: 'நேர்மையான வாட்ஸ்அப்',
+              body: 'ஸ்டாக், பரிசுப் பெட்டி, மீள் ஆர்டர் — அயலவரைப் போல பதிலளிக்கிறோம்.'
+            }
+          ].map((item, i) => (
+            <article class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-6 animate-in" style={`animation-delay: ${(i + 1) * 80}ms`}>
+              <span class="font-display text-brass-500 text-2xl font-semibold">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="heading-4 mt-3 mb-2">{item.title}</h3>
+              <p class="text-sm-body">{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-paper-soft">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-12 animate-in">
+          <p class="section-label">நாங்கள் நிற்பது</p>
+          <h2 class="heading-2">சுவைக்கும் மதிப்புகள்</h2>
+        </header>
+        <div class="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              title: 'பிராந்தியத் தயாரிப்பாளர்கள் முதலில்',
+              body: 'தமிழ்நாடு முழுவதும் கைவினைஞர்கள் மற்றும் சிறிய சமையலறைகளுடன் பணியாற்றி, பாரம்பரிய வாழ்வாதாரங்களையும் சுவைகளையும் காக்கிறோம்.'
+            },
+            {
+              title: 'போலி “நகரச் சமையலறை” கதை இல்லை',
+              body: 'எல்லாம் சென்னையில் சமைக்கப்பட்டதாக நாங்கள் சொல்ல மாட்டோம். வெளிப்படைத்தன்மைதான் ஆடம்பரம்: சுவை எங்கிருந்து வருகிறது என்பதை நீங்கள் அறியத் தகுதியானவர்கள்.'
+            },
+            {
+              title: 'அயலக மகிழ்ச்சி',
+              body: 'முதல் வாட்ஸ்அப் முதல் கடைசி மொறுமொறுப்பு வரை — நம்பகமான உள்ளூர் கடையின் அரவணைப்பு, குளிர்ச்சியற்ற பளபளப்பு.'
+            }
+          ].map((item, i) => (
+            <article class="animate-in" style={`animation-delay: ${(i + 1) * 90}ms`}>
+              <h3 class="heading-4 mb-3">{item.title}</h3>
+              <p class="text-body">{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container-custom grid lg:grid-cols-2 gap-10 items-center">
+        <div class="relative aspect-[5/4] rounded-2xl overflow-hidden shadow-warm animate-in">
+          <img
+            src="/images/products/mysore-pak.jpg"
+            alt="மைசூர் பாக் — பிரியமான தமிழ்நாட்டு இனிப்பு"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div class="animate-in delay-200">
+          <p class="section-label">வருகை & ஆர்டர்</p>
+          <h2 class="heading-2 mb-4">மாவட்டங்களுக்காக வாருங்கள். புத்துணர்ச்சிக்காக இருங்கள்.</h2>
+          <p class="text-body mb-6">
+            ஆன்லைனில் சிறப்புகளைப் பாருங்கள், உங்கள் பட்டியலை அனுப்புங்கள், அல்லது சென்னை கடைக்கு வாருங்கள்.
+            மாலை காபித் துணைகள் முதல் தீபாவளிப் பரிசுப் பெட்டிகள் வரை — சொந்த ஊர் சுவையுடன் தேர்ந்தெடுக்க உதவுகிறோம்.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <WhatsAppButton locale={locale} variant="inline" text="வாட்ஸ்அப்பில் ஆர்டர்" message="வணக்கம் வினோஜா ஃபூட்ஸ்! மாவட்டச் சிறப்புகள் பற்றி மேலும் அறிய விரும்புகிறேன்." />
+            <a href={`/${locale}/products/`} class="btn-outline text-center">சிறப்புகளைப் பாருங்கள்</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="சென்னையை விட்டு வெளியேறாமல் தமிழ்நாட்டைச் சுவியுங்கள்"
+      subtitle="மாவட்டச் சிறப்புகள், சுகாதார பேக்கிங், ஒரு நாளுக்குள் கடைக்கு. என்ன வேண்டும் என்று சொல்லுங்கள்."
+      buttonText="வாட்ஸ்அப்பில் பேசுங்கள்"
+      message="வணக்கம் வினோஜா ஃபூட்ஸ்! புதிய பிராந்தியத் தின்பண்டங்கள் மற்றும் இனிப்புகளுக்கு ஆர்டர் செய்ய விரும்புகிறேன்."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

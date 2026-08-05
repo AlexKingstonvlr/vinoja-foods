@@ -1,0 +1,67 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import BundleCard from '@/components/ui/BundleCard.astro';
+import BuildABox from '@/components/ui/BuildABox.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { bundles } from '@/data/bundles';
+
+const locale = 'en';
+---
+
+<BaseLayout
+  locale={locale}
+  title="Snack Bundles & Build a Box | Vinoja Foods"
+  description="Curated tea-time, sweet+savory, and festival gift packs with clear savings — or build your own box and order on WhatsApp."
+>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content" role="main">
+    <PageHero
+      locale={locale}
+      label="Value packs"
+      title="Bundles & Build a Box"
+      subtitle="Curated packs with savings vs buying singles — or pick your own mix. Made at famous places of origin across Tamil Nadu; fresh at our Chennai shop within a day."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Bundles', url: '/en/bundles/' }
+      ]}
+    />
+
+    <section class="section" aria-labelledby="bundles-heading">
+      <div class="container-custom">
+        <h2 id="bundles-heading" class="heading-3 mb-8">Curated packs</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {bundles.map((bundle) => (
+            <div id={bundle.slug}>
+              <BundleCard locale={locale} bundle={bundle} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <BuildABox locale={locale} />
+
+    <CtaBand
+      locale={locale}
+      title="Not sure which pack?"
+      subtitle="Tell us the occasion — festival, tea-time, or office gifts — and we’ll suggest from what’s fresh."
+      buttonText="Ask on WhatsApp"
+      message="Hello Vinoja Foods! I need help choosing a bundle or building a box."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton
+    locale={locale}
+    variant="floating"
+    text="Order"
+    message="Hello Vinoja Foods! I'd like to order a snack bundle."
+  />
+</BaseLayout>

@@ -1,0 +1,244 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import TrustStrip from '@/components/ui/TrustStrip.astro';
+import BundleCard from '@/components/ui/BundleCard.astro';
+import OriginsSection from '@/components/ui/OriginsSection.astro';
+import { formatPrice } from '@/utils/helpers';
+import { getFeaturedProducts } from '@/data/products';
+import { getFeaturedBundles } from '@/data/bundles';
+
+const locale = 'ta';
+const featured = getFeaturedProducts();
+const featuredBundles = getFeaturedBundles();
+
+const copy = {
+  brand: 'வினோஜா ஃபூட்ஸ்',
+  headline: 'ஒவ்வொரு மாவட்டத்தின் சிறப்பு — சென்னையில் புதிதாக',
+  sub: 'தமிழ்நாட்டின் புகழ்பெற்ற ஊர்களில் பாரம்பரியமாக தயாரிக்கப்படும் சிற்றுண்டிகளும் மிட்டாய்களும் — சுகாதாரமாக பேக் செய்து ஒரு நாளுக்குள் எங்கள் சென்னை கடைக்கு வரும்.',
+  ctaPrimary: 'வாட்ஸ்அப்பில் ஆர்டர்',
+  ctaSecondary: 'சிறப்புகளைப் பாருங்கள்',
+  featuredLabel: 'தமிழ்நாடு முழுவதும் இருந்து',
+  featuredTitle: 'குடும்பங்கள் மீண்டும் ஆர்டர் செய்வவை',
+  featuredSub: 'முறிவான, மணமுள்ள மாவட்டச் சிறப்புகள் — தயாரித்த ஒரு நாளுக்குள் சென்னை கடைக்கு வரும்.',
+  viewAll: 'அனைத்து சிற்றுண்டிகளையும் பாருங்கள்',
+  occasionsLabel: 'சந்தர்ப்பத்தின்படி',
+  occasionsTitle: 'பரிசு, தேநீர் நேரம் & அலுவலக விருந்து',
+  occasionsSub: 'திருவிழா, மாலை தேநீர், ரிட்டர்ன் கிஃப்ட் — வாட்ஸ்அப்பில் உறுதி செய்யுங்கள்.',
+  bundlesLabel: 'மதிப்பு பேக்குகள்',
+  bundlesTitle: 'சேமிப்பு தெளிவான தொகுப்புகள்',
+  bundlesSub: 'தேநீர் நேரம், இனிப்பு+காரம், திருவிழா ஹாம்பர் — அல்லது உங்கள் பெட்டியை உருவாக்குங்கள்.',
+  viewBundles: 'அனைத்து பேக்குகளும் · பெட்டி உருவாக்குங்கள்',
+  storyLabel: 'ஏன் உண்மையான சுவை',
+  storyTitle: 'ஒவ்வொரு மாவட்டத்தின் சிறந்தவை.',
+  storyBody: 'நாங்கள் சென்னையில் தொழிற்சாலையில் சமைப்பதில்லை. ஒவ்வொரு சிற்றுண்டிக்கும் புகழ்பெற்ற ஊர்களின் பாரம்பரிய தயாரிப்பாளர்களுடன் இணைந்து, அவை சுகாதாரமாக பேக் செய்யப்பட்டு ஒரு நாளுக்குள் எங்கள் சென்னை கடைக்கு வரும். முழு தமிழ்நாட்டின் சுவை — ஒரே கடையில்.',
+  storyCta: 'எங்கள் கதை',
+  stepsLabel: 'ஆர்டர் எளிது',
+  stepsTitle: 'மூன்று எளிய படிகள்',
+  steps: [
+    { n: '1', title: 'விருப்பத்தைத் தேர்வு', body: 'முறுக்கு, மிட்டாய், மிக்ச்சர் — ஒவ்வொன்றும் அதன் புகழ்பெற்ற ஊரிலிருந்து.' },
+    { n: '2', title: 'வாட்ஸ்அப்பில் அனுப்புங்கள்', body: 'ஒரு தட்டில் ஆர்டர். எங்கள் சென்னை கடையில் இருந்து புதுமை, இருப்பு, டெலிவரியை உறுதி செய்கிறோம்.' },
+    { n: '3', title: 'புதிதாக அனுபவிக்க', body: 'சுகாதாரமாக பேக் செய்யப்பட்ட தமிழ்நாட்டின் சிறந்த சுவை.' }
+  ],
+  socialLabel: 'அண்டை வீட்டாரின் அன்பு',
+  socialTitle: 'வாடிக்கையாளர்கள் சொல்வது',
+  socialNote: 'எடுத்துக்காட்டு மேற்கோள்கள் — உண்மையான விமர்சனங்கள் கிடைக்கும்போது மாற்றவும்.',
+  testimonials: [
+    { quote: 'கை முறுக்கு பாட்டியின் சுவை போலவே இருந்தது — அன்றே முடித்துவிட்டோம்.', name: 'பிரியா ச.', place: 'அடையார், சென்னை' },
+    { quote: 'தீபாவளிக்கு மைசூர் பாக் அனுப்பினோம். மென்மையான நெய் சுவை. மீண்டும் ஆர்டர்.', name: 'கார்த்திக் ர.', place: 'தி. நகர்' },
+    { quote: 'வாட்ஸ்அப் ஆர்டர் மிக எளிது. சென்னையை விட்டு வெளியே போகாமல் உண்மையான மாவட்டச் சுவை கிடைத்தது.', name: 'மீனா ல.', place: 'வேளச்சேரி' }
+  ],
+  finalTitle: 'உண்மையான சுவை வேண்டுமா?',
+  finalSub: 'என்ன வேண்டும் என்று சொல்லுங்கள் — மாவட்டச் சிறப்புகள், ஒரு நாளுக்குள் புதிதாக எங்கள் சென்னை கடையில்.',
+  waMessage: 'வணக்கம் வினோஜா ஃபூட்ஸ்! புதிய மாவட்டச் சிற்றுண்டிகளுக்கு ஆர்டர் செய்ய விரும்புகிறேன்.'
+};
+
+const occasionCards = [
+  { href: '/ta/occasions/festival/', title: 'திருவிழா சிறப்புகள்', detail: 'தீபாவளி, பொங்கல் பரிசு ஹாம்பர்கள்' },
+  { href: '/ta/occasions/tea-time/', title: 'தேநீர் நேரம்', detail: 'மாலை தேநீருக்கு முறிவு பேக்குகள்' },
+  { href: '/ta/occasions/office-gifts/', title: 'அலுவலக & ரிட்டர்ன் கிஃப்ட்', detail: 'பகிரக்கூடிய பெட்டிகள் — அளவை வாட்ஸ்அப்பில் உறுதி' }
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title="வினோஜா ஃபூட்ஸ் | தமிழ்நாட்டின் உண்மையான சிற்றுண்டிகள் · சென்னையில் புதிதாக"
+  description={copy.sub}
+  ogImage="/images/hero-snacks.jpg"
+>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content" role="main">
+    <section class="relative min-h-[88vh] flex items-end sm:items-center overflow-hidden" aria-labelledby="hero-brand">
+      <div class="absolute inset-0">
+        <img src="/images/hero-snacks.jpg" alt="" class="h-full w-full object-cover hero-ken-burns" width="1920" height="1080" fetchpriority="high" />
+        <div class="absolute inset-0 bg-gradient-to-r from-ink/75 via-ink/45 to-ink/25"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/20"></div>
+      </div>
+
+      <div class="relative container-custom pt-fluid-12 pb-24 sm:py-fluid-16 w-full">
+        <div class="max-w-2xl text-white animate-in">
+          <p id="hero-brand" class="font-display text-fluid-4xl sm:text-fluid-5xl font-semibold tracking-tight text-balance mb-4">
+            {copy.brand}
+          </p>
+          <h1 class="font-display text-fluid-2xl sm:text-fluid-3xl font-medium text-brass-200 text-balance mb-4">
+            {copy.headline}
+          </h1>
+          <p class="text-fluid-lg text-white/85 max-w-xl leading-relaxed mb-8">{copy.sub}</p>
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <WhatsAppButton locale={locale} variant="inline" text={copy.ctaPrimary} message={copy.waMessage} />
+            <a href={`/${locale}/products/`} class="btn-on-dark text-center">{copy.ctaSecondary}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <TrustStrip locale={locale} />
+
+    <section class="section-sm" aria-labelledby="occasions-heading">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-8 animate-in">
+          <p class="section-label">{copy.occasionsLabel}</p>
+          <h2 id="occasions-heading" class="heading-2 mb-3">{copy.occasionsTitle}</h2>
+          <p class="text-body">{copy.occasionsSub}</p>
+        </header>
+        <div class="grid sm:grid-cols-3 gap-4">
+          {occasionCards.map((card) => (
+            <a href={card.href} class="block rounded-xl border border-leaf-100 bg-white/70 p-5 hover:border-leaf-300 hover:shadow-soft transition-all">
+              <h3 class="font-display font-semibold text-ink text-lg mb-1">{card.title}</h3>
+              <p class="text-sm text-ink-faint">{card.detail}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="featured-heading">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-10 animate-in">
+          <p class="section-label">{copy.featuredLabel}</p>
+          <h2 id="featured-heading" class="heading-2 mb-3">{copy.featuredTitle}</h2>
+          <p class="text-body text-fluid-lg">{copy.featuredSub}</p>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" role="list">
+          {featured.map((product, i) => (
+            <article class="product-tile group animate-in" style={`animation-delay: ${(i + 1) * 90}ms`} role="listitem">
+              <a href={`/${locale}/products/${product.slug}/`} class="block relative aspect-square overflow-hidden">
+                <img src={product.image} alt={product.tamilName} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" width="400" height="400" />
+                <span class="absolute top-3 left-3 badge badge-secondary">சிறப்பு</span>
+              </a>
+              <div class="p-5">
+                <p class="text-xs text-leaf-700 font-medium mb-1">{product.origin}</p>
+                <h3 class="font-display text-lg font-semibold text-ink mb-0.5">
+                  <a href={`/${locale}/products/${product.slug}/`} class="hover:text-leaf-700">{product.tamilName}</a>
+                </h3>
+                <p class="text-sm text-ink-faint mb-3">{product.name} · {product.weight}</p>
+                <div class="flex items-baseline gap-2 mb-4">
+                  <span class="text-xl font-bold text-leaf-700">{formatPrice(product.price, locale)}</span>
+                  {product.originalPrice > product.price && (
+                    <span class="text-sm text-ink-faint line-through">{formatPrice(product.originalPrice, locale)}</span>
+                  )}
+                </div>
+                <WhatsAppButton locale={locale} variant="product" productName={product.tamilName} weight={product.weight} price={product.price} />
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-10 text-center">
+          <a href={`/${locale}/products/`} class="btn-outline inline-flex items-center gap-2">{copy.viewAll}</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-paper-soft border-y border-leaf-100" aria-labelledby="bundles-home">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-10 animate-in">
+          <p class="section-label">{copy.bundlesLabel}</p>
+          <h2 id="bundles-home" class="heading-2 mb-3">{copy.bundlesTitle}</h2>
+          <p class="text-body text-fluid-lg">{copy.bundlesSub}</p>
+        </header>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredBundles.map((bundle) => (
+            <BundleCard locale={locale} bundle={bundle} />
+          ))}
+        </div>
+        <div class="mt-10 text-center">
+          <a href={`/${locale}/bundles/`} class="btn-outline">{copy.viewBundles}</a>
+        </div>
+      </div>
+    </section>
+
+    <OriginsSection locale={locale} limit={6} />
+
+    <section class="section bg-leaf-800 text-white relative overflow-hidden" aria-labelledby="story-heading">
+      <div class="absolute inset-0 opacity-20 pointer-events-none" style="background: radial-gradient(circle at 70% 30%, rgba(201,162,39,0.5), transparent 50%);"></div>
+      <div class="container-custom relative grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div class="animate-in">
+          <p class="section-label text-brass-300">{copy.storyLabel}</p>
+          <h2 id="story-heading" class="font-display text-fluid-3xl font-semibold mb-5 text-balance">{copy.storyTitle}</h2>
+          <p class="text-fluid-lg text-white/85 leading-relaxed mb-8">{copy.storyBody}</p>
+          <a href={`/${locale}/about/`} class="btn-secondary">{copy.storyCta}</a>
+        </div>
+        <div class="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lift animate-in delay-200">
+          <img src="/images/products/kai-murukku.jpg" alt="கை முறுக்கு" class="w-full h-full object-cover" loading="lazy" width="800" height="600" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-paper-soft" aria-labelledby="steps-heading">
+      <div class="container-custom">
+        <header class="max-w-xl mb-12 animate-in">
+          <p class="section-label">{copy.stepsLabel}</p>
+          <h2 id="steps-heading" class="heading-2">{copy.stepsTitle}</h2>
+        </header>
+        <ol class="grid md:grid-cols-3 gap-8">
+          {copy.steps.map((step, i) => (
+            <li class="animate-in" style={`animation-delay: ${(i + 1) * 100}ms`}>
+              <span class="font-display text-4xl text-brass-500 font-semibold">{step.n}</span>
+              <h3 class="heading-4 mt-3 mb-2">{step.title}</h3>
+              <p class="text-body">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="social-heading">
+      <div class="container-custom">
+        <header class="max-w-xl mb-10 animate-in">
+          <p class="section-label">{copy.socialLabel}</p>
+          <h2 id="social-heading" class="heading-2">{copy.socialTitle}</h2>
+          <p class="text-xs text-ink-faint mt-2">{copy.socialNote}</p>
+        </header>
+        <div class="grid md:grid-cols-3 gap-6">
+          {copy.testimonials.map((item, i) => (
+            <blockquote class="bg-white/70 border border-leaf-100 rounded-xl p-6 shadow-soft animate-in" style={`animation-delay: ${(i + 1) * 100}ms`}>
+              <p class="text-ink leading-relaxed mb-5">“{item.quote}”</p>
+              <footer>
+                <cite class="not-italic font-semibold text-ink">{item.name}</cite>
+                <p class="text-sm text-ink-faint">{item.place}</p>
+              </footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band section" aria-labelledby="final-cta">
+      <div class="container-custom relative text-center max-w-2xl mx-auto animate-in">
+        <h2 id="final-cta" class="font-display text-fluid-3xl font-semibold text-white mb-4 text-balance">{copy.finalTitle}</h2>
+        <p class="text-fluid-lg text-white/85 mb-8">{copy.finalSub}</p>
+        <WhatsAppButton locale={locale} variant="inline" text={copy.ctaPrimary} message={copy.waMessage} class="bg-whatsapp-light hover:bg-whatsapp text-ink font-bold" />
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" text={copy.ctaPrimary} message={copy.waMessage} />
+</BaseLayout>

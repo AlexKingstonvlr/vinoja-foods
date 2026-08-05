@@ -1,0 +1,83 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+import { getWhatsAppUrl } from '@/utils/helpers';
+
+const locale = 'en';
+const wa = getWhatsAppUrl('Hello Vinoja Foods! I need help with a refund.');
+---
+
+<BaseLayout
+  title="Refund Policy — Vinoja Foods"
+  description="When refunds apply for Vinoja Foods orders and how quickly we process them."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Policies"
+      title="Refund policy"
+      subtitle="We stand behind freshness and packing quality. Here’s when refunds apply."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Refund Policy', url: '/en/refund-policy/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <h2>Eligible situations</h2>
+        <ul>
+          <li>Damaged, broken, or tampered pack on arrival</li>
+          <li>Wrong product versus what was confirmed</li>
+          <li>Expired at the time of delivery</li>
+          <li>Significant quality issue reported within 48 hours with photos</li>
+        </ul>
+
+        <h2>How to request</h2>
+        <ol>
+          <li>Contact us within <strong>48 hours</strong> via <a href={wa}>WhatsApp</a> or {SITE_CONFIG.contactEmail}.</li>
+          <li>Share order ID, description, and photos.</li>
+          <li>We review and reply within about <strong>24 hours</strong>.</li>
+          <li>Approved refunds go to the original payment method (COD via UPI/bank transfer).</li>
+        </ol>
+
+        <h2>Typical timelines</h2>
+        <div class="not-prose my-6 overflow-x-auto rounded-xl border border-leaf-100">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-paper-soft">
+              <tr class="border-b border-leaf-100">
+                <th class="py-3 px-4 font-semibold text-ink">Method</th>
+                <th class="py-3 px-4 font-semibold text-ink">Refund time</th>
+              </tr>
+            </thead>
+            <tbody class="text-ink-muted">
+              <tr class="border-b border-leaf-50"><td class="py-3 px-4">UPI</td><td class="py-3 px-4">3–5 business days</td></tr>
+              <tr class="border-b border-leaf-50"><td class="py-3 px-4">Card</td><td class="py-3 px-4">5–7 business days</td></tr>
+              <tr><td class="py-3 px-4">Net banking</td><td class="py-3 px-4">5–7 business days</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Not usually refundable</h2>
+        <ul>
+          <li>Change of mind after successful delivery of correct, fresh packs</li>
+          <li>Issues reported after 48 hours</li>
+          <li>Opened packs without evidence of a quality fault on arrival</li>
+        </ul>
+      </div>
+    </section>
+
+    <CtaBand locale={locale} title="Need help with an order?" subtitle="Send photos on WhatsApp — we’ll sort a fair fix quickly." message="Hello Vinoja Foods! I need help with a refund / replacement." />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

@@ -1,0 +1,121 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { products } from '@/data/products';
+
+const locale = 'en';
+
+const categoryMeta = [
+  {
+    name: 'Murukku & Chakli',
+    slug: 'murukku-chakli',
+    blurb: 'Twists, thenkuzhal, and kai murukku from towns famous for the craft.',
+    image: '/images/categories/murukku.jpg'
+  },
+  {
+    name: 'Sweets & Mithai',
+    slug: 'sweets-mithai',
+    blurb: 'Mysore pak, laddu, adhirasam — soft, ghee-rich, regionally made.',
+    image: '/images/categories/sweets.jpg'
+  },
+  {
+    name: 'Mixture & Namkeen',
+    slug: 'mixture-namkeen',
+    blurb: 'Curry-leaf heat and crunch for evening chai — packed at origin.',
+    image: '/images/categories/mixture.jpg'
+  },
+  {
+    name: 'Festival Specials',
+    slug: 'festival-specials',
+    blurb: 'Pongal to Deepavali boxes — ask us to curate a fresh gift set.',
+    image: '/images/categories/festival.jpg'
+  },
+  {
+    name: 'Healthy Snacks',
+    slug: 'healthy-snacks',
+    blurb: 'Lighter traditional options when you want crunch without excess.',
+    image: '/images/categories/healthy.jpg'
+  },
+  {
+    name: 'Gift Hampers',
+    slug: 'gift-hampers',
+    blurb: 'Assorted regional specialties, wrapped for celebrations.',
+    image: '/images/categories/gift.jpg'
+  }
+];
+
+const categories = categoryMeta.map((c) => ({
+  ...c,
+  productCount: products.filter((p) => p.category === c.slug).length
+}));
+---
+
+<BaseLayout
+  title="Categories — Vinoja Foods | Regional Tamil Nadu Specialties"
+  description="Browse murukku, sweets, mixtures, and festival packs — specialties from across Tamil Nadu, sold fresh in Chennai."
+  locale={locale}
+>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Shop by craving"
+      title="Categories"
+      subtitle="Every category gathers specialties made where they are famous — hygienically packed, at our Chennai shop within a day."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Categories', url: '/en/categories/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom grid sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+        {categories.map((category, index) => (
+          <a
+            href={`/${locale}/products/?category=${category.slug}`}
+            class="group relative block rounded-2xl overflow-hidden aspect-[4/5] shadow-soft border border-leaf-100 animate-in"
+            style={`animation-delay: ${index * 70}ms`}
+          >
+            <img
+              src={category.image}
+              alt=""
+              class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+              loading="lazy"
+            />
+            <div class="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/35 to-ink/10"></div>
+            <div class="absolute inset-x-0 bottom-0 p-6 text-white">
+              {category.productCount > 0 ? (
+                <span class="badge badge-secondary mb-3">{category.productCount} in shop</span>
+              ) : (
+                <span class="badge bg-white/20 text-white mb-3">Ask on WhatsApp</span>
+              )}
+              <h2 class="font-display text-2xl font-semibold text-balance">{category.name}</h2>
+              <p class="mt-2 text-sm text-white/80 leading-relaxed">{category.blurb}</p>
+              <span class="mt-4 inline-flex items-center gap-1 text-sm font-semibold text-brass-200">
+                View products
+                <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+              </span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="Not sure which category?"
+      subtitle="Tell us if it is tea-time, a festival gift, or bulk — we’ll suggest regional packs."
+      message="Hello Vinoja Foods! Can you help me choose snacks?"
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

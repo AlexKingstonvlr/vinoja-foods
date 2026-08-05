@@ -1,0 +1,202 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+
+const locale = 'en';
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  name: 'About Vinoja Foods',
+  description:
+    'Regional specialties from across Tamil Nadu — made where they’re famous, sold fresh at our Chennai shop within a day of packing.',
+  url: 'https://vinojafoods.com/en/about'
+};
+---
+
+<BaseLayout
+  title="Our Story — Vinoja Foods | Regional Specialties Sold in Chennai"
+  description="We don’t cook everything in Chennai. We bring authentic Tamil Nadu specialties from their famous places of origin — hygienically packed, to our Chennai shop within a day."
+  locale={locale}
+>
+  <StructuredData locale={locale} data={structuredData} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Banana Leaf Kitchen"
+      title="Our story"
+      subtitle="The best of every region of Tamil Nadu — sold fresh in Chennai. Not made in a city factory. Made where each snack and sweet is famous."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'About', url: '/en/about/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+        <div class="animate-in">
+          <p class="section-label">What we are</p>
+          <h2 class="heading-2 mb-5 text-balance">A Chennai shop for all of Tamil Nadu</h2>
+          <p class="text-body text-fluid-lg mb-4">
+            Vinoja Foods is where Chennai families find the snacks and sweets they grew up craving —
+            murukku from the towns known for murukku, sweets from the kitchens known for sweets,
+            mixtures from makers who still fry the old way.
+          </p>
+          <p class="text-body mb-4">
+            We are <strong class="text-ink">not</strong> a factory that stamps “Made in Chennai” on every packet.
+            Our products are traditionally and authentically made in their famous places of origin across Tamil Nadu.
+            Then they are hygienically packed and sent to our Chennai shop <strong class="text-ink">within a day</strong>
+            — so you taste the region, not a warehouse.
+          </p>
+          <p class="text-body">
+            That is our selling point: the best specialties from every region, under one trusted roof in Chennai —
+            with WhatsApp ordering as warm as a neighbourhood counter.
+          </p>
+        </div>
+        <div class="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lift animate-in delay-200">
+          <img
+            src="/images/products/kai-murukku.jpg"
+            alt="Handmade kai murukku — a regional Tamil Nadu specialty"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="section bg-leaf-800 text-white relative overflow-hidden">
+      <div class="absolute inset-0 opacity-25 pointer-events-none" style="background: radial-gradient(circle at 80% 20%, rgba(201,162,39,0.45), transparent 45%);"></div>
+      <div class="container-custom relative max-w-3xl">
+        <p class="section-label text-brass-300">How it began</p>
+        <h2 class="font-display text-fluid-3xl font-semibold mb-6 text-balance">From missing “that town’s taste”</h2>
+        <div class="space-y-5 text-fluid-lg text-white/85 leading-relaxed">
+          <p>
+            Anyone who has lived away from their native district knows the longing: the exact crunch of a particular murukku,
+            the ghee-rich softness of a sweet that only one street still gets right. Travelling every week for a packet is impossible.
+            Settling for generic “South Indian snacks” is a quiet disappointment.
+          </p>
+          <p>
+            Vinoja Foods was built to close that gap. We seek out traditional makers in the places famous for each specialty —
+            then bring those packs to Chennai quickly and carefully. Our shop is the meeting point; the craft stays where it belongs.
+          </p>
+          <p>
+            Today, neighbours from Adyar to Velachery message us for tea-time boxes, festival gifts, and the snacks that taste like home.
+            We answer on WhatsApp, confirm what’s freshest, and deliver with the care those makers deserve.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="quality" class="section">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-12 animate-in">
+          <p class="section-label">Quality promise</p>
+          <h2 class="heading-2 mb-3">How we keep trust on every pack</h2>
+          <p class="text-body text-fluid-lg">
+            Excellence is not a slogan on a Chennai kitchen wall — it is origin, hygiene, and speed to our shop.
+          </p>
+        </header>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          {[
+            {
+              title: 'Famous places of origin',
+              body: 'Each item is made where that specialty is renowned — traditional recipes, authentic craft.'
+            },
+            {
+              title: 'Hygienic packing',
+              body: 'Sealed with care so crunch and aroma travel intact from the maker to Chennai.'
+            },
+            {
+              title: 'Within a day to Chennai',
+              body: 'Sent to our shop within a day of packing — fresh enough for tea-time and festivals.'
+            },
+            {
+              title: 'Honest WhatsApp service',
+              body: 'Ask what’s in stock, build a gift box, or reorder favourites — we reply like neighbours.'
+            }
+          ].map((item, i) => (
+            <article class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-6 animate-in" style={`animation-delay: ${(i + 1) * 80}ms`}>
+              <span class="font-display text-brass-500 text-2xl font-semibold">{String(i + 1).padStart(2, '0')}</span>
+              <h3 class="heading-4 mt-3 mb-2">{item.title}</h3>
+              <p class="text-sm-body">{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-paper-soft">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-12 animate-in">
+          <p class="section-label">What we stand for</p>
+          <h2 class="heading-2">Values you can taste</h2>
+        </header>
+        <div class="grid md:grid-cols-3 gap-8">
+          {[
+            {
+              title: 'Regional makers first',
+              body: 'We partner with artisans and small kitchens across Tamil Nadu so traditional livelihoods — and flavours — keep thriving.'
+            },
+            {
+              title: 'No fake “city kitchen” story',
+              body: 'We will never claim everything is cooked in Chennai. Transparency is part of luxury: you deserve to know where taste comes from.'
+            },
+            {
+              title: 'Neighbourhood delight',
+              body: 'From first WhatsApp message to the last crunch, we aim for the warmth of a trusted local shop — polished, not cold.'
+            }
+          ].map((item, i) => (
+            <article class="animate-in" style={`animation-delay: ${(i + 1) * 90}ms`}>
+              <h3 class="heading-4 mb-3">{item.title}</h3>
+              <p class="text-body">{item.body}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container-custom grid lg:grid-cols-2 gap-10 items-center">
+        <div class="relative aspect-[5/4] rounded-2xl overflow-hidden shadow-warm animate-in">
+          <img
+            src="/images/products/mysore-pak.jpg"
+            alt="Mysore pak — a beloved Tamil Nadu sweet specialty"
+            class="w-full h-full object-cover"
+            loading="lazy"
+          />
+        </div>
+        <div class="animate-in delay-200">
+          <p class="section-label">Visit & order</p>
+          <h2 class="heading-2 mb-4">Come for the regions. Stay for the freshness.</h2>
+          <p class="text-body mb-6">
+            Browse specialties online, message us your list, or stop by our Chennai shop.
+            Whether it is evening filter coffee companions or Deepavali gift boxes —
+            we’ll help you choose packs that still taste of their hometowns.
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3">
+            <WhatsAppButton locale={locale} variant="inline" text="Order on WhatsApp" message="Hello Vinoja Foods! I’d like to know more about your regional specialties." />
+            <a href={`/${locale}/products/`} class="btn-outline text-center">Browse specialties</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="Taste Tamil Nadu without leaving Chennai"
+      subtitle="Regional specialties, hygienically packed, at our shop within a day. Tell us what you’re craving."
+      buttonText="Chat on WhatsApp"
+      message="Hello Vinoja Foods! I would love to place an order for fresh regional snacks and sweets."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

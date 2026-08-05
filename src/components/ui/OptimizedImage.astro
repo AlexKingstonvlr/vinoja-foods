@@ -1,0 +1,60 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  src: ImageMetadata | string;
+  alt: string;
+  width?: number;
+  height?: number;
+  class?: string;
+  loading?: 'lazy' | 'eager';
+  decoding?: 'async' | 'sync';
+  priority?: boolean;
+  sizes?: string;
+  format?: 'avif' | 'webp' | 'jpg' | 'png';
+  quality?: number;
+}
+
+const {
+  src,
+  alt,
+  width,
+  height,
+  class: className = '',
+  loading = 'lazy',
+  decoding = 'async',
+  priority = false,
+  sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw',
+  format,
+  quality = 80
+} = Astro.props;
+
+const isExternal = typeof src === 'string' && (src.startsWith('http') || src.startsWith('//'));
+---
+
+{isExternal ? (
+  <img
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={decoding}
+    fetchpriority={priority ? 'high' : 'auto'}
+    class={`block max-w-full h-auto ${className}`}
+    sizes={sizes}
+  />
+) : (
+  <Image
+    src={src}
+    alt={alt}
+    width={width}
+    height={height}
+    loading={loading}
+    decoding={decoding}
+    format={format}
+    quality={quality}
+    class={`block max-w-full h-auto ${className}`}
+    sizes={sizes}
+  />
+)}

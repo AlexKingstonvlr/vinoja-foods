@@ -1,0 +1,117 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { schemas } from '@/utils/schemas';
+
+const locale = 'en';
+
+const faqs = [
+  {
+    question: 'How do I place an order?',
+    answer:
+      'Message us on WhatsApp with the snacks or sweets you want — that is the fastest way. You can also browse products on this site, then tap “Order on WhatsApp” on any item. We confirm freshness, stock at our Chennai shop, and delivery.'
+  },
+  {
+    question: 'Are your products made in Chennai?',
+    answer:
+      'No. Our shop is in Chennai, but each specialty is traditionally made in its famous place of origin across Tamil Nadu. Packs are hygienically sealed and sent to our Chennai shop within a day — so you get regional authenticity, not a single city factory taste.'
+  },
+  {
+    question: 'What does “within a day” mean?',
+    answer:
+      'After packing at the maker, specialties are sent to our Chennai shop within a day. It is not a “same-day gimmick” — it is a reliable freshness rhythm so tea-time and festival packs stay crisp and fragrant.'
+  },
+  {
+    question: 'Do you ship across India?',
+    answer:
+      'Yes. We deliver across Chennai and ship to major cities through trusted partners. Ask on WhatsApp for timelines to your pin code. International shipping is not available yet.'
+  },
+  {
+    question: 'What is the shelf life?',
+    answer:
+      'Most traditional snacks last about 7–30 days depending on the product. Each pack is labelled. Store in a cool, dry place and finish while crunchy — that is when they taste best.'
+  },
+  {
+    question: 'Do you take bulk or corporate orders?',
+    answer:
+      'Yes — weddings, Deepavali gifts, office hampers, and wholesale. Message us on WhatsApp with quantity and date; we’ll recommend regional packs and pricing.'
+  },
+  {
+    question: 'How can I track my order?',
+    answer:
+      'Once dispatched, we share tracking by SMS, email, or WhatsApp. Reply with your order details anytime for an update.'
+  },
+  {
+    question: 'What payment methods do you accept?',
+    answer:
+      'UPI (GPay, PhonePe, Paytm), cards, net banking, and COD for select pin codes. We’ll confirm when you order on WhatsApp.'
+  },
+  {
+    question: 'What if something is wrong with my order?',
+    answer:
+      'Contact us within 48 hours with photos if a pack is damaged, incorrect, or expired on arrival. Perishable food means we can’t accept casual returns, but we make genuine quality issues right.'
+  },
+  {
+    question: 'Do you offer gift packaging?',
+    answer:
+      'Yes — festival and celebration gift wrapping. Mention it when you order on WhatsApp and we’ll prepare a present-ready box of regional specialties.'
+  }
+];
+
+const structuredData = schemas.faqPage(faqs);
+---
+
+<BaseLayout
+  title="FAQ — Vinoja Foods | Ordering, Freshness & Shipping"
+  description="Answers about WhatsApp ordering, regional specialties sold in Chennai, shipping, and freshness."
+  locale={locale}
+>
+  <StructuredData locale={locale} data={structuredData} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Help"
+      title="Frequently asked questions"
+      subtitle="Straight answers about origin, freshness, WhatsApp ordering, and delivery from our Chennai shop."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'FAQ', url: '/en/faq/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl space-y-3">
+        {faqs.map((faq, i) => (
+          <details class="group bg-paper-soft/90 border border-leaf-100 rounded-xl overflow-hidden animate-in" style={`animation-delay: ${i * 40}ms`}>
+            <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-5 sm:p-6 font-display text-lg font-semibold text-ink hover:text-leaf-700 transition-colors">
+              <span>{faq.question}</span>
+              <span class="shrink-0 text-brass-500 transition-transform group-open:rotate-180" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </span>
+            </summary>
+            <div class="px-5 sm:px-6 pb-6 text-ink-muted leading-relaxed border-t border-leaf-100/80 pt-4">
+              {faq.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="Still have a question?"
+      subtitle="WhatsApp us — we’ll help you pick fresh regional packs for tea-time, gifts, or bulk orders."
+      message="Hello Vinoja Foods! I have a question about your products."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

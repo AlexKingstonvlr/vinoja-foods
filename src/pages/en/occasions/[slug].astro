@@ -1,0 +1,135 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import BundleCard from '@/components/ui/BundleCard.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { formatPrice } from '@/utils/helpers';
+import { getBundlesByOccasion } from '@/data/bundles';
+import { getOccasion, type OccasionSlug } from '@/data/occasions';
+import { getProductBySlug, type Product } from '@/data/products';
+
+export function getStaticPaths() {
+  return [
+    { params: { slug: 'festival' } },
+    { params: { slug: 'tea-time' } },
+    { params: { slug: 'office-gifts' } }
+  ];
+}
+
+const locale = 'en';
+const slug = Astro.params.slug as OccasionSlug;
+const occasion = getOccasion(slug);
+
+if (!occasion) {
+  return Astro.redirect('/en/');
+}
+
+const copy = occasion.copy.en;
+const meta = occasion.meta.en;
+const occasionBundles = getBundlesByOccasion(occasion.bundleOccasion);
+const products: Product[] = [];
+for (const s of occasion.productSlugs) {
+  const p = getProductBySlug(s);
+  if (p && p.inStock) products.push(p);
+}
+---
+
+<BaseLayout locale={locale} title={meta.title} description={meta.description}>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content" role="main">
+    <PageHero
+      locale={locale}
+      label={copy.label}
+      title={copy.title}
+      subtitle={copy.subtitle}
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Occasions', url: `/en/occasions/${slug}/` },
+        { name: copy.title, url: `/en/occasions/${slug}/` }
+      ]}
+    />
+
+    <section class="section-sm border-b border-leaf-100 bg-paper-soft/50">
+      <div class="container-custom flex flex-col sm:flex-row sm:items-center gap-4 justify-between">
+        <p class="text-ink-muted text-sm sm:text-base max-w-xl">
+          Made at famous places of origin across Tamil Nadu — hygienically packed, at our Chennai shop within a day. Confirm on WhatsApp.
+        </p>
+        <WhatsAppButton locale={locale} variant="inline" text={copy.cta} message={copy.waMessage} />
+      </div>
+    </section>
+
+    {occasionBundles.length > 0 && (
+      <section class="section" aria-labelledby="occ-bundles">
+        <div class="container-custom">
+          <h2 id="occ-bundles" class="heading-3 mb-8">{copy.bundlesLabel}</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {occasionBundles.map((bundle) => (
+              <BundleCard locale={locale} bundle={bundle} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    {products.length > 0 && (
+      <section class="section bg-paper-soft border-y border-leaf-100" aria-labelledby="occ-products">
+        <div class="container-custom">
+          <h2 id="occ-products" class="heading-3 mb-8">{copy.productsLabel}</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {products.map((product) => (
+              <article class="product-tile group">
+                <a href={`/en/products/${product.slug}/`} class="block relative aspect-square overflow-hidden">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                    width="400"
+                    height="400"
+                  />
+                </a>
+                <div class="p-5">
+                  <p class="text-xs text-leaf-700 font-medium mb-1">{product.origin}</p>
+                  <h3 class="font-display font-semibold text-ink mb-2">
+                    <a href={`/en/products/${product.slug}/`} class="hover:text-leaf-700">{product.name}</a>
+                  </h3>
+                  <div class="flex items-baseline gap-2 mb-4">
+                    <span class="text-xl font-bold text-leaf-700">{formatPrice(product.price, locale)}</span>
+                    <span class="text-sm text-ink-faint">{product.weight}</span>
+                  </div>
+                  <WhatsAppButton
+                    locale={locale}
+                    variant="product"
+                    productName={product.name}
+                    weight={product.weight}
+                    price={product.price}
+                  />
+                </div>
+              </article>
+            ))}
+          </div>
+          <div class="mt-8">
+            <a href="/en/bundles/" class="btn-outline">Browse all bundles · Build a box</a>
+          </div>
+        </div>
+      </section>
+    )}
+
+    <CtaBand
+      locale={locale}
+      title={copy.title}
+      subtitle="One WhatsApp message — we’ll confirm stock, packing, and delivery for your area."
+      buttonText={copy.cta}
+      message={copy.waMessage}
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" text="Order" message={copy.waMessage} />
+</BaseLayout>

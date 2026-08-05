@@ -1,0 +1,95 @@
+---
+import '@/styles/global.css';
+import Analytics from '@/components/seo/Analytics.astro';
+import WhatsAppNudge from '@/components/ui/WhatsAppNudge.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  ogImage?: string;
+  canonicalURL?: string;
+  jsonLd?: Record<string, unknown>[];
+  lang?: 'en' | 'ta';
+  locale?: 'en' | 'ta';
+  noindex?: boolean;
+  nofollow?: boolean;
+}
+
+const {
+  title,
+  description,
+  ogImage,
+  canonicalURL,
+  jsonLd = [],
+  lang,
+  locale,
+  noindex = false,
+  nofollow = false
+} = Astro.props;
+
+const activeLang = lang || locale || 'en';
+
+const siteUrl = import.meta.env.PUBLIC_SITE_URL || 'https://vinojafoods.com';
+const finalTitle = title || (activeLang === 'en' ? 'Vinoja Foods | Authentic Tamil Nadu Snacks & Sweets · Sold Fresh in Chennai' : 'வினோஜா ஃபூட்ஸ் | தமிழ்நாட்டின் உண்மையான சிற்றுண்டிகள் · சென்னையில் புதிதாக');
+const finalDescription = description || (activeLang === 'en' ? 'Regional specialties made in their famous places of origin across Tamil Nadu — hygienically packed and sent to our Chennai shop within a day. Order on WhatsApp.' : 'தமிழ்நாட்டின் புகழ்பெற்ற ஊர்களில் தயாரிக்கப்படும் மாவட்டச் சிறப்புகள் — சுகாதாரமாக பேக் செய்து ஒரு நாளுக்குள் சென்னை கடைக்கு. வாட்ஸ்அப்பில் ஆர்டர் செய்யுங்கள்.');
+const finalOgImage = ogImage ? new URL(ogImage, siteUrl).toString() : `${siteUrl}/images/og-default.jpg`;
+const finalCanonical = canonicalURL || new URL(Astro.url.pathname, siteUrl).toString();
+const alternates = {
+  en: new URL(`/en${Astro.url.pathname.replace(/^\/[a-z]{2}/, '')}`, siteUrl).toString(),
+  ta: new URL(`/ta${Astro.url.pathname.replace(/^\/[a-z]{2}/, '')}`, siteUrl).toString()
+};
+---
+
+<!doctype html>
+<html lang={activeLang} dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Noto+Serif+Tamil:wght@500;600;700&family=Source+Sans+3:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>{finalTitle}</title>
+    <meta name="description" content={finalDescription} />
+    <meta name="theme-color" content="#1F5C45" />
+    <meta name="robots" content={`${noindex ? 'noindex' : 'index'}, ${nofollow ? 'nofollow' : 'follow'}`} />
+
+    <link rel="canonical" href={finalCanonical} />
+    <link rel="alternate" hreflang="en" href={alternates.en} />
+    <link rel="alternate" hreflang="ta" href={alternates.ta} />
+    <link rel="alternate" hreflang="x-default" href={alternates.en} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={activeLang === 'en' ? 'Vinoja Foods' : 'வினோஜா ஃபூட்ஸ்'} />
+    <meta property="og:title" content={finalTitle} />
+    <meta property="og:description" content={finalDescription} />
+    <meta property="og:image" content={finalOgImage} />
+    <meta property="og:url" content={finalCanonical} />
+    <meta property="og:locale" content={activeLang === 'en' ? 'en_IN' : 'ta_IN'} />
+    <meta property="og:locale:alternate" content={activeLang === 'en' ? 'ta_IN' : 'en_IN'} />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@vinojafoods" />
+    <meta name="twitter:title" content={finalTitle} />
+    <meta name="twitter:description" content={finalDescription} />
+    <meta name="twitter:image" content={finalOgImage} />
+
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="alternate" type="application/rss+xml" title="Vinoja Foods Blog" href="/en/rss.xml" />
+
+    <Analytics />
+
+    {jsonLd.map((ld, i) => (
+      <script type="application/ld+json" set:data-index={i} dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} />
+    ))}
+  </head>
+  <body class="font-sans antialiased bg-paper text-ink min-h-screen flex flex-col">
+    <a href="#main-content" class="skip-link">{activeLang === 'en' ? 'Skip to main content' : 'முக்கிய உள்ளடக்கத்திற்கு செல்லவும்'}</a>
+    <slot />
+    <WhatsAppNudge locale={activeLang} />
+  </body>
+</html>

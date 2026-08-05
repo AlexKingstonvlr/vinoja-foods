@@ -1,0 +1,117 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { schemas } from '@/utils/schemas';
+
+const locale = 'ta';
+
+const faqs = [
+  {
+    question: 'நான் எவ்வாறு ஆர்டர் செய்வது?',
+    answer:
+      'வாட்ஸ்அப்பில் நீங்கள் விரும்பும் தின்பண்டங்கள் அல்லது இனிப்புகளைச் செய்தி அனுப்புவதே வேகமான வழி. தளத்தில் உற்பத்திகளைப் பார்த்து “வாட்ஸ்அப்பில் ஆர்டர்” அழுத்தவும். சென்னை கடையில் புத்துணர்ச்சி, ஸ்டாக், டெலிவரியை உறுதி செய்கிறோம்.'
+  },
+  {
+    question: 'உங்கள் உற்பத்திகள் சென்னையில் தயாரிக்கப்படுகின்றனவா?',
+    answer:
+      'இல்லை. எங்கள் கடை சென்னையில். ஆனால் ஒவ்வொரு சிறப்பும் தமிழ்நாட்டில் அதற்குப் புகழ்பெற்ற ஊரில் பாரம்பரியமாகத் தயாரிக்கப்படுகிறது. சுகாதார பேக்கிங்கிற்குப் பிறகு ஒரு நாளுக்குள் சென்னை கடைக்கு வரும் — ஒரே நகரத் தொழிற்சாலை சுவை அல்ல.'
+  },
+  {
+    question: '“ஒரு நாளுக்குள்” என்றால் என்ன?',
+    answer:
+      'தயாரிப்பாளர் பேக் செய்த பிறகு, சிறப்புகள் ஒரு நாளுக்குள் சென்னை கடைக்கு அனுப்பப்படும். “அதே நாள்” விளம்பரம் அல்ல — டீ-நேரத்திற்கும் பண்டிகைக்கும் மொறுமொறுப்பைக் காக்கும் நம்பகமான தாளம்.'
+  },
+  {
+    question: 'இந்தியா முழுவதும் அனுப்புகிறீர்களா?',
+    answer:
+      'ஆம். சென்னை முழுவதும் டெலிவரி; முக்கிய நகரங்களுக்கு நம்பகமான கூரியர். உங்கள் பின் குறியீட்டிற்கு நேரத்தை வாட்ஸ்அப்பில் கேளுங்கள். வெளிநாட்டு அனுப்புதல் இன்னும் இல்லை.'
+  },
+  {
+    question: 'ஆயுள் காலம் என்ன?',
+    answer:
+      'பெரும்பாலான பாரம்பரியத் தின்பண்டங்கள் தயாரிப்பைப் பொறுத்து சுமார் 7–30 நாட்கள். ஒவ்வொரு பொட்டலத்திலும் அட்டை உள்ளது. குளிர்ந்த, உலர்ந்த இடத்தில் வைத்து மொறுமொறுப்பாக இருக்கும்போது முடியுங்கள்.'
+  },
+  {
+    question: 'மொத்த அல்லது நிறுவன ஆர்டர்கள்?',
+    answer:
+      'ஆம் — திருமணம், தீபாவளிப் பரிசுகள், அலுவலக ஹாம்பர்கள், மொத்த விற்பனை. அளவு மற்றும் தேதியை வாட்ஸ்அப்பில் அனுப்புங்கள்; பிராந்தியப் பொட்டலங்களையும் விலையையும் பரிந்துரைக்கிறோம்.'
+  },
+  {
+    question: 'ஆர்டரை எப்படிக் கண்காணிப்பது?',
+    answer:
+      'அனுப்பியதும் SMS, மின்னஞ்சல் அல்லது வாட்ஸ்அப் மூலம் டிராக்கிங் பகிர்கிறோம். எப்போதும் ஆர்டர் விவரத்துடன் பதிலளிக்கலாம்.'
+  },
+  {
+    question: 'எந்தக் கட்டண முறைகள்?',
+    answer:
+      'UPI, கார்டுகள், நெட் பேங்கிங், தேர்ந்தெடுக்கப்பட்ட பின் குறியீடுகளுக்கு COD. வாட்ஸ்அப் ஆர்டரில் உறுதி செய்கிறோம்.'
+  },
+  {
+    question: 'ஆர்டரில் பிரச்சினை இருந்தால்?',
+    answer:
+      'சேதமடைந்த, தவறான, அல்லது காலாவதியான பொட்டலத்திற்கு 48 மணி நேரத்திற்குள் புகைப்படங்களுடன் தொடர்பு கொள்ளுங்கள். உணவு கெட்டுப்போகக்கூடியது என்பதால் சாதாரண ரிட்டர்ன் இல்லை; உண்மையான தரப் பிரச்சினைகளைச் சரி செய்கிறோம்.'
+  },
+  {
+    question: 'பரிசுப் பேக்கிங் உண்டா?',
+    answer:
+      'ஆம் — பண்டிகை மற்றும் கொண்டாட்டப் பரிசு. வாட்ஸ்அப் ஆர்டரில் சொல்லுங்கள்; மாவட்டச் சிறப்புகளுடன் பரிசுக்குத் தயார் பெட்டி தயாரிக்கிறோம்.'
+  }
+];
+
+const structuredData = schemas.faqPage(faqs);
+---
+
+<BaseLayout
+  title="கேள்விகள் — வினோஜா ஃபூட்ஸ் | ஆர்டர், புத்துணர்ச்சி, அனுப்புதல்"
+  description="வாட்ஸ்அப் ஆர்டர், சென்னையில் விற்கப்படும் மாவட்டச் சிறப்புகள், அனுப்புதல் பற்றிய பதில்கள்."
+  locale={locale}
+>
+  <StructuredData locale={locale} data={structuredData} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="உதவி"
+      title="அடிக்கடி கேட்கப்படும் கேள்விகள்"
+      subtitle="தோற்றம், புத்துணர்ச்சி, வாட்ஸ்அப் ஆர்டர், சென்னை கடையிலிருந்து டெலிவரி — நேரடிப் பதில்கள்."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'கேள்விகள்', url: '/ta/faq/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl space-y-3">
+        {faqs.map((faq, i) => (
+          <details class="group bg-paper-soft/90 border border-leaf-100 rounded-xl overflow-hidden animate-in" style={`animation-delay: ${i * 40}ms`}>
+            <summary class="cursor-pointer list-none flex items-center justify-between gap-4 p-5 sm:p-6 font-display text-lg font-semibold text-ink hover:text-leaf-700 transition-colors">
+              <span>{faq.question}</span>
+              <span class="shrink-0 text-brass-500 transition-transform group-open:rotate-180" aria-hidden="true">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+              </span>
+            </summary>
+            <div class="px-5 sm:px-6 pb-6 text-ink-muted leading-relaxed border-t border-leaf-100/80 pt-4">
+              {faq.answer}
+            </div>
+          </details>
+        ))}
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="இன்னும் கேள்வி உள்ளதா?"
+      subtitle="வாட்ஸ்அப்பில் கேளுங்கள் — டீ-நேரம், பரிசு, மொத்த ஆர்டருக்கு புதிய பிராந்தியப் பொட்டலங்களைத் தேர்ந்தெடுக்க உதவுகிறோம்."
+      message="வணக்கம் வினோஜா ஃபூட்ஸ்! உங்கள் உற்பத்திகள் பற்றி கேள்வி உள்ளது."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

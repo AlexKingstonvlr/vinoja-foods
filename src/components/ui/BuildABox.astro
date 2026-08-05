@@ -1,0 +1,187 @@
+---
+import { BUILD_A_BOX_PRODUCTS } from '@/data/bundles';
+import { SITE_CONFIG } from '@/utils/site-config';
+
+interface Props {
+  locale: 'en' | 'ta';
+}
+
+const { locale } = Astro.props;
+const isEnglish = locale === 'en';
+const products = BUILD_A_BOX_PRODUCTS;
+const waNumber = SITE_CONFIG.whatsappNumber;
+
+const copy = isEnglish
+  ? {
+      label: 'Custom order',
+      title: 'Build a box',
+      subtitle: 'Pick items and quantities — we’ll open WhatsApp with your list ready. Add your area or notes if you like.',
+      qty: 'Qty',
+      area: 'Area (optional)',
+      areaPlaceholder: 'e.g. Adyar, T. Nagar',
+      notes: 'Notes (optional)',
+      notesPlaceholder: 'Gift wrap, bulk, dietary notes…',
+      cta: 'Send order on WhatsApp',
+      empty: 'Select at least one item',
+      greeting: 'Hello Vinoja Foods! I would like to order:'
+    }
+  : {
+      label: 'தனிப்பயன் ஆர்டர்',
+      title: 'பெட்டி உருவாக்குங்கள்',
+      subtitle: 'பொருட்களையும் அளவையும் தேர்வு செய்யுங்கள் — உங்கள் பட்டியலுடன் வாட்ஸ்அப் திறக்கும். பகுதி அல்லது குறிப்பைச் சேர்க்கலாம்.',
+      qty: 'அளவு',
+      area: 'பகுதி (விருப்பம்)',
+      areaPlaceholder: 'எ.கா. அடையார், தி. நகர்',
+      notes: 'குறிப்பு (விருப்பம்)',
+      notesPlaceholder: 'பரிசுப் பொதி, மொத்த ஆர்டர்…',
+      cta: 'வாட்ஸ்அப்பில் ஆர்டர் அனுப்பு',
+      empty: 'குறைந்தது ஒரு பொருளைத் தேர்வு செய்யுங்கள்',
+      greeting: 'வணக்கம் வினோஜா ஃபூட்ஸ்! நான் ஆர்டர் செய்ய விரும்புகிறேன்:'
+    };
+---
+
+<section class="section bg-paper-soft border-y border-leaf-100" aria-labelledby="build-box-heading" id="build-a-box">
+  <div class="container-custom max-w-3xl">
+    <header class="mb-8 animate-in">
+      <p class="section-label">{copy.label}</p>
+      <h2 id="build-box-heading" class="heading-2 mb-3">{copy.title}</h2>
+      <p class="text-body text-fluid-lg">{copy.subtitle}</p>
+    </header>
+
+    <form id="build-box-form" class="space-y-6" data-locale={locale} data-wa-number={waNumber} data-greeting={copy.greeting} data-empty={copy.empty}>
+      <ul class="divide-y divide-leaf-100 rounded-xl border border-leaf-100 bg-white/70 overflow-hidden" role="list">
+        {products.map((p) => (
+          <li class="flex flex-wrap items-center gap-3 sm:gap-4 p-3 sm:p-4" data-product-row>
+            <label class="flex items-center gap-3 flex-1 min-w-[12rem] cursor-pointer">
+              <input
+                type="checkbox"
+                name={`item-${p.slug}`}
+                value={p.slug}
+                class="rounded border-leaf-300 text-leaf-600 focus:ring-leaf-500"
+                data-slug={p.slug}
+                data-name={isEnglish ? p.name : p.tamilName}
+                data-weight={p.weight}
+                data-price={p.price}
+              />
+              <span>
+                <span class="font-medium text-ink text-sm sm:text-base">{isEnglish ? p.name : p.tamilName}</span>
+                <span class="block text-xs text-ink-faint">₹{p.price} · {p.weight}</span>
+              </span>
+            </label>
+            <div class="flex items-center gap-2">
+              <label class="sr-only" for={`qty-${p.slug}`}>{copy.qty}</label>
+              <span class="text-xs text-ink-faint hidden sm:inline">{copy.qty}</span>
+              <input
+                type="number"
+                id={`qty-${p.slug}`}
+                min="1"
+                max="20"
+                value="1"
+                class="w-16 rounded-md border-leaf-200 text-sm py-1.5"
+                data-qty-for={p.slug}
+                disabled
+              />
+            </div>
+          </li>
+        ))}
+      </ul>
+
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div>
+          <label for="box-area" class="block text-sm font-medium text-ink mb-1.5">{copy.area}</label>
+          <input
+            type="text"
+            id="box-area"
+            name="area"
+            placeholder={copy.areaPlaceholder}
+            class="w-full rounded-md border-leaf-200 text-sm"
+            autocomplete="address-level2"
+          />
+        </div>
+        <div>
+          <label for="box-notes" class="block text-sm font-medium text-ink mb-1.5">{copy.notes}</label>
+          <input
+            type="text"
+            id="box-notes"
+            name="notes"
+            placeholder={copy.notesPlaceholder}
+            class="w-full rounded-md border-leaf-200 text-sm"
+          />
+        </div>
+      </div>
+
+      <p id="box-error" class="text-sm text-red-700 hidden" role="alert"></p>
+
+      <button type="submit" class="btn-whatsapp w-full sm:w-auto justify-center min-h-[48px] px-8" data-wa-click="true" data-wa-context="build-a-box">
+        {copy.cta}
+      </button>
+    </form>
+  </div>
+</section>
+
+<script>
+  function initBuildBox() {
+    const form = document.getElementById('build-box-form') as HTMLFormElement | null;
+    if (!form) return;
+
+    const locale = form.dataset.locale || 'en';
+    const waNumber = form.dataset.waNumber || '91XXXXXXXXXX';
+    const greeting = form.dataset.greeting || '';
+    const emptyMsg = form.dataset.empty || '';
+    const errorEl = document.getElementById('box-error');
+
+    form.querySelectorAll('[data-slug]').forEach((cb) => {
+      const input = cb as HTMLInputElement;
+      const qty = form.querySelector(`[data-qty-for="${input.dataset.slug}"]`) as HTMLInputElement | null;
+      const sync = () => {
+        if (qty) qty.disabled = !input.checked;
+      };
+      input.addEventListener('change', sync);
+      sync();
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const lines: string[] = [];
+      form.querySelectorAll('[data-slug]').forEach((cb) => {
+        const input = cb as HTMLInputElement;
+        if (!input.checked) return;
+        const qtyEl = form.querySelector(`[data-qty-for="${input.dataset.slug}"]`) as HTMLInputElement | null;
+        const qty = Math.max(1, parseInt(qtyEl?.value || '1', 10) || 1);
+        const name = input.dataset.name || input.dataset.slug;
+        const weight = input.dataset.weight || '';
+        lines.push(`• ${name} (${weight}) × ${qty}`);
+      });
+
+      if (lines.length === 0) {
+        if (errorEl) {
+          errorEl.textContent = emptyMsg;
+          errorEl.classList.remove('hidden');
+        }
+        return;
+      }
+      if (errorEl) errorEl.classList.add('hidden');
+
+      const area = (document.getElementById('box-area') as HTMLInputElement)?.value?.trim();
+      const notes = (document.getElementById('box-notes') as HTMLInputElement)?.value?.trim();
+
+      let msg = `${greeting}\n${lines.join('\n')}`;
+      if (area) {
+        msg += locale === 'ta' ? `\nபகுதி: ${area}` : `\nArea: ${area}`;
+      }
+      if (notes) {
+        msg += locale === 'ta' ? `\nகுறிப்பு: ${notes}` : `\nNotes: ${notes}`;
+      }
+      msg +=
+        locale === 'ta'
+          ? '\nதயவுசெய்து கிடைக்கும் தன்மை மற்றும் டெலிவரியை உறுதி செய்யவும்.'
+          : '\nPlease confirm availability and delivery.';
+
+      const url = `https://wa.me/${waNumber}?text=${encodeURIComponent(msg)}`;
+      window.open(url, '_blank', 'noopener,noreferrer');
+    });
+  }
+
+  initBuildBox();
+  document.addEventListener('astro:page-load', initBuildBox);
+</script>

@@ -1,0 +1,64 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+
+const locale = 'en';
+---
+
+<BaseLayout
+  title="Terms & Conditions — Vinoja Foods"
+  description="Terms for ordering regional Tamil Nadu specialties from Vinoja Foods’ Chennai shop."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Legal"
+      title="Terms & conditions"
+      subtitle="Last updated: January 2025. By using our site or placing an order, you agree to these terms."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Terms & Conditions', url: '/en/terms-conditions/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <h2>Acceptance</h2>
+        <p>Using vinojafoods.com or ordering via WhatsApp means you accept these Terms and our Privacy Policy. If you do not agree, please do not order.</p>
+
+        <h2>Products & authenticity</h2>
+        <ul>
+          <li>Items are traditionally made in their famous places of origin across Tamil Nadu and sold at our Chennai shop.</li>
+          <li>We do not claim all products are manufactured in a Chennai factory kitchen.</li>
+          <li>Photos are illustrative; natural variation in handmade snacks and sweets is expected.</li>
+          <li>Availability depends on fresh packs arriving within a day of packing — we confirm stock when you order.</li>
+        </ul>
+
+        <h2>Orders & pricing</h2>
+        <p>Orders are confirmed when we accept them on WhatsApp or other channels. Prices are in INR and may change; the price we confirm applies. Promotions have their own conditions.</p>
+
+        <h2>Delivery</h2>
+        <p>Timelines are estimates. See <a href="/en/shipping-returns/">Shipping & Returns</a>. Risk passes on delivery to the address you provide.</p>
+
+        <h2>Allergens & storage</h2>
+        <p>Products may contain nuts, dairy, gluten, or sesame. Check labels and store as directed. We are not liable for improper storage after delivery.</p>
+
+        <h2>Limitation</h2>
+        <p>To the extent allowed by law, our liability is limited to the value of the affected order. Nothing here limits rights you have under Indian consumer law.</p>
+
+        <h2>Contact</h2>
+        <p>{SITE_CONFIG.contactEmail} · {SITE_CONFIG.contactPhone} · {SITE_CONFIG.address.en}</p>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

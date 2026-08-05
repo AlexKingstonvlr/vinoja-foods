@@ -1,0 +1,103 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { formatDate } from '@/utils/helpers';
+import { getBlogPosts } from '@/data/blog';
+
+const locale = 'en';
+const posts = getBlogPosts(locale);
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Stories — Vinoja Foods',
+  description: 'Stories of Tamil Nadu specialties, festivals, and why origin matters — from Vinoja Foods.',
+  url: 'https://vinojafoods.com/en/blog'
+};
+---
+
+<BaseLayout
+  title="Stories — Vinoja Foods | Tamil Nadu Snacks & Heritage"
+  description="Read about regional murukku, festival sweets, tea-time rituals, and how specialties reach our Chennai shop within a day."
+  locale={locale}
+>
+  <StructuredData locale={locale} data={structuredData} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="From the banana leaf"
+      title="Stories"
+      subtitle="Heritage, festivals, and why place of origin tastes different — written for families who care about authentic Tamil Nadu snacks."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Stories', url: '/en/blog/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom">
+        {posts.length === 0 ? (
+          <p class="text-body text-center py-16">Stories are on the way. Meanwhile, message us on WhatsApp for today’s specialties.</p>
+        ) : (
+          <div class="grid gap-8 sm:grid-cols-2">
+            {posts.map((post, i) => (
+              <a
+                href={`/en/blog/${post.slug}/`}
+                class="group block bg-paper-soft/90 rounded-xl overflow-hidden border border-leaf-100/80 transition-all duration-300 hover:shadow-lift hover:border-leaf-200 hover:-translate-y-1 animate-in"
+                style={`animation-delay: ${i * 80}ms`}
+              >
+                <div class="relative overflow-hidden aspect-[16/10]">
+                  <img
+                    src={post.image}
+                    alt=""
+                    class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                  <div class="absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent"></div>
+                </div>
+                <div class="p-6">
+                  <div class="flex flex-wrap items-center gap-2 text-sm text-ink-faint">
+                    <time datetime={post.date}>{formatDate(post.date, 'en')}</time>
+                    <span aria-hidden="true">·</span>
+                    <span>{post.author}</span>
+                  </div>
+                  <div class="mt-3 flex flex-wrap gap-2">
+                    {post.tags.slice(0, 3).map((tag) => (
+                      <span class="badge badge-primary">{tag}</span>
+                    ))}
+                  </div>
+                  <h2 class="heading-3 mt-4 group-hover:text-leaf-700 transition-colors text-balance">
+                    {post.title}
+                  </h2>
+                  <p class="mt-3 text-ink-muted line-clamp-3 leading-relaxed">{post.excerpt}</p>
+                  <span class="mt-5 inline-flex items-center gap-1 text-sm font-semibold text-leaf-700">
+                    Read story
+                    <svg class="w-4 h-4 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+                  </span>
+                </div>
+              </a>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="Craving something from a story?"
+      subtitle="Tell us the snack — we’ll confirm a fresh regional pack at our Chennai shop."
+      buttonText="Order on WhatsApp"
+      message="Hello Vinoja Foods! I read your stories and would like to place an order."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

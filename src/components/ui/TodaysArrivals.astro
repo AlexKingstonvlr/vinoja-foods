@@ -1,0 +1,76 @@
+---
+import { formatPrice } from '@/utils/helpers';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import { getFeaturedProducts } from '@/data/products';
+
+interface Props {
+  locale: 'en' | 'ta';
+}
+
+const { locale } = Astro.props;
+const isEnglish = locale === 'en';
+/** Only show when driven by real `featured` flags — no fake scarcity */
+const arrivals = getFeaturedProducts().filter((p) => p.inStock);
+
+const copy = isEnglish
+  ? {
+      label: 'In our Chennai shop',
+      title: 'Today’s arrivals',
+      subtitle: 'Featured specialties currently highlighted — made at origin, fresh at our shop within a day of packing.',
+      badge: 'Featured'
+    }
+  : {
+      label: 'எங்கள் சென்னை கடையில்',
+      title: 'இன்றைய வரவுகள்',
+      subtitle: 'தற்போது சிறப்பிக்கப்படும் மாவட்டச் சிறப்புகள் — ஊரில் தயாரிப்பு, பேக் செய்த ஒரு நாளுக்குள் கடையில் புதிதாக.',
+      badge: 'சிறப்பு'
+    };
+---
+
+{arrivals.length > 0 && (
+  <section class="section-sm bg-leaf-50/50 border-y border-leaf-100" aria-labelledby="arrivals-heading">
+    <div class="container-custom">
+      <header class="max-w-2xl mb-8 animate-in">
+        <p class="section-label">{copy.label}</p>
+        <h2 id="arrivals-heading" class="heading-2 mb-3">{copy.title}</h2>
+        <p class="text-body">{copy.subtitle}</p>
+      </header>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5" role="list">
+        {arrivals.map((product) => (
+          <article class="product-tile group" role="listitem">
+            <a href={`/${locale}/products/${product.slug}/`} class="block relative aspect-square overflow-hidden">
+              <img
+                src={product.image}
+                alt={isEnglish ? product.name : product.tamilName}
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                loading="lazy"
+                width="400"
+                height="400"
+              />
+              <span class="absolute top-3 left-3 badge badge-secondary">{copy.badge}</span>
+            </a>
+            <div class="p-4">
+              <h3 class="font-display font-semibold text-ink text-base mb-0.5">
+                <a href={`/${locale}/products/${product.slug}/`} class="hover:text-leaf-700">
+                  {isEnglish ? product.name : product.tamilName}
+                </a>
+              </h3>
+              <p class="text-xs text-ink-faint mb-2">{product.origin}</p>
+              <div class="flex items-baseline gap-2 mb-3">
+                <span class="font-bold text-leaf-700">{formatPrice(product.price, locale)}</span>
+                <span class="text-xs text-ink-faint">{product.weight}</span>
+              </div>
+              <WhatsAppButton
+                locale={locale}
+                variant="product"
+                productName={isEnglish ? product.name : product.tamilName}
+                weight={product.weight}
+                price={product.price}
+              />
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+)}

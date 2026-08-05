@@ -1,0 +1,23 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+
+const locale = 'en';
+---
+
+<BaseLayout title="Page Not Found — Vinoja Foods" description="This page does not exist." locale={locale}>
+  <main class="min-h-[70vh] flex items-center justify-center px-4 py-24">
+    <div class="text-center max-w-md animate-in">
+      <p class="font-display text-7xl sm:text-8xl font-semibold text-brass-500 mb-4">404</p>
+      <h1 class="heading-2 mb-4">Page not found</h1>
+      <p class="text-body mb-8">
+        That link may be old — try the homepage or message us on WhatsApp for today’s specialties.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/en/" class="btn-primary">Back to home</a>
+        <a href="/en/products/" class="btn-outline">Browse specialties</a>
+      </div>
+    </div>
+  </main>
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

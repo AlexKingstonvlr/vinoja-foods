@@ -1,0 +1,147 @@
+---
+import { SITE_CONFIG } from '@/utils/site-config';
+
+interface Props {
+  locale: 'en' | 'ta';
+}
+
+const { locale } = Astro.props;
+const isEnglish = locale === 'en';
+const waNumber = SITE_CONFIG.whatsappNumber;
+
+const copy = isEnglish
+  ? {
+      title: 'Need help picking snacks?',
+      body: 'Message us on WhatsApp — we’ll confirm what’s fresh at the shop.',
+      cta: 'Chat on WhatsApp',
+      dismiss: 'Not now',
+      message: 'Hello Vinoja Foods! I could use help choosing snacks or sweets.'
+    }
+  : {
+      title: 'சிற்றுண்டி தேர்வுக்கு உதவி வேண்டுமா?',
+      body: 'வாட்ஸ்அப்பில் எழுதுங்கள் — கடையில் என்ன புதிதாக இருக்கிறது என்பதை உறுதி செய்வோம்.',
+      cta: 'வாட்ஸ்அப்பில் பேசுங்கள்',
+      dismiss: 'இப்போது வேண்டாம்',
+      message: 'வணக்கம் வினோஜா ஃபூட்ஸ்! சிற்றுண்டி அல்லது இனிப்பு தேர்வுக்கு உதவி வேண்டும்.'
+    };
+
+const waUrl = `https://wa.me/${waNumber}?text=${encodeURIComponent(copy.message)}`;
+---
+
+<div
+  id="wa-nudge"
+  class="fixed bottom-20 sm:bottom-24 left-4 right-4 sm:left-auto sm:right-24 sm:max-w-sm z-30 hidden"
+  role="dialog"
+  aria-labelledby="wa-nudge-title"
+  aria-hidden="true"
+  data-locale={locale}
+>
+  <div class="rounded-xl border border-leaf-200 bg-paper-soft shadow-lift p-4 sm:p-5 relative">
+    <button
+      type="button"
+      id="wa-nudge-dismiss"
+      class="absolute top-2 right-2 p-2 rounded-md text-ink-faint hover:bg-leaf-50 min-w-[44px] min-h-[44px] inline-flex items-center justify-center"
+      aria-label={copy.dismiss}
+    >
+      <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+    </button>
+    <p id="wa-nudge-title" class="font-display font-semibold text-ink pr-10 mb-1">{copy.title}</p>
+    <p class="text-sm text-ink-muted mb-4 leading-relaxed">{copy.body}</p>
+    <div class="flex flex-wrap gap-2">
+      <a
+        href={waUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-whatsapp text-sm px-4 py-2.5 min-h-[44px]"
+        data-wa-click="true"
+        data-wa-context="idle-nudge"
+        id="wa-nudge-cta"
+      >
+        {copy.cta}
+      </a>
+      <button type="button" id="wa-nudge-later" class="btn-ghost text-sm min-h-[44px]">{copy.dismiss}</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const STORAGE_KEY = 'vf-wa-nudge-dismissed';
+  const COOLDOWN_MS = 1000 * 60 * 60 * 24 * 3; // 3 days
+  const IDLE_MS = 45000;
+
+  function preferReducedMotion() {
+    return window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  }
+
+  function wasDismissedRecently() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (!raw) return false;
+      const t = parseInt(raw, 10);
+      return Number.isFinite(t) && Date.now() - t < COOLDOWN_MS;
+    } catch {
+      return false;
+    }
+  }
+
+  function markDismissed() {
+    try {
+      localStorage.setItem(STORAGE_KEY, String(Date.now()));
+    } catch {
+      /* ignore */
+    }
+  }
+
+  function hideNudge(el: HTMLElement) {
+    el.classList.add('hidden');
+    el.setAttribute('aria-hidden', 'true');
+    markDismissed();
+  }
+
+  function showNudge(el: HTMLElement) {
+    if (wasDismissedRecently() || preferReducedMotion()) return;
+    el.classList.remove('hidden');
+    el.setAttribute('aria-hidden', 'false');
+  }
+
+  function initNudge() {
+    const el = document.getElementById('wa-nudge');
+    if (!el || wasDismissedRecently()) return;
+
+    let shown = false;
+    let idleTimer: ReturnType<typeof setTimeout> | undefined;
+
+    const resetIdle = () => {
+      if (shown || preferReducedMotion()) return;
+      clearTimeout(idleTimer);
+      idleTimer = setTimeout(() => {
+        if (!shown) {
+          showNudge(el);
+          shown = true;
+        }
+      }, IDLE_MS);
+    };
+
+    const onExitIntent = (e: MouseEvent) => {
+      if (shown || preferReducedMotion()) return;
+      if (e.clientY <= 8) {
+        showNudge(el);
+        shown = true;
+        document.removeEventListener('mouseout', onExitIntent);
+      }
+    };
+
+    ['mousemove', 'keydown', 'scroll', 'touchstart'].forEach((evt) => {
+      window.addEventListener(evt, resetIdle, { passive: true });
+    });
+    document.addEventListener('mouseout', onExitIntent);
+    resetIdle();
+
+    document.getElementById('wa-nudge-dismiss')?.addEventListener('click', () => hideNudge(el));
+    document.getElementById('wa-nudge-later')?.addEventListener('click', () => hideNudge(el));
+    document.getElementById('wa-nudge-cta')?.addEventListener('click', () => markDismissed());
+  }
+
+  initNudge();
+  document.addEventListener('astro:page-load', initNudge);
+</script>

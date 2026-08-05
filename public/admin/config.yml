@@ -1,0 +1,113 @@
+backend:
+  name: git-gateway
+  branch: main
+  commit_messages:
+    create: 'Create {{collection}} "{{slug}}"'
+    update: 'Update {{collection}} "{{slug}}"'
+    delete: 'Delete {{collection}} "{{slug}}"'
+    uploadMedia: '[skip] upload "{{path}}"'
+    deleteMedia: '[skip] delete "{{path}}"'
+
+media_folder: "public/images/uploads"
+public_folder: "/images/uploads"
+
+i18n:
+  structure: multiple_files
+  locales: [en, ta]
+  default_locale: en
+
+collections:
+  - name: "products"
+    label: "Products"
+    folder: "src/content/products"
+    create: true
+    slug: "{{slug}}"
+    i18n: true
+    fields:
+      - { label: "Title", name: "title", widget: "string", i18n: true }
+      - { label: "Slug", name: "slug", widget: "string", pattern: "^[a-z0-9]+(?:-[a-z0-9]+)*$" }
+      - { label: "Category", name: "category", widget: "select", options:
+          - { label: "Murukku & Chakli", value: "murukku-chakli" }
+          - { label: "Sweets & Mithai", value: "sweets-mithai" }
+          - { label: "Mixture & Namkeen", value: "mixture-namkeen" }
+          - { label: "Festival Specials", value: "festival-specials" }
+          - { label: "Healthy Snacks", value: "healthy-snacks" }
+          - { label: "Gift Hampers", value: "gift-hampers" }
+      }
+      - { label: "Short Description", name: "shortDescription", widget: "text", i18n: true }
+      - { label: "Description", name: "description", widget: "markdown", i18n: true }
+      - { label: "Price (₹)", name: "price", widget: "number", min: 1 }
+      - { label: "Original Price (₹)", name: "originalPrice", widget: "number", required: false }
+      - { label: "Weight", name: "weight", widget: "string", example: "200g" }
+      - { label: "Images", name: "images", widget: "list", i18n: true, field: { label: "Image", name: "src", widget: "image" } }
+      - { label: "In Stock", name: "inStock", widget: "boolean", default: true }
+      - { label: "Featured", name: "featured", widget: "boolean", default: false }
+      - { label: "Tags", name: "tags", widget: "list", allow_add: true }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        required: false
+        fields:
+          - { label: "SEO Title", name: "title", widget: "string", required: false }
+          - { label: "SEO Description", name: "description", widget: "text", required: false }
+
+  - name: "categories"
+    label: "Categories"
+    folder: "src/content/categories"
+    create: true
+    slug: "{{slug}}"
+    i18n: true
+    fields:
+      - { label: "Title", name: "title", widget: "string", i18n: true }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Description", name: "description", widget: "text", i18n: true }
+      - { label: "Image", name: "image", widget: "image", required: false }
+      - { label: "Sort Order", name: "order", widget: "number", default: 0 }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        required: false
+        fields:
+          - { label: "SEO Title", name: "title", widget: "string", required: false }
+          - { label: "SEO Description", name: "description", widget: "text", required: false }
+
+  - name: "blog"
+    label: "Blog Posts"
+    folder: "src/content/blog"
+    create: true
+    slug: "{{slug}}"
+    i18n: true
+    fields:
+      - { label: "Title", name: "title", widget: "string", i18n: true }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Excerpt", name: "excerpt", widget: "text", i18n: true }
+      - { label: "Content", name: "content", widget: "markdown", i18n: true }
+      - { label: "Cover Image", name: "coverImage", widget: "image", i18n: true }
+      - { label: "Author", name: "author", widget: "string", default: "Vinoja Foods" }
+      - { label: "Publish Date", name: "publishDate", widget: "datetime", format: "YYYY-MM-DD" }
+      - { label: "Tags", name: "tags", widget: "list", allow_add: true }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        required: false
+        fields:
+          - { label: "SEO Title", name: "title", widget: "string", required: false }
+          - { label: "SEO Description", name: "description", widget: "text", required: false }
+
+  - name: "pages"
+    label: "Pages"
+    folder: "src/content/pages"
+    create: true
+    slug: "{{slug}}"
+    i18n: true
+    fields:
+      - { label: "Title", name: "title", widget: "string", i18n: true }
+      - { label: "Slug", name: "slug", widget: "string" }
+      - { label: "Content", name: "content", widget: "markdown", i18n: true }
+      - label: "SEO"
+        name: "seo"
+        widget: "object"
+        required: false
+        fields:
+          - { label: "SEO Title", name: "title", widget: "string", required: false }
+          - { label: "SEO Description", name: "description", widget: "text", required: false }

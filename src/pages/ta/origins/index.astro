@@ -1,0 +1,87 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import OriginsSection from '@/components/ui/OriginsSection.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { ORIGIN_REGIONS, ORIGINS_PAGE } from '@/data/origins';
+import { getProductBySlug } from '@/data/products';
+
+const locale = 'ta';
+const page = ORIGINS_PAGE.ta;
+
+const regionCards = ORIGIN_REGIONS.map((r) => ({
+  place: r.place.ta,
+  specialty: r.specialty.ta,
+  products: r.productSlugs
+    .map((s) => getProductBySlug(s))
+    .filter((p) => Boolean(p))
+    .map((p) => ({ slug: p!.slug, name: p!.tamilName }))
+}));
+---
+
+<BaseLayout
+  locale={locale}
+  title="தமிழ்நாட்டு மூலங்கள் — ஒவ்வொரு மாவட்டத்தின் சிறந்தவை | வினோஜா ஃபூட்ஸ்"
+  description="புகழ்பெற்ற ஊர்களில் தயாரிக்கப்படும் சிற்றுண்டிகளும் மிட்டாய்களும் — சுகாதார பேக்கிங், ஒரு நாளுக்குள் சென்னை கடையில் புதிதாக."
+>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content" role="main">
+    <PageHero
+      locale={locale}
+      label={page.label}
+      title={page.title}
+      subtitle={page.subtitle}
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'மூலங்கள்', url: '/ta/origins/' }
+      ]}
+    />
+
+    <OriginsSection locale={locale} showLink={false} />
+
+    <section class="section bg-paper-soft border-y border-leaf-100" aria-labelledby="origin-list">
+      <div class="container-custom">
+        <h2 id="origin-list" class="heading-3 mb-8">மாவட்டம் → சிறப்பு</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          {regionCards.map((r) => (
+            <div class="rounded-xl border border-leaf-100 bg-white/70 p-5">
+              <h3 class="font-display font-semibold text-ink text-lg">{r.place}</h3>
+              <p class="text-sm text-ink-muted mt-1 mb-3">{r.specialty}</p>
+              <ul class="flex flex-wrap gap-2">
+                {r.products.map((p) => (
+                  <li>
+                    <a href={`/ta/products/${p.slug}/`} class="text-sm font-medium text-leaf-700 hover:underline">
+                      {p.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="இந்த வாரம் ஒரு மாவட்டச் சுவை"
+      subtitle="என்ன வேண்டும் என்று சொல்லுங்கள் — சென்னை கடையில் என்ன புதிதாக இருக்கிறது என்பதை உறுதி செய்வோம்."
+      buttonText="வாட்ஸ்அப்பில் ஆர்டர்"
+      message="வணக்கம் வினோஜா ஃபூட்ஸ்! தமிழ்நாட்டு மாவட்டச் சிறப்புகள் ஆர்டர் செய்ய விரும்புகிறேன்."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton
+    locale={locale}
+    variant="floating"
+    text="ஆர்டர்"
+    message="வணக்கம் வினோஜா ஃபூட்ஸ்! மாவட்டச் சிறப்புகள் ஆர்டர் செய்ய விரும்புகிறேன்."
+  />
+</BaseLayout>

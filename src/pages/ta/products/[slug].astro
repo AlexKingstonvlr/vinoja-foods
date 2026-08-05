@@ -1,0 +1,212 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import DeliveryInfo from '@/components/ui/DeliveryInfo.astro';
+import { formatPrice } from '@/utils/helpers';
+import { schemas } from '@/utils/schemas';
+import { products, getProductBySlug } from '@/data/products';
+
+const locale = 'ta';
+const { slug } = Astro.params;
+
+export function getStaticPaths() {
+  return products.map((p) => ({ params: { slug: p.slug } }));
+}
+
+const product = getProductBySlug(slug!);
+
+if (!product) {
+  return Astro.redirect('/ta/');
+}
+
+const relatedProducts = products
+  .filter((p) => p.category === product.category && p.slug !== slug)
+  .slice(0, 3);
+
+const breadcrumbs = [
+  { name: 'முகப்பு', url: '/ta/' },
+  { name: 'பொருட்கள்', url: '/ta/products/' },
+  { name: product.tamilName, url: `/ta/products/${slug}/` }
+];
+
+const productSchema = schemas.product(
+  {
+    name: product.tamilName,
+    description: product.shortDescription.ta,
+    image: [product.image].map((img: string) =>
+      new URL(img, import.meta.env.PUBLIC_SITE_URL || 'https://vinojafoods.com').toString()
+    ),
+    price: product.price,
+    currency: 'INR',
+    availability: product.inStock ? 'in-stock' : 'out-of-stock',
+    sku: `VF-${slug?.toUpperCase()}`,
+    brand: 'வினோஜா ஃபூட்ஸ்',
+    category: product.categoryName,
+    weight: product.weight,
+    url: new URL(
+      `/ta/products/${slug}/`,
+      import.meta.env.PUBLIC_SITE_URL || 'https://vinojafoods.com'
+    ).toString()
+  },
+  locale
+);
+
+const breadcrumbSchema = schemas.breadcrumb(
+  breadcrumbs.map((b) => ({
+    ...b,
+    url: new URL(b.url, import.meta.env.PUBLIC_SITE_URL || 'https://vinojafoods.com').toString()
+  }))
+);
+---
+
+<BaseLayout
+  locale={locale}
+  title={`${product.tamilName} | வினோஜா ஃபூட்ஸ்`}
+  description={product.shortDescription.ta}
+  jsonLd={[productSchema, breadcrumbSchema]}
+>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content" role="main">
+    <section class="bg-paper-soft py-fluid-6 lg:py-fluid-8 border-b border-leaf-100">
+      <div class="container-custom">
+        <Breadcrumb items={breadcrumbs} />
+      </div>
+    </section>
+
+    <section class="section-sm">
+      <div class="container-custom">
+        <div class="grid lg:grid-cols-2 gap-10 lg:gap-14 items-start">
+          <div class="animate-in">
+            <div class="relative aspect-square overflow-hidden rounded-2xl bg-leaf-50 shadow-soft border border-leaf-100">
+              <img src={product.image} alt={product.tamilName} class="w-full h-full object-cover" width="800" height="800" fetchpriority="high" />
+              <div class="absolute top-4 left-4 flex flex-col gap-2">
+                {product.featured && <span class="badge badge-secondary">சிறப்பு</span>}
+                {!product.inStock && <span class="badge badge-red">இருப்பு இல்லை</span>}
+              </div>
+            </div>
+          </div>
+
+          <div class="animate-in delay-200 lg:sticky lg:top-28">
+            <a href={`/ta/products/?category=${product.category}`} class="text-sm font-semibold text-leaf-700 hover:underline">
+              {product.categoryName}
+            </a>
+            <h1 class="heading-2 mt-2 mb-2">{product.tamilName}</h1>
+            <p class="text-ink-faint mb-3">{product.name}</p>
+
+            <div class="mb-5 rounded-lg border border-brass-200/60 bg-brass-50/40 px-4 py-3">
+              <p class="text-xs font-semibold uppercase tracking-wide text-leaf-700 mb-0.5">மூல ஊர்</p>
+              <p class="font-display font-semibold text-ink">{product.origin}</p>
+              <p class="text-xs text-ink-faint mt-1">சென்னையில் தயாரிப்பு அல்ல — பேக் செய்த ஒரு நாளுக்குள் எங்கள் சென்னை கடையில் புதிதாக.</p>
+            </div>
+
+            <div class="flex items-baseline gap-3 mb-2">
+              <span class="text-3xl font-bold text-leaf-700">{formatPrice(product.price, locale)}</span>
+              {product.originalPrice > product.price && (
+                <span class="text-lg text-ink-faint line-through">{formatPrice(product.originalPrice, locale)}</span>
+              )}
+              <span class="text-sm text-ink-muted">/ {product.weight}</span>
+            </div>
+
+            <p class="text-sm text-leaf-700 font-medium mb-6">
+              {product.inStock ? 'கிடைக்கும் · ஒரு நாளுக்குள் சென்னை கடைக்குப் புதிதாக' : 'தற்போது இருப்பு இல்லை'}
+            </p>
+
+            <p class="text-body leading-relaxed mb-6">{product.shortDescription.ta}</p>
+
+            <ul class="grid grid-cols-2 gap-3 text-sm text-ink-muted mb-8">
+              <li class="bg-paper-soft rounded-md px-3 py-2 border border-leaf-100">மாவட்டச் சிறப்பு</li>
+              <li class="bg-paper-soft rounded-md px-3 py-2 border border-leaf-100">சுகாதார பேக்கிங்</li>
+              <li class="bg-paper-soft rounded-md px-3 py-2 border border-leaf-100">{product.shelfLife.ta}</li>
+              <li class="bg-paper-soft rounded-md px-3 py-2 border border-leaf-100">சென்னையில் விற்பனை</li>
+            </ul>
+
+            <div class="flex flex-col gap-3 mb-4">
+              <WhatsAppButton
+                locale={locale}
+                variant="product"
+                productName={product.tamilName}
+                weight={product.weight}
+                price={product.price}
+                text="வாட்ஸ்அப்பில் ஆர்டர்"
+                class="text-lg py-4"
+              />
+            </div>
+            <p class="text-xs text-ink-faint mb-6">உங்கள் பகுதிக்கு இருப்பு மற்றும் டெலிவரி உறுதி ஆகும் வரை பணம் தேவையில்லை.</p>
+
+            <DeliveryInfo locale={locale} compact />
+
+            <div class="border-t border-leaf-100 mt-8 pt-6 space-y-4">
+              <details class="group">
+                <summary class="flex items-center justify-between cursor-pointer font-medium text-ink text-sm">
+                  முழு விவரம்
+                  <svg class="w-5 h-5 text-ink-faint group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </summary>
+                <p class="text-sm text-ink-muted mt-2 leading-relaxed">{product.description.ta}</p>
+              </details>
+              <details class="group border-t border-leaf-100 pt-4">
+                <summary class="flex items-center justify-between cursor-pointer font-medium text-ink text-sm">
+                  பொருட்கள்
+                  <svg class="w-5 h-5 text-ink-faint group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </summary>
+                <p class="text-sm text-ink-muted mt-2">{product.ingredients.ta}</p>
+              </details>
+              <details class="group border-t border-leaf-100 pt-4">
+                <summary class="flex items-center justify-between cursor-pointer font-medium text-ink text-sm">
+                  சேமிப்பு
+                  <svg class="w-5 h-5 text-ink-faint group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" /></svg>
+                </summary>
+                <p class="text-sm text-ink-muted mt-2">{product.storageInstructions.ta}</p>
+              </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {relatedProducts.length > 0 && (
+      <section class="section bg-paper-soft border-y border-leaf-100">
+        <div class="container-custom">
+          <h2 class="heading-3 mb-8">இதனுடன் பொருந்தும்</h2>
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {relatedProducts.map((rp) => (
+              <article class="product-tile group">
+                <a href={`/ta/products/${rp.slug}/`} class="block">
+                  <div class="relative aspect-square overflow-hidden bg-leaf-50">
+                    <img src={rp.image} alt={rp.tamilName} class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" width="400" height="400" />
+                  </div>
+                </a>
+                <div class="p-5">
+                  <h3 class="font-display font-semibold text-ink mb-2">
+                    <a href={`/ta/products/${rp.slug}/`} class="hover:text-leaf-700 transition-colors">{rp.tamilName}</a>
+                  </h3>
+                  <div class="flex items-center justify-between mb-3">
+                    <span class="text-xl font-bold text-leaf-700">{formatPrice(rp.price, locale)}</span>
+                    <span class="text-sm text-ink-faint">{rp.weight}</span>
+                  </div>
+                  <WhatsAppButton locale={locale} variant="product" productName={rp.tamilName} weight={rp.weight} price={rp.price} />
+                </div>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
+
+    <section class="cta-band section">
+      <div class="container-custom text-center relative max-w-2xl mx-auto">
+        <h2 class="font-display text-fluid-3xl font-semibold text-white mb-4">{product.tamilName} வேண்டுமா?</h2>
+        <p class="text-white/85 mb-8 text-fluid-lg">ஒரு வாட்ஸ்அப் செய்தி — கடையில் என்ன புதிதாக இருக்கிறது என்பதை உறுதி செய்வோம்.</p>
+        <WhatsAppButton locale={locale} variant="inline" productName={product.tamilName} weight={product.weight} price={product.price} text="வாட்ஸ்அப்பில் ஆர்டர்" />
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" productName={product.tamilName} weight={product.weight} price={product.price} text="ஆர்டர்" />
+</BaseLayout>

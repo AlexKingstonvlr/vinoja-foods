@@ -1,0 +1,32 @@
+---
+/**
+ * Organization / LocalBusiness JSON-LD — uses shared schemas + map coords from env.
+ */
+import { schemas } from '@/utils/schemas';
+import { SITE_CONFIG } from '@/utils/site-config';
+
+interface Props {
+  locale: 'en' | 'ta';
+  data?: Record<string, unknown> | Record<string, unknown>[];
+}
+
+const { locale, data } = Astro.props;
+const extraSchemas = data ? (Array.isArray(data) ? data : [data]) : [];
+
+const organizationSchema = {
+  ...schemas.organization(locale),
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: SITE_CONFIG.map.lat,
+    longitude: SITE_CONFIG.map.lng
+  }
+};
+
+const websiteSchema = schemas.website(locale);
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(organizationSchema)} />
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+{extraSchemas.map((schema) => (
+  <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+))}

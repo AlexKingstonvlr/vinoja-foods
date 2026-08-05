@@ -1,0 +1,282 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import TrustStrip from '@/components/ui/TrustStrip.astro';
+import BundleCard from '@/components/ui/BundleCard.astro';
+import OriginsSection from '@/components/ui/OriginsSection.astro';
+import { formatPrice } from '@/utils/helpers';
+import { getFeaturedProducts } from '@/data/products';
+import { getFeaturedBundles } from '@/data/bundles';
+import { OCCASION_NAV } from '@/data/occasions';
+
+const locale = 'en';
+const featured = getFeaturedProducts();
+const featuredBundles = getFeaturedBundles();
+
+const copy = {
+  brand: 'Vinoja Foods',
+  headline: 'The best of every region, sold fresh in Chennai',
+  sub: 'Authentic Tamil snacks and sweets made in their famous places of origin across Tamil Nadu — hygienically packed and sent to our Chennai shop within a day.',
+  ctaPrimary: 'Order on WhatsApp',
+  ctaSecondary: 'Browse specialties',
+  featuredLabel: 'From across Tamil Nadu',
+  featuredTitle: 'Favourites families reorder',
+  featuredSub: 'Crispy, fragrant regional specialties — arrive at our Chennai shop within a day of preparation.',
+  viewAll: 'See all snacks & sweets',
+  occasionsLabel: 'Shop by occasion',
+  occasionsTitle: 'Gifting, tea-time & office treats',
+  occasionsSub: 'Curated packs for festivals, evening chai, and return gifts — confirm on WhatsApp.',
+  bundlesLabel: 'Value packs',
+  bundlesTitle: 'Bundles with clear savings',
+  bundlesSub: 'Tea-time, sweet+savory, and festival hampers — or build your own box.',
+  viewBundles: 'See all bundles · Build a box',
+  storyLabel: 'Why it tastes authentic',
+  storyTitle: 'The best of every district.',
+  storyBody: 'We don’t cook in a factory in Chennai. We partner with traditional makers in the towns famous for each snack — then bring those specialties to our Chennai shop within a day, hygienically packed. Murukku from its home region, sweets from theirs: one shop, the whole of Tamil Nadu.',
+  storyCta: 'Our story',
+  stepsLabel: 'Ordering is easy',
+  stepsTitle: 'Three warm steps to your door',
+  steps: [
+    { n: '1', title: 'Pick your favourites', body: 'Browse murukku, sweets, mixtures — each from its renowned place of origin.' },
+    { n: '2', title: 'Message us on WhatsApp', body: 'One tap sends your order. We confirm freshness, stock, and delivery from our Chennai shop.' },
+    { n: '3', title: 'Enjoy it fresh', body: 'Hygienically packed and ready — the taste of Tamil Nadu’s finest kitchens.' }
+  ],
+  socialLabel: 'From neighbours',
+  socialTitle: 'What customers tell us',
+  socialNote: 'Illustrative quotes — replace with real reviews when available.',
+  testimonials: [
+    { quote: 'The kai murukku tasted exactly like my grandmother’s — we finished the pack the same evening.', name: 'Priya S.', place: 'Adyar, Chennai' },
+    { quote: 'Ordered mysore pak for Diwali gifts. Soft, ghee-rich, and arrived fresh. Already reordered.', name: 'Karthik R.', place: 'T. Nagar' },
+    { quote: 'WhatsApp ordering was so simple. Felt like getting the real regional taste without leaving Chennai.', name: 'Meena L.', place: 'Velachery' }
+  ],
+  finalTitle: 'Hungry for something authentic?',
+  finalSub: 'Tell us what you’re craving — regional specialties, fresh at our Chennai shop within a day of making.',
+  waMessage: 'Hello Vinoja Foods! I would love to place an order for fresh regional snacks and sweets.'
+};
+
+const occasionCards = [
+  { href: '/en/occasions/festival/', title: 'Festival Specials', detail: 'Gift hampers for Diwali, Pongal & more' },
+  { href: '/en/occasions/tea-time/', title: 'Tea-Time', detail: 'Crispy packs for evening chai' },
+  { href: '/en/occasions/office-gifts/', title: 'Office & Return Gifts', detail: 'Shareable boxes — confirm qty on WhatsApp' }
+];
+---
+
+<BaseLayout
+  locale={locale}
+  title="Vinoja Foods | Authentic Tamil Nadu Snacks & Sweets · Sold Fresh in Chennai"
+  description={copy.sub}
+  ogImage="/images/hero-snacks.jpg"
+>
+  <StructuredData locale={locale} />
+  <Header locale={locale} />
+
+  <main id="main-content" role="main">
+    <section class="relative min-h-[88vh] flex items-end sm:items-center overflow-hidden" aria-labelledby="hero-brand">
+      <div class="absolute inset-0">
+        <img
+          src="/images/hero-snacks.jpg"
+          alt=""
+          class="h-full w-full object-cover hero-ken-burns"
+          width="1920"
+          height="1080"
+          fetchpriority="high"
+        />
+        <div class="absolute inset-0 bg-gradient-to-r from-ink/75 via-ink/45 to-ink/25"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-ink/70 via-transparent to-ink/20"></div>
+      </div>
+
+      <div class="relative container-custom pt-fluid-12 pb-24 sm:py-fluid-16 w-full">
+        <div class="max-w-2xl text-white animate-in">
+          <p id="hero-brand" class="font-display text-fluid-4xl sm:text-fluid-5xl font-semibold tracking-tight text-balance mb-4 drop-shadow-sm">
+            {copy.brand}
+          </p>
+          <h1 class="font-display text-fluid-2xl sm:text-fluid-3xl font-medium text-brass-200 text-balance mb-4">
+            {copy.headline}
+          </h1>
+          <p class="text-fluid-lg text-white/85 max-w-xl leading-relaxed mb-8">
+            {copy.sub}
+          </p>
+          <div class="flex flex-col sm:flex-row gap-3 sm:gap-4">
+            <WhatsAppButton locale={locale} variant="inline" text={copy.ctaPrimary} message={copy.waMessage} />
+            <a href={`/${locale}/products/`} class="btn-on-dark text-center">{copy.ctaSecondary}</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <TrustStrip locale={locale} />
+
+    <!-- Occasions -->
+    <section class="section-sm" aria-labelledby="occasions-heading">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-8 animate-in">
+          <p class="section-label">{copy.occasionsLabel}</p>
+          <h2 id="occasions-heading" class="heading-2 mb-3">{copy.occasionsTitle}</h2>
+          <p class="text-body">{copy.occasionsSub}</p>
+        </header>
+        <div class="grid sm:grid-cols-3 gap-4">
+          {occasionCards.map((card) => (
+            <a
+              href={card.href}
+              class="block rounded-xl border border-leaf-100 bg-white/70 p-5 hover:border-leaf-300 hover:shadow-soft transition-all"
+            >
+              <h3 class="font-display font-semibold text-ink text-lg mb-1">{card.title}</h3>
+              <p class="text-sm text-ink-faint">{card.detail}</p>
+            </a>
+          ))}
+        </div>
+        <ul class="sr-only">
+          {OCCASION_NAV.en.map((l) => (
+            <li><a href={l.href}>{l.label}</a></li>
+          ))}
+        </ul>
+      </div>
+    </section>
+
+    <!-- Featured products -->
+    <section class="section" aria-labelledby="featured-heading">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-10 animate-in">
+          <p class="section-label">{copy.featuredLabel}</p>
+          <h2 id="featured-heading" class="heading-2 mb-3">{copy.featuredTitle}</h2>
+          <p class="text-body text-fluid-lg">{copy.featuredSub}</p>
+          <p class="text-xs text-ink-faint mt-2">Featured from our catalogue — made at origin, fresh at the Chennai shop within a day.</p>
+        </header>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" role="list">
+          {featured.map((product, i) => (
+            <article class="product-tile group animate-in" style={`animation-delay: ${(i + 1) * 90}ms`} role="listitem">
+              <a href={`/${locale}/products/${product.slug}/`} class="block relative aspect-square overflow-hidden">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                  loading="lazy"
+                  width="400"
+                  height="400"
+                />
+                <span class="absolute top-3 left-3 badge badge-secondary">Bestseller</span>
+              </a>
+              <div class="p-5">
+                <p class="text-xs text-leaf-700 font-medium mb-1">{product.origin}</p>
+                <h3 class="font-display text-lg font-semibold text-ink mb-0.5">
+                  <a href={`/${locale}/products/${product.slug}/`} class="hover:text-leaf-700 transition-colors">{product.name}</a>
+                </h3>
+                <p class="text-sm text-ink-faint mb-3">{product.tamilName} · {product.weight}</p>
+                <div class="flex items-baseline gap-2 mb-4">
+                  <span class="text-xl font-bold text-leaf-700">{formatPrice(product.price, locale)}</span>
+                  {product.originalPrice > product.price && (
+                    <span class="text-sm text-ink-faint line-through">{formatPrice(product.originalPrice, locale)}</span>
+                  )}
+                </div>
+                <WhatsAppButton
+                  locale={locale}
+                  variant="product"
+                  productName={product.name}
+                  weight={product.weight}
+                  price={product.price}
+                />
+              </div>
+            </article>
+          ))}
+        </div>
+
+        <div class="mt-10 text-center">
+          <a href={`/${locale}/products/`} class="btn-outline inline-flex items-center gap-2">
+            {copy.viewAll}
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Bundles -->
+    <section class="section bg-paper-soft border-y border-leaf-100" aria-labelledby="bundles-home">
+      <div class="container-custom">
+        <header class="max-w-2xl mb-10 animate-in">
+          <p class="section-label">{copy.bundlesLabel}</p>
+          <h2 id="bundles-home" class="heading-2 mb-3">{copy.bundlesTitle}</h2>
+          <p class="text-body text-fluid-lg">{copy.bundlesSub}</p>
+        </header>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {featuredBundles.map((bundle) => (
+            <BundleCard locale={locale} bundle={bundle} />
+          ))}
+        </div>
+        <div class="mt-10 text-center">
+          <a href={`/${locale}/bundles/`} class="btn-outline">{copy.viewBundles}</a>
+        </div>
+      </div>
+    </section>
+
+    <OriginsSection locale={locale} limit={6} />
+
+    <section class="section bg-leaf-800 text-white relative overflow-hidden" aria-labelledby="story-heading">
+      <div class="absolute inset-0 opacity-20 pointer-events-none" style="background: radial-gradient(circle at 70% 30%, rgba(201,162,39,0.5), transparent 50%);"></div>
+      <div class="container-custom relative grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+        <div class="animate-in">
+          <p class="section-label text-brass-300">{copy.storyLabel}</p>
+          <h2 id="story-heading" class="font-display text-fluid-3xl font-semibold mb-5 text-balance">{copy.storyTitle}</h2>
+          <p class="text-fluid-lg text-white/85 leading-relaxed mb-8">{copy.storyBody}</p>
+          <a href={`/${locale}/about/`} class="btn-secondary">{copy.storyCta}</a>
+        </div>
+        <div class="relative aspect-[4/3] rounded-2xl overflow-hidden shadow-lift animate-in delay-200">
+          <img src="/images/products/kai-murukku.jpg" alt="Fresh handmade kai murukku" class="w-full h-full object-cover" loading="lazy" width="800" height="600" />
+        </div>
+      </div>
+    </section>
+
+    <section class="section bg-paper-soft" aria-labelledby="steps-heading">
+      <div class="container-custom">
+        <header class="max-w-xl mb-12 animate-in">
+          <p class="section-label">{copy.stepsLabel}</p>
+          <h2 id="steps-heading" class="heading-2">{copy.stepsTitle}</h2>
+        </header>
+        <ol class="grid md:grid-cols-3 gap-8">
+          {copy.steps.map((step, i) => (
+            <li class="animate-in" style={`animation-delay: ${(i + 1) * 100}ms`}>
+              <span class="font-display text-4xl text-brass-500 font-semibold">{step.n}</span>
+              <h3 class="heading-4 mt-3 mb-2">{step.title}</h3>
+              <p class="text-body">{step.body}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="social-heading">
+      <div class="container-custom">
+        <header class="max-w-xl mb-10 animate-in">
+          <p class="section-label">{copy.socialLabel}</p>
+          <h2 id="social-heading" class="heading-2">{copy.socialTitle}</h2>
+          <p class="text-xs text-ink-faint mt-2">{copy.socialNote}</p>
+        </header>
+        <div class="grid md:grid-cols-3 gap-6">
+          {copy.testimonials.map((item, i) => (
+            <blockquote class="bg-white/70 border border-leaf-100 rounded-xl p-6 shadow-soft animate-in" style={`animation-delay: ${(i + 1) * 100}ms`}>
+              <p class="text-ink leading-relaxed mb-5">“{item.quote}”</p>
+              <footer>
+                <cite class="not-italic font-semibold text-ink">{item.name}</cite>
+                <p class="text-sm text-ink-faint">{item.place}</p>
+              </footer>
+            </blockquote>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band section" aria-labelledby="final-cta">
+      <div class="container-custom relative text-center max-w-2xl mx-auto animate-in">
+        <h2 id="final-cta" class="font-display text-fluid-3xl font-semibold text-white mb-4 text-balance">{copy.finalTitle}</h2>
+        <p class="text-fluid-lg text-white/85 mb-8">{copy.finalSub}</p>
+        <WhatsAppButton locale={locale} variant="inline" text={copy.ctaPrimary} message={copy.waMessage} class="bg-whatsapp-light hover:bg-whatsapp text-ink font-bold" />
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" text={copy.ctaPrimary} message={copy.waMessage} />
+</BaseLayout>

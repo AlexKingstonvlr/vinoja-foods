@@ -1,0 +1,57 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+
+const locale = 'ta';
+---
+
+<BaseLayout
+  title="குக்கி கொள்கை — வினோஜா ஃபூட்ஸ்"
+  description="வினோஜா ஃபூட்ஸ் குக்கிகளை எப்படிப் பயன்படுத்துகிறது."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="சட்டம்"
+      title="குக்கி கொள்கை"
+      subtitle="கடைசியாகப் புதுப்பிக்கப்பட்டது: ஜனவரி 2025. மென்மையான, நம்பகமான அனுபவத்திற்கான எளிய குக்கிகள்."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'குக்கி', url: '/ta/cookie-policy/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <p>vinojafoods.com குக்கிகள் மற்றும் ஒத்த தொழில்நுட்பங்களை எப்படிப் பயன்படுத்துகிறது என்பதை இக்கொள்கை விளக்குகிறது.</p>
+
+        <h2>குக்கி என்றால் என்ன?</h2>
+        <p>தளம் வேலை செய்ய, விருப்பங்களை நினைவில் வைக்க, வருகைகளைப் புரிந்துகொள்ள சாதனத்தில் சேமிக்கப்படும் சிறிய கோப்புகள்.</p>
+
+        <h2>நாங்கள் பயன்படுத்தக்கூடியவை</h2>
+        <h3>அத்தியாவசியம்</h3>
+        <p>வழிசெலுத்தல், பாதுகாப்பு, அடிப்படை அம்சங்களுக்குத் தேவை.</p>
+        <h3>விருப்பங்கள்</h3>
+        <p>மொழி (EN/TA) போன்ற தேர்வுகள்.</p>
+        <h3>பகுப்பாய்வு</h3>
+        <p>எந்தப் பக்கங்கள் பயனுள்ளவை என்பதை அறிய (அமைக்கப்பட்டிருந்தால்). தேவையற்ற கண்காணிப்பைத் தவிர்க்க முயல்கிறோம்.</p>
+
+        <h2>மேலாண்மை</h2>
+        <p>உலாவி அமைப்புகளில் குக்கிகளைத் தடுக்க/நீக்கலாம். தளத்திற்கு அத்தியாவசிய குக்கிகள் தேவைப்படலாம்.</p>
+
+        <h2>மேலும்</h2>
+        <p><a href="/ta/privacy-policy/">தனியுரிமைக் கொள்கை</a> அல்லது {SITE_CONFIG.contactEmail}.</p>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

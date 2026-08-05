@@ -1,0 +1,183 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+import { getOsmEmbedUrl, getOsmLink, getGoogleMapsSearchUrl, getWhatsAppUrl } from '@/utils/helpers';
+
+const locale = 'en';
+const address = SITE_CONFIG.address.en;
+const { lat, lng } = SITE_CONFIG.map;
+const osmEmbed = getOsmEmbedUrl(lat, lng);
+const osmLink = getOsmLink(lat, lng);
+const googleMapsUrl = getGoogleMapsSearchUrl(address);
+const phone = SITE_CONFIG.contactPhone;
+const email = SITE_CONFIG.contactEmail;
+const waUrl = getWhatsAppUrl('Hello Vinoja Foods! I have a question about your Chennai shop and orders.');
+
+const structuredData = {
+  '@context': 'https://schema.org',
+  '@type': 'ContactPage',
+  name: 'Contact Vinoja Foods',
+  description: 'Visit our Chennai shop or message us on WhatsApp for regional Tamil Nadu specialties.',
+  url: 'https://vinojafoods.com/en/contact'
+};
+
+const hours = [
+  { days: 'Monday – Saturday', time: '9:00 AM – 9:00 PM' },
+  { days: 'Sunday', time: '10:00 AM – 8:00 PM' }
+];
+---
+
+<BaseLayout
+  title="Contact Us — Vinoja Foods | Chennai Shop & WhatsApp"
+  description="Find our Chennai shop on the map, call, email, or order regional Tamil Nadu specialties on WhatsApp."
+  locale={locale}
+>
+  <StructuredData locale={locale} data={structuredData} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Visit & message"
+      title="Contact us"
+      subtitle="Our Chennai shop sells specialties from across Tamil Nadu. Order on WhatsApp, or drop by — we’d love to help you choose."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Contact', url: '/en/contact/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom grid lg:grid-cols-5 gap-12">
+        <div class="lg:col-span-3 animate-in">
+          <p class="section-label">Write to us</p>
+          <h2 class="heading-3 mb-6">Send a message</h2>
+          <form class="space-y-5" action="#" method="POST">
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="name" class="label">Full name</label>
+                <input type="text" id="name" name="name" class="input" placeholder="Your name" required />
+              </div>
+              <div>
+                <label for="email" class="label">Email</label>
+                <input type="email" id="email" name="email" class="input" placeholder="you@example.com" required />
+              </div>
+            </div>
+            <div class="grid sm:grid-cols-2 gap-5">
+              <div>
+                <label for="phone" class="label">Phone</label>
+                <input type="tel" id="phone" name="phone" class="input" placeholder="+91 …" />
+              </div>
+              <div>
+                <label for="subject" class="label">Subject</label>
+                <select id="subject" name="subject" class="input" required>
+                  <option value="" disabled selected>Select</option>
+                  <option value="order">Order enquiry</option>
+                  <option value="bulk">Bulk / festival order</option>
+                  <option value="wholesale">Wholesale</option>
+                  <option value="feedback">Feedback</option>
+                </select>
+              </div>
+            </div>
+            <div>
+              <label for="message" class="label">Message</label>
+              <textarea id="message" name="message" class="input min-h-[140px]" placeholder="Tell us what you need…" required></textarea>
+            </div>
+            <div class="flex flex-col sm:flex-row gap-3 sm:items-center">
+              <button type="submit" class="btn-primary">Send message</button>
+              <span class="text-sm text-ink-faint">Prefer speed? Use WhatsApp — we usually reply faster.</span>
+            </div>
+          </form>
+        </div>
+
+        <div class="lg:col-span-2 space-y-4 animate-in delay-100">
+          <p class="section-label">Shop details</p>
+          <h2 class="heading-3 mb-2">Get in touch</h2>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-1">Address</h3>
+            <p class="text-sm-body">{address}</p>
+            <p class="text-xs text-ink-faint mt-2">Regional specialties sold in Chennai — made across Tamil Nadu.</p>
+          </div>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-1">Phone</h3>
+            <a href={`tel:${phone.replace(/\s/g, '')}`} class="link text-sm">{phone}</a>
+          </div>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-1">Email</h3>
+            <a href={`mailto:${email}`} class="link text-sm">{email}</a>
+          </div>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-1">WhatsApp</h3>
+            <a href={waUrl} class="link text-sm" target="_blank" rel="noopener noreferrer">Chat with us</a>
+          </div>
+
+          <div class="bg-paper-soft/90 border border-leaf-100 rounded-xl p-5">
+            <h3 class="font-display font-semibold text-ink mb-2">Hours</h3>
+            {hours.map((h) => (
+              <p class="text-sm text-ink-muted">
+                <span class="font-medium text-ink">{h.days}:</span> {h.time}
+              </p>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Map: OpenStreetMap embed (no API key) + fallback links -->
+    <section class="section-sm bg-paper-soft border-y border-leaf-100/80" aria-labelledby="map-heading">
+      <div class="container-custom">
+        <header class="mb-6 animate-in">
+          <p class="section-label">Find the shop</p>
+          <h2 id="map-heading" class="heading-3">Chennai shop on the map</h2>
+          <p class="text-body mt-2 max-w-2xl">
+            Open the map below, or launch Google Maps / OpenStreetMap in a new tab with our address.
+          </p>
+        </header>
+
+        <div class="relative rounded-2xl overflow-hidden border border-leaf-200 shadow-soft bg-leaf-50 animate-in delay-100">
+          <iframe
+            title="Vinoja Foods Chennai shop map"
+            src={osmEmbed}
+            class="w-full h-80 sm:h-96 border-0"
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+        </div>
+
+        <div class="mt-5 flex flex-col sm:flex-row flex-wrap gap-3 animate-in delay-200">
+          <a href={googleMapsUrl} class="btn-primary text-center" target="_blank" rel="noopener noreferrer">
+            Open in Google Maps
+          </a>
+          <a href={osmLink} class="btn-outline text-center" target="_blank" rel="noopener noreferrer">
+            Open in OpenStreetMap
+          </a>
+          <a href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(address)}`} class="btn-ghost text-center" target="_blank" rel="noopener noreferrer">
+            Get directions
+          </a>
+        </div>
+        <p class="mt-4 text-sm text-ink-faint">{address}</p>
+      </div>
+    </section>
+
+    <CtaBand
+      locale={locale}
+      title="Prefer a quick chat?"
+      subtitle="Message us on WhatsApp for today’s fresh packs, festival boxes, or shop directions."
+      buttonText="Chat on WhatsApp"
+      message="Hello Vinoja Foods! I’d like to place an order / visit the Chennai shop."
+    />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

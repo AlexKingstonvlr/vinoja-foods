@@ -1,0 +1,41 @@
+---
+import { DELIVERY_INFO } from '@/data/delivery';
+
+interface Props {
+  locale: 'en' | 'ta';
+  /** Optional product origin line already shown above */
+  compact?: boolean;
+}
+
+const { locale, compact = false } = Astro.props;
+const isEnglish = locale === 'en';
+
+const title = isEnglish ? 'Delivery & ordering' : 'டெலிவரி & ஆர்டர்';
+const items = [
+  { label: isEnglish ? 'Areas' : 'பகுதிகள்', body: DELIVERY_INFO.areasServed[locale] },
+  { label: isEnglish ? 'How WhatsApp ordering works' : 'வாட்ஸ்அப் ஆர்டர் எப்படி', body: DELIVERY_INFO.howOrderingWorks[locale] },
+  { label: isEnglish ? 'Freshness' : 'புதுமை', body: DELIVERY_INFO.freshness[locale] },
+  { label: isEnglish ? 'Packing' : 'பேக்கிங்', body: DELIVERY_INFO.hygiene[locale] }
+];
+---
+
+<aside
+  class:list={[
+    'rounded-xl border border-leaf-100 bg-paper-soft/80',
+    compact ? 'p-4' : 'p-5 sm:p-6'
+  ]}
+  aria-labelledby="delivery-info-heading"
+>
+  <h2 id="delivery-info-heading" class:list={['font-display font-semibold text-ink mb-3', compact ? 'text-base' : 'text-lg']}>
+    {title}
+  </h2>
+  <dl class="space-y-3">
+    {items.map((item) => (
+      <div>
+        <dt class="text-xs font-semibold uppercase tracking-wide text-leaf-700 mb-0.5">{item.label}</dt>
+        <dd class="text-sm text-ink-muted leading-relaxed">{item.body}</dd>
+      </div>
+    ))}
+  </dl>
+  <p class="text-xs text-ink-faint mt-4 border-t border-leaf-100 pt-3">{DELIVERY_INFO.note[locale]}</p>
+</aside>

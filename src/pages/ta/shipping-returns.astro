@@ -1,0 +1,87 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { SITE_CONFIG } from '@/utils/site-config';
+import { getWhatsAppUrl } from '@/utils/helpers';
+
+const locale = 'ta';
+const wa = getWhatsAppUrl('வணக்கம் வினோஜா ஃபூட்ஸ்! அனுப்புதல் பற்றி கேள்வி உள்ளது.');
+---
+
+<BaseLayout
+  title="அனுப்புதல் & திரும்பப் பெறுதல் — வினோஜா ஃபூட்ஸ்"
+  description="சென்னை கடையிலிருந்து டெலிவரி நேரங்கள், இலவச ஷிப்பிங், சேதமடைந்த பொட்டலங்கள்."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="கொள்கைகள்"
+      title="அனுப்புதல் & திரும்பப் பெறுதல்"
+      subtitle="மாவட்டச் சிறப்புகள் சென்னை கடையிலிருந்து எப்படிச் செல்கின்றன — தவறு நேர்ந்தால் நாங்கள் என்ன செய்கிறோம்."
+      breadcrumbs={[
+        { name: 'முகப்பு', url: '/ta/' },
+        { name: 'அனுப்புதல்', url: '/ta/shipping-returns/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-3xl prose prose-legal">
+        <h2>அனுப்புதல்</h2>
+        <p>
+          சிறப்புகள் தோற்ற ஊரில் பேக் செய்த பிறகு ஒரு நாளுக்குள் எங்கள் சென்னை கடைக்கு வரும்.
+          கடையிலிருந்து சென்னை முழுவதும் டெலிவரி; இந்தியாவின் பிற பகுதிகளுக்கு நம்பகமான கூரியர்.
+        </p>
+
+        <h3>மதிப்பிடப்பட்ட டெலிவரி</h3>
+        <div class="not-prose my-6 overflow-x-auto rounded-xl border border-leaf-100">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-paper-soft">
+              <tr class="border-b border-leaf-100">
+                <th class="py-3 px-4 font-semibold text-ink">பகுதி</th>
+                <th class="py-3 px-4 font-semibold text-ink">பொதுவான நேரம்</th>
+              </tr>
+            </thead>
+            <tbody class="text-ink-muted">
+              <tr class="border-b border-leaf-50"><td class="py-3 px-4">சென்னை</td><td class="py-3 px-4">1–2 வேலை நாட்கள்</td></tr>
+              <tr class="border-b border-leaf-50"><td class="py-3 px-4">தமிழ்நாடு</td><td class="py-3 px-4">2–3 வேலை நாட்கள்</td></tr>
+              <tr><td class="py-3 px-4">மற்ற இந்தியா</td><td class="py-3 px-4">5–7 வேலை நாட்கள்</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h3>கட்டணம்</h3>
+        <p><strong>₹500</strong>-க்கு மேல் இலவச அனுப்புதல். அதற்குக் கீழ் பொதுவாக ₹50 — வாட்ஸ்அப்பில் உறுதி.</p>
+
+        <h3>கண்காணிப்பு</h3>
+        <p>அனுப்பியதும் SMS, மின்னஞ்சல் அல்லது வாட்ஸ்அப் மூலம் லிங்க் பகிர்கிறோம்.</p>
+
+        <h2>திரும்பப் பெறுதல்</h2>
+        <p>உணவு கெட்டுப்போகக்கூடியது என்பதால் திறக்கப்பட்ட/சரியாக வழங்கப்பட்ட பொட்டலங்களைத் திரும்பப் பெற மாட்டோம். உண்மையான பிரச்சினைகளுக்குத் தீர்வு:</p>
+        <ul>
+          <li>வருகையில் சேதம் அல்லது திறந்த பேக்கிங்</li>
+          <li>தவறான உற்பத்தி</li>
+          <li>வழங்கும்போதே காலாவதி</li>
+        </ul>
+
+        <h3>எப்படிக் கோரலாம்</h3>
+        <ol>
+          <li>டெலிவரிக்குப் பிறகு <strong>48 மணி</strong> நேரத்திற்குள் <a href={wa}>வாட்ஸ்அப்</a> அல்லது மின்னஞ்சல் ({SITE_CONFIG.contactEmail}).</li>
+          <li>ஆர்டர் விவரம் + புகைப்படங்கள்.</li>
+          <li><a href="/ta/refund-policy/">பணத்திரும்பல் கொள்கை</a>ப்படி மாற்று அல்லது பணத்திரும்பல்.</li>
+        </ol>
+      </div>
+    </section>
+
+    <CtaBand locale={locale} title="டெலிவரி நேரம் தெரிய வேண்டுமா?" subtitle="பின் குறியீட்டை வாட்ஸ்அப்பில் அனுப்புங்கள்." message="வணக்கம் வினோஜா ஃபூட்ஸ்! என் பகுதிக்கு டெலிவரி நேரம் என்ன?" />
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

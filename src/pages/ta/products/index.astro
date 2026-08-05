@@ -1,0 +1,234 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import { formatPrice, cn } from '@/utils/helpers';
+import { schemas } from '@/utils/schemas';
+import { products } from '@/data/products';
+
+const locale = 'ta';
+
+const t = {
+  title: 'எங்கள் பொருட்கள்',
+  subtitle: 'மாவட்டச் சிறப்புகள், சுகாதார பேக்கிங் — ஒரு நாளுக்குள் சென்னை கடையில் புதிதாக. வாட்ஸ்அப்பில் ஆர்டர்.',
+  categories: 'வகைகள்',
+  allCategories: 'அனைத்தும்',
+  filterBy: 'வடிகட்டி',
+  productsFound: '{count} பொருட்கள்',
+  outOfStock: 'இருப்பு இல்லை',
+  featured: 'சிறப்பு'
+};
+
+const productsList = products;
+
+const mockCategories = [
+  { slug: 'murukku-chakli', name: 'முறுக்கு & சக்லி', count: products.filter((p) => p.category === 'murukku-chakli').length },
+  { slug: 'sweets-mithai', name: 'இனிப்புகள்', count: products.filter((p) => p.category === 'sweets-mithai').length },
+  { slug: 'mixture-namkeen', name: 'மிக்ச்சர்', count: products.filter((p) => p.category === 'mixture-namkeen').length },
+  { slug: 'festival-specials', name: 'பண்டிகை சிறப்புகள்', count: 0 },
+  { slug: 'healthy-snacks', name: 'ஆரோக்கிய தின்பண்டங்கள்', count: 0 },
+  { slug: 'gift-hampers', name: 'பரிசு ஹாம்பர்கள்', count: 0 }
+];
+
+const breadcrumbItems = [
+  { name: 'முகப்பு', url: `/${locale}/` },
+  { name: t.title, url: `/${locale}/products/` }
+];
+
+const collectionPageSchema = schemas.collectionPage({
+  name: t.title,
+  description: t.subtitle,
+  url: new URL(`/${locale}/products/`, import.meta.env.PUBLIC_SITE_URL || 'https://vinojafoods.com').toString(),
+    itemListElement: productsList.map(p => ({
+    name: p.name,
+    url: new URL(`/${locale}/products/${p.slug}/`, import.meta.env.PUBLIC_SITE_URL || 'https://vinojafoods.com').toString(),
+    image: new URL(p.image, import.meta.env.PUBLIC_SITE_URL || 'https://vinojafoods.com').toString(),
+    price: p.price,
+    currency: 'INR'
+  }))
+}, locale);
+---
+
+<BaseLayout 
+  locale={locale} 
+  title={t.title} 
+  description={t.subtitle}
+  jsonLd={[collectionPageSchema]}
+>
+  <StructuredData locale={locale} />
+
+  <Header locale={locale} />
+  
+  <main id="main-content" role="main">
+    <section class="bg-paper-soft py-fluid-8 lg:py-fluid-12 border-b border-leaf-100" aria-labelledby="page-title">
+      <div class="container-custom">
+        <Breadcrumb items={breadcrumbItems} />
+        
+        <header class="mt-6 animate-in">
+          <p class="section-label">தமிழ்நாடு முழுவதும்</p>
+          <h1 id="page-title" class="heading-2 mb-2">
+            {t.title}
+          </h1>
+          <p class="text-fluid-lg text-ink-muted max-w-2xl">
+            {t.subtitle}
+          </p>
+        </header>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="products-heading">
+      <div class="container-custom">
+        <div class="grid lg:grid-cols-4 gap-8">
+          <aside class="lg:col-span-1" aria-label={t.filterBy}>
+            <div class="sticky top-24 space-y-6">
+              <div class="bg-white/80 border border-leaf-100 rounded-xl p-5 shadow-soft">
+                <h2 class="heading-4 mb-4">{t.categories}</h2>
+                <nav aria-label={t.categories}>
+                  <ul class="space-y-2" role="list">
+                    <li>
+                      <a 
+                        href={`/${locale}/products/`} 
+                        class={cn('flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors', 
+                          !Astro.url.searchParams.get('category') 
+                            ? 'bg-leaf-100 text-leaf-800' 
+                            : 'text-ink-muted hover:bg-leaf-50')}
+                      >
+                        <span>{t.allCategories}</span>
+                        <span class="text-xs text-ink-faint">{productsList.length}</span>
+                      </a>
+                    </li>
+                    {mockCategories.map(cat => (
+                      <li>
+                        <a 
+                          href={`/${locale}/products/?category=${cat.slug}`} 
+                          class={cn('flex items-center justify-between px-3 py-2 rounded-md text-sm font-medium transition-colors',
+                            Astro.url.searchParams.get('category') === cat.slug
+                              ? 'bg-leaf-100 text-leaf-800'
+                              : 'text-ink-muted hover:bg-leaf-50')}
+                        >
+                          <span>{cat.name}</span>
+                          <span class="text-xs text-ink-faint">{cat.count}</span>
+                        </a>
+                      </li>
+                    ))}
+                  </ul>
+                </nav>
+              </div>
+
+              <div class="bg-leaf-700 text-white rounded-xl p-5 shadow-warm">
+                <h2 class="font-display text-lg font-semibold mb-2">தேர்வு செய்ய உதவி வேண்டுமா?</h2>
+                <p class="text-sm text-white/80 mb-4">செய்தி அனுப்புங்கள் — டீ-நேரம், பண்டிகை, பரிசுக்குப் புதிய பொட்டலங்களைப் பரிந்துரைக்கிறோம்.</p>
+                <WhatsAppButton
+                  locale={locale}
+                  variant="inline"
+                  text="வாட்ஸ்அப்பில் கேளுங்கள்"
+                  message="வணக்கம் வினோஜா ஃபூட்ஸ்! இன்றைய தின்பண்டங்கள் தேர்ந்தெடுக்க உதவுங்கள்."
+                  class="w-full justify-center bg-whatsapp-light hover:bg-whatsapp text-ink"
+                />
+              </div>
+            </div>
+          </aside>
+
+          <div class="lg:col-span-3">
+            <p class="text-sm text-ink-muted mb-6">
+              {t.productsFound.replace('{count}', productsList.length.toString())} · மாவட்டச் சிறப்புகள் · வாட்ஸ்அப் ஆர்டர்
+            </p>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label={t.title}>
+              {productsList.map((product, i) => (
+                <article class="product-tile group animate-in" style={`animation-delay: ${(i % 6 + 1) * 80}ms`} role="listitem" itemscope itemtype="https://schema.org/Product">
+                  <a href={`/${locale}/products/${product.slug}/`} class="block" itemprop="url">
+                    <div class="relative aspect-square overflow-hidden bg-leaf-50">
+                      <img 
+                        src={product.image} 
+                        alt={product.name}
+                        class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+                        loading="lazy"
+                        itemprop="image"
+                      />
+                      <div class="absolute top-3 left-3 flex flex-col gap-2">
+                        {product.featured && (
+                          <span class="badge badge-secondary self-start">சிறந்தவை</span>
+                        )}
+                        {!product.inStock && (
+                          <span class="badge badge-red self-start">{t.outOfStock}</span>
+                        )}
+                      </div>
+                    </div>
+                  </a>
+                  <div class="p-5">
+                    <h3 class="font-display text-lg font-semibold text-ink line-clamp-1 mb-0.5" itemprop="name">
+                      <a href={`/${locale}/products/${product.slug}/`} class="hover:text-leaf-700 transition-colors">
+                        {product.tamilName}
+                      </a>
+                    </h3>
+                    <p class="text-sm text-ink-faint mb-3">{product.name} · {product.weight}</p>
+                    <div class="flex items-center gap-2 mb-3">
+                      <span class="text-xl font-bold text-leaf-700" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                        <meta itemprop="priceCurrency" content="INR" />
+                        <meta itemprop="price" content={product.price.toString()} />
+                        <meta itemprop="availability" content={product.inStock ? 'https://schema.org/InStock' : 'https://schema.org/OutOfStock'} />
+                        {formatPrice(product.price, locale)}
+                      </span>
+                      {product.originalPrice && product.originalPrice > product.price && (
+                        <span class="text-sm text-ink-faint line-through">
+                          {formatPrice(product.originalPrice, locale)}
+                        </span>
+                      )}
+                    </div>
+                    <p class="text-sm text-ink-muted mb-4 line-clamp-2" itemprop="description">
+                      {product.shortDescription.ta}
+                    </p>
+                    <WhatsAppButton 
+                      locale={locale} 
+                      variant="product"
+                      productName={product.name}
+                      weight={product.weight}
+                      price={product.price}
+                    />
+                  </div>
+                </article>
+              ))}
+            </div>
+
+            {productsList.length > 12 && (
+              <div class="text-center mt-10 animate-in">
+                <button class="btn-outline inline-flex items-center gap-2">
+                  மேலும் பொருட்களைக் காட்டு
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta-band section" aria-labelledby="whatsapp-cta-heading">
+      <div class="container-custom text-center relative">
+        <div class="max-w-2xl mx-auto animate-in">
+          <h2 id="whatsapp-cta-heading" class="font-display text-fluid-3xl font-semibold text-white mb-4">
+            வீட்டுச் சுவைக்குத் தயாரா?
+          </h2>
+          <p class="text-white/85 mb-8 text-fluid-lg">
+            உங்கள் பட்டியலை அனுப்புங்கள் — பிராந்தியத் தயாரிப்பாளர்களிடமிருந்து புத்துணர்ச்சியையும் சென்னை கடை டெலிவரியையும் உறுதி செய்கிறோம்.
+          </p>
+          <WhatsAppButton 
+            locale={locale} 
+            variant="inline"
+            text="வாட்ஸ்அப்பில் ஆர்டர்"
+            message="வணக்கம் வினோஜா ஃபூட்ஸ்! ஆர்டர் செய்ய விரும்புகிறேன்."
+          />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" text="ஆர்டர்" message="வணக்கம் வினோஜா ஃபூட்ஸ்! ஆர்டர் செய்ய விரும்புகிறேன்." />
+</BaseLayout>

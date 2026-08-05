@@ -1,0 +1,130 @@
+---
+import LanguageSwitcher from '@/components/layout/LanguageSwitcher.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+
+interface Props {
+  locale?: 'en' | 'ta';
+}
+
+const { locale = 'en' } = Astro.props;
+const isEnglish = locale === 'en';
+const t = {
+  en: {
+    shop: 'Snacks',
+    bundles: 'Bundles',
+    occasions: 'Occasions',
+    origins: 'Origins',
+    blog: 'Stories',
+    about: 'Our Story',
+    contact: 'Contact',
+    orderNow: 'Order on WhatsApp',
+    madeFresh: 'Regional specialties · Fresh to Chennai within a day'
+  },
+  ta: {
+    shop: 'சிற்றுண்டிகள்',
+    bundles: 'பேக்குகள்',
+    occasions: 'சந்தர்ப்பங்கள்',
+    origins: 'மூலங்கள்',
+    blog: 'கதைகள்',
+    about: 'எங்கள் கதை',
+    contact: 'தொடர்பு',
+    orderNow: 'வாட்ஸ்அப்பில் ஆர்டர்',
+    madeFresh: 'மாவட்டச் சிறப்புகள் · ஒரு நாளுக்குள் சென்னைக்கு புதிதாக'
+  }
+}[locale];
+
+const navLinks = [
+  { href: `/${locale}/`, label: isEnglish ? 'Home' : 'முகப்பு' },
+  { href: `/${locale}/products/`, label: t.shop },
+  { href: `/${locale}/bundles/`, label: t.bundles },
+  { href: `/${locale}/occasions/festival/`, label: t.occasions },
+  { href: `/${locale}/origins/`, label: t.origins },
+  { href: `/${locale}/about/`, label: t.about },
+  { href: `/${locale}/blog/`, label: t.blog },
+  { href: `/${locale}/contact/`, label: t.contact }
+];
+---
+
+<header class="sticky top-0 z-50 w-full border-b border-leaf-200/70 bg-paper-soft/90 backdrop-blur-md" role="banner">
+  <div class="bg-leaf-700 text-white text-center text-[11px] leading-snug sm:text-sm py-1.5 px-3 sm:px-4 tracking-wide">
+    <span class="inline-flex items-center justify-center gap-2 max-w-full">
+      <span class="w-1.5 h-1.5 rounded-full bg-brass-400 animate-steam flex-shrink-0" aria-hidden="true"></span>
+      <span class="text-balance">{t.madeFresh}</span>
+    </span>
+  </div>
+  <div class="container-custom">
+    <div class="flex h-16 sm:h-[4.25rem] items-center justify-between gap-4">
+      <a href={`/${locale}/`} class="flex items-center gap-3 group" aria-label={isEnglish ? 'Vinoja Foods Home' : 'வினோஜா ஃபூட்ஸ் முகப்பு'}>
+        <span class="flex h-10 w-10 items-center justify-center rounded-full bg-leaf-600 text-brass-300 shadow-warm group-hover:scale-105 transition-transform" aria-hidden="true">
+          <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 6 5 9.5 5 13a7 7 0 0014 0c0-3.5-3-7-7-11zm0 16a4 4 0 01-4-4c0-1.8 1.4-3.8 4-7.2 2.6 3.4 4 5.4 4 7.2a4 4 0 01-4 4z"/></svg>
+        </span>
+        <span class="font-display text-lg sm:text-2xl font-semibold text-ink tracking-tight">
+          {isEnglish ? 'Vinoja Foods' : 'வினோஜா ஃபூட்ஸ்'}
+        </span>
+      </a>
+
+      <nav class="hidden lg:flex items-center gap-0.5" role="navigation" aria-label={isEnglish ? 'Main navigation' : 'முக்கிய வழிசெலுத்தல்'}>
+        {navLinks.map((link) => (
+          <a href={link.href} class="px-2.5 py-2 rounded-md text-sm font-medium text-ink-muted hover:text-leaf-700 hover:bg-leaf-50 transition-colors">
+            {link.label}
+          </a>
+        ))}
+      </nav>
+
+      <div class="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+        <LanguageSwitcher locale={locale} />
+        <WhatsAppButton
+          locale={locale}
+          variant="header"
+          text={t.orderNow}
+          message={isEnglish
+            ? 'Hello Vinoja Foods! I would love to place an order.'
+            : 'வணக்கம் வினோஜா ஃபூட்ஸ்! நான் ஆர்டர் செய்ய விரும்புகிறேன்.'}
+          class="hidden sm:flex"
+        />
+        <button
+          type="button"
+          id="menu-toggle"
+          class="lg:hidden p-2.5 min-w-[44px] min-h-[44px] inline-flex items-center justify-center rounded-md text-ink-muted hover:bg-leaf-50"
+          aria-label={isEnglish ? 'Open menu' : 'மெனியைத் திறக்கவும்'}
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden lg:hidden pb-4 border-t border-leaf-100" role="navigation" aria-label={isEnglish ? 'Mobile navigation' : 'கைபேசி வழிசெலுத்தல்'}>
+      <nav class="flex flex-col gap-1 pt-3">
+        {navLinks.map((link) => (
+          <a href={link.href} class="px-3 py-2.5 rounded-md text-base font-medium text-ink-muted hover:text-leaf-700 hover:bg-leaf-50 transition-colors">
+            {link.label}
+          </a>
+        ))}
+        <div class="pt-3">
+          <WhatsAppButton
+            locale={locale}
+            variant="header"
+            text={t.orderNow}
+            message={isEnglish
+              ? 'Hello Vinoja Foods! I would love to place an order.'
+              : 'வணக்கம் வினோஜா ஃபூட்ஸ்! நான் ஆர்டர் செய்ய விரும்புகிறேன்.'}
+            class="w-full justify-center"
+          />
+        </div>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('menu-toggle');
+  const menu = document.getElementById('mobile-menu');
+  toggle?.addEventListener('click', () => {
+    const open = menu?.classList.toggle('hidden') === false;
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+</script>

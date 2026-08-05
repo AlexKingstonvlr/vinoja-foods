@@ -1,0 +1,133 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import StructuredData from '@/components/seo/StructuredData.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import Breadcrumb from '@/components/ui/Breadcrumb.astro';
+import CtaBand from '@/components/ui/CtaBand.astro';
+import { schemas } from '@/utils/schemas';
+import { formatDate } from '@/utils/helpers';
+import { getBlogPost, getBlogPosts, getBlogSlugs } from '@/data/blog';
+
+export function getStaticPaths() {
+  return getBlogSlugs().map((slug) => ({ params: { slug } }));
+}
+
+const { slug } = Astro.params;
+const locale = 'en';
+const post = getBlogPost(locale, slug as string);
+
+if (!post) {
+  return Astro.redirect('/en/blog/');
+}
+
+const related = getBlogPosts(locale)
+  .filter((p) => p.slug !== slug)
+  .slice(0, 3);
+
+const blogPostSchema = schemas.blogPost({
+  headline: post.title,
+  description: post.excerpt,
+  image: `https://vinojafoods.com${post.image}`,
+  datePublished: post.date,
+  dateModified: post.date,
+  author: post.author,
+  publisher: 'Vinoja Foods',
+  url: `https://vinojafoods.com/en/blog/${slug}/`,
+  mainEntityOfPage: `https://vinojafoods.com/en/blog/${slug}/`
+});
+---
+
+<BaseLayout title={`${post.title} | Vinoja Foods`} description={post.excerpt} locale={locale}>
+  <StructuredData locale={locale} data={blogPostSchema} />
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <article>
+      <section class="border-b border-leaf-100/80 bg-paper-soft pt-28 pb-10 sm:pt-32">
+        <div class="container-custom max-w-3xl">
+          <Breadcrumb
+            items={[
+              { name: 'Home', url: '/en/' },
+              { name: 'Stories', url: '/en/blog/' },
+              { name: post.title, url: `/en/blog/${slug}/` }
+            ]}
+          />
+          <div class="mt-6 animate-in">
+            <div class="flex flex-wrap gap-2">
+              {post.tags.map((tag) => (
+                <span class="badge badge-primary">{tag}</span>
+              ))}
+            </div>
+            <h1 class="heading-1 mt-4 text-balance">{post.title}</h1>
+            <div class="mt-4 flex flex-wrap items-center gap-3 text-sm text-ink-faint">
+              <time datetime={post.date}>{formatDate(post.date, 'en')}</time>
+              <span aria-hidden="true">·</span>
+              <span>By {post.author}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div class="container-custom max-w-3xl py-10">
+        <div class="rounded-2xl overflow-hidden shadow-lift aspect-[16/9] animate-in delay-100">
+          <img src={post.image} alt="" class="w-full h-full object-cover" />
+        </div>
+
+        <div class="prose prose-lg max-w-none mt-10 animate-in delay-200" set:html={post.content} />
+
+        <div class="mt-12 pt-8 border-t border-leaf-100 animate-in delay-300">
+          <h2 class="heading-4 mb-4">Share this story</h2>
+          <div class="flex flex-wrap gap-3">
+            <a
+              href={`https://wa.me/?text=${encodeURIComponent(`${post.title} — https://vinojafoods.com/en/blog/${slug}/`)}`}
+              class="btn-whatsapp text-sm"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              WhatsApp
+            </a>
+            <a
+              href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(`https://vinojafoods.com/en/blog/${slug}/`)}&text=${encodeURIComponent(post.title)}`}
+              class="btn-outline text-sm"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Share
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {related.length > 0 && (
+        <section class="section bg-paper-soft border-t border-leaf-100/80">
+          <div class="container-custom">
+            <h2 class="heading-2 mb-8">More stories</h2>
+            <div class="grid gap-6 sm:grid-cols-3">
+              {related.map((r, i) => (
+                <a href={`/en/blog/${r.slug}/`} class="group block animate-in" style={`animation-delay: ${i * 80}ms`}>
+                  <div class="aspect-[16/10] rounded-xl overflow-hidden mb-4">
+                    <img src={r.image} alt="" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                  </div>
+                  <time class="text-xs text-ink-faint" datetime={r.date}>{formatDate(r.date, 'en')}</time>
+                  <h3 class="heading-4 mt-1 group-hover:text-leaf-700 transition-colors">{r.title}</h3>
+                </a>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <CtaBand
+        locale={locale}
+        title="Enjoyed this story?"
+        subtitle="Order the specialties you just read about — fresh at our Chennai shop within a day of packing."
+        message="Hello Vinoja Foods! I read your blog and would like to order."
+      />
+    </article>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>

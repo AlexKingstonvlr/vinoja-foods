@@ -1,0 +1,128 @@
+---
+interface Props {
+  locale?: 'en' | 'ta';
+}
+
+const { locale = 'en' } = Astro.props;
+const isEnglish = locale === 'en';
+
+const t = {
+  en: {
+    tagline: 'Authentic Tamil Nadu specialties — made in their famous hometowns, sold fresh in our Chennai shop.',
+    company: 'Our Story',
+    shop: 'Shop',
+    support: 'Help',
+    legal: 'Policies',
+    orderCta: 'Order on WhatsApp',
+    orderHint: 'Confirm stock & delivery before you pay',
+    rights: 'All rights reserved.',
+    madeWith: 'Sold with care from our Chennai shop · Sourced across Tamil Nadu'
+  },
+  ta: {
+    tagline: 'தமிழ்நாட்டின் உண்மையான சிறப்புகள் — புகழ்பெற்ற ஊர்களில் தயாரிப்பு, சென்னை கடையில் புதிதாக விற்பனை.',
+    company: 'எங்கள் கதை',
+    shop: 'கடை',
+    support: 'உதவி',
+    legal: 'கொள்கைகள்',
+    orderCta: 'வாட்ஸ்அப்பில் ஆர்டர்',
+    orderHint: 'பணத்திற்கு முன் இருப்பு & டெலிவரியை உறுதி செய்யுங்கள்',
+    rights: 'அனைத்து உரிமைகளும் பாதுகாக்கப்பட்டவை.',
+    madeWith: 'சென்னை கடையில் இருந்து · தமிழ்நாடு முழுவதும் இருந்து பெறப்பட்டவை'
+  }
+}[locale];
+
+const footerLinks = {
+  company: [
+    { label: isEnglish ? 'About Us' : 'எங்களைப் பற்றி', href: `/${locale}/about/` },
+    { label: isEnglish ? 'Our Story' : 'எங்கள் கதை', href: `/${locale}/about/#story` },
+    { label: isEnglish ? 'Origins' : 'மூலங்கள்', href: `/${locale}/origins/` },
+    { label: isEnglish ? 'Quality Promise' : 'தர உறுதி', href: `/${locale}/about/#quality` }
+  ],
+  shop: [
+    { label: isEnglish ? 'All Products' : 'அனைத்து பொருட்கள்', href: `/${locale}/products/` },
+    { label: isEnglish ? 'Bundles' : 'பேக்குகள்', href: `/${locale}/bundles/` },
+    { label: isEnglish ? 'Festival Specials' : 'திருவிழா சிறப்புகள்', href: `/${locale}/occasions/festival/` },
+    { label: isEnglish ? 'Tea-Time' : 'தேநீர் நேரம்', href: `/${locale}/occasions/tea-time/` },
+    { label: isEnglish ? 'Office Gifts' : 'அலுவலக பரிசு', href: `/${locale}/occasions/office-gifts/` }
+  ],
+  support: [
+    { label: isEnglish ? 'Contact' : 'தொடர்பு', href: `/${locale}/contact/` },
+    { label: isEnglish ? 'Shipping' : 'டெலிவரி', href: `/${locale}/shipping-returns/` },
+    { label: isEnglish ? 'FAQ' : 'கேள்விகள்', href: `/${locale}/faq/` }
+  ],
+  legal: [
+    { label: isEnglish ? 'Privacy' : 'தனியுரிமை', href: `/${locale}/privacy-policy/` },
+    { label: isEnglish ? 'Terms' : 'நிபந்தனைகள்', href: `/${locale}/terms-conditions/` },
+    { label: isEnglish ? 'Refunds' : 'பணத்திருப்பம்', href: `/${locale}/refund-policy/` }
+  ]
+};
+
+const whatsappNumber = import.meta.env.PUBLIC_WHATSAPP_NUMBER || '91XXXXXXXXXX';
+const orderUrl = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
+  isEnglish
+    ? 'Hello Vinoja Foods! I would love to place an order.'
+    : 'வணக்கம் வினோஜா ஃபூட்ஸ்! நான் ஆர்டர் செய்ய விரும்புகிறேன்.'
+)}`;
+---
+
+<footer class="mt-auto bg-ink text-paper-soft" role="contentinfo">
+  <div class="container-custom py-fluid-12">
+    <div class="grid gap-10 lg:grid-cols-12 mb-12">
+      <div class="lg:col-span-5">
+        <a href={`/${locale}/`} class="inline-flex items-center gap-3 mb-4">
+          <span class="flex h-11 w-11 items-center justify-center rounded-full bg-leaf-500 text-brass-200" aria-hidden="true">
+            <svg class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8 6 5 9.5 5 13a7 7 0 0014 0c0-3.5-3-7-7-11zm0 16a4 4 0 01-4-4c0-1.8 1.4-3.8 4-7.2 2.6 3.4 4 5.4 4 7.2a4 4 0 01-4 4z"/></svg>
+          </span>
+          <span class="font-display text-2xl font-semibold text-white">
+            {isEnglish ? 'Vinoja Foods' : 'வினோஜா ஃபூட்ஸ்'}
+          </span>
+        </a>
+        <p class="text-paper-deep/90 max-w-md leading-relaxed mb-6">{t.tagline}</p>
+        <a href={orderUrl} target="_blank" rel="noopener noreferrer" class="btn-whatsapp" data-wa-click="true" data-wa-context="footer">
+          {t.orderCta}
+        </a>
+        <p class="text-sm text-paper-deep/70 mt-3">{t.orderHint}</p>
+      </div>
+
+      <div class="lg:col-span-7 grid grid-cols-2 sm:grid-cols-4 gap-8">
+        <div>
+          <h3 class="font-display text-white mb-4">{t.company}</h3>
+          <ul class="space-y-2.5">
+            {footerLinks.company.map((link) => (
+              <li><a href={link.href} class="text-paper-deep/80 hover:text-brass-300 transition-colors text-sm">{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display text-white mb-4">{t.shop}</h3>
+          <ul class="space-y-2.5">
+            {footerLinks.shop.map((link) => (
+              <li><a href={link.href} class="text-paper-deep/80 hover:text-brass-300 transition-colors text-sm">{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display text-white mb-4">{t.support}</h3>
+          <ul class="space-y-2.5">
+            {footerLinks.support.map((link) => (
+              <li><a href={link.href} class="text-paper-deep/80 hover:text-brass-300 transition-colors text-sm">{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-display text-white mb-4">{t.legal}</h3>
+          <ul class="space-y-2.5">
+            {footerLinks.legal.map((link) => (
+              <li><a href={link.href} class="text-paper-deep/80 hover:text-brass-300 transition-colors text-sm">{link.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-t border-white/10 pt-6 flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between text-sm text-paper-deep/70">
+      <p>&copy; {new Date().getFullYear()} {isEnglish ? 'Vinoja Foods' : 'வினோஜா ஃபூட்ஸ்'}. {t.rights}</p>
+      <p>{t.madeWith}</p>
+    </div>
+  </div>
+</footer>

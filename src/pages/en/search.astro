@@ -1,0 +1,95 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import Header from '@/components/layout/Header.astro';
+import Footer from '@/components/layout/Footer.astro';
+import WhatsAppButton from '@/components/ui/WhatsAppButton.astro';
+import PageHero from '@/components/ui/PageHero.astro';
+import { products } from '@/data/products';
+
+const locale = 'en';
+const q = Astro.url.searchParams.get('q')?.trim() || '';
+const results = q
+  ? products.filter(
+      (p) =>
+        p.name.toLowerCase().includes(q.toLowerCase()) ||
+        p.tamilName.includes(q) ||
+        p.tags.en.some((t) => t.toLowerCase().includes(q.toLowerCase())) ||
+        p.origin.toLowerCase().includes(q.toLowerCase())
+    )
+  : [];
+---
+
+<BaseLayout
+  title="Search — Vinoja Foods"
+  description="Search regional Tamil Nadu snacks and sweets sold at our Chennai shop."
+  locale={locale}
+>
+  <Header locale={locale} />
+
+  <main id="main-content">
+    <PageHero
+      locale={locale}
+      label="Find a specialty"
+      title="Search"
+      subtitle="Look up murukku, sweets, mixtures — or a famous place of origin."
+      breadcrumbs={[
+        { name: 'Home', url: '/en/' },
+        { name: 'Search', url: '/en/search/' }
+      ]}
+    />
+
+    <section class="section">
+      <div class="container-custom max-w-2xl">
+        <form class="mb-10" role="search" method="get" action="/en/search/">
+          <label for="search-input" class="label">Search snacks & sweets</label>
+          <div class="flex gap-3">
+            <input
+              type="search"
+              id="search-input"
+              name="q"
+              value={q}
+              placeholder="e.g. murukku, mysore pak, Manapparai…"
+              class="input flex-1"
+              autocomplete="off"
+            />
+            <button type="submit" class="btn-primary shrink-0">Search</button>
+          </div>
+        </form>
+
+        {!q && (
+          <div class="text-center py-12 text-ink-faint">
+            <p class="text-lg font-display text-ink">Type something to search</p>
+            <p class="mt-2 text-sm">Or <a href="/en/products/" class="link">browse all specialties</a>.</p>
+          </div>
+        )}
+
+        {q && results.length === 0 && (
+          <div class="text-center py-12">
+            <p class="heading-4 mb-2">No matches for “{q}”</p>
+            <p class="text-body mb-6">Try another name, or message us on WhatsApp — we’ll help you find it.</p>
+            <WhatsAppButton locale={locale} variant="inline" message={`Hello Vinoja Foods! I'm looking for: ${q}`} />
+          </div>
+        )}
+
+        {results.length > 0 && (
+          <ul class="space-y-4">
+            {results.map((p) => (
+              <li>
+                <a href={`/en/products/${p.slug}/`} class="flex gap-4 p-4 rounded-xl border border-leaf-100 bg-paper-soft/90 hover:shadow-soft transition-shadow">
+                  <img src={p.image} alt="" class="w-20 h-20 rounded-lg object-cover" />
+                  <div>
+                    <p class="font-display font-semibold text-ink">{p.name}</p>
+                    <p class="text-sm text-ink-faint">{p.tamilName} · {p.origin}</p>
+                  </div>
+                </a>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
+    </section>
+  </main>
+
+  <Footer locale={locale} />
+  <WhatsAppButton locale={locale} variant="floating" />
+</BaseLayout>
