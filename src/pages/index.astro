@@ -1,3 +1,20 @@
 ---
-return Astro.redirect('/en/');
+// Relative redirect so *.vercel.app works before the custom domain is live.
+// (Astro.redirect('/en/') becomes an absolute URL from `site` in the static build.)
 ---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Vinoja Foods</title>
+    <meta http-equiv="refresh" content="0;url=/en/" />
+    <link rel="canonical" href="/en/" />
+    <meta name="robots" content="noindex" />
+    <script is:inline>
+      location.replace('/en/');
+    </script>
+  </head>
+  <body>
+    <p><a href="/en/">Continue to Vinoja Foods</a></p>
+  </body>
+</html>

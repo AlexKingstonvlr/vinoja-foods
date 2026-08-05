@@ -3,8 +3,12 @@ import tailwind from '@astrojs/tailwind';
 import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
+const site =
+  process.env.PUBLIC_SITE_URL ||
+  (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : 'https://vinojafoods.com');
+
 export default defineConfig({
-  site: 'https://vinojafoods.com',
+  site,
   trailingSlash: 'always',
   prefetch: {
     prefetchAll: true,
@@ -28,7 +32,8 @@ export default defineConfig({
     defaultLocale: 'en',
     locales: ['en', 'ta'],
     routing: {
-      prefixDefaultLocale: true
+      prefixDefaultLocale: true,
+      redirectToDefaultLocale: false
     }
   },
   markdown: {
